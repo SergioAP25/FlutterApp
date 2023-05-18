@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutterapp/services/database/constants/database_constants.dart';
 
-import '../../api/models/api_pokemon_model.dart';
-
 @immutable
 class PokemonDatabaseModel {
   final int id;

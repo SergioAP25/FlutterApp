@@ -1,9 +1,5 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutterapp/services/api/api_service.dart';
 import 'package:flutterapp/services/repository.dart';
-import 'package:http/http.dart' as http;
 
 class Pokedex extends StatefulWidget {
   const Pokedex({super.key});

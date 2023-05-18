@@ -1,4 +1,7 @@
 import 'dart:convert';
+import 'package:flutterapp/services/api/models/api_description_model.dart';
+import 'package:flutterapp/services/api/models/api_filtered_pokemon.dart';
+import 'package:flutterapp/services/api/models/api_pokemon_model.dart';
 import 'package:http/http.dart' as http;
 import 'constants/api_constants.dart';
 
@@ -11,25 +14,26 @@ class ApiService {
 
   ApiService._sharedInstance();
 
-  Future<dynamic> getAllPokemons() async {
+  Future<PokemonApiModel> getAllPokemons() async {
     const endpoint = base_url + allPokemons;
     final uri = Uri.parse(endpoint);
     final response = await http.get(uri);
     final json = jsonDecode(response.body);
-    return json;
+    return PokemonApiModel.fromJson(json);
   }
 
-  Future<dynamic> getPokemonByUrl(String endpoint) async {
+  Future<FilteredPokemonApiModel> getPokemonByUrl(String endpoint) async {
     final uri = Uri.parse(endpoint);
     final response = await http.get(uri);
     final json = jsonDecode(response.body);
-    return json;
+    return FilteredPokemonApiModel.fromJson(json);
   }
 
-  Future<dynamic> getPokemonDescriptionByUrl(String endpoint) async {
+  Future<DescriptionApiModel> getPokemonDescriptionByUrl(
+      String endpoint) async {
     final uri = Uri.parse(endpoint);
     final response = await http.get(uri);
     final json = jsonDecode(response.body);
-    return json;
+    return DescriptionApiModel.fromJson(json);
   }
 }
