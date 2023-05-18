@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/views/favorites.dart';
-import 'package:flutterapp/views/home.dart';
-import 'package:flutterapp/views/options.dart';
-import 'package:flutterapp/views/pokedex.dart';
+
 import 'package:google_nav_bar/google_nav_bar.dart';
+
+import 'navbar/home.dart';
+import 'navbar/options.dart';
+import 'navbar/pokedex.dart';
+import 'navbar/favorites.dart';
 
 class NavHolder extends StatefulWidget {
   const NavHolder({super.key});
