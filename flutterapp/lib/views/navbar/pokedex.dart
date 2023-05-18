@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/services/repository.dart';
 
 class Pokedex extends StatefulWidget {
   const Pokedex({super.key});
@@ -11,7 +10,6 @@ class Pokedex extends StatefulWidget {
 class _PokedexState extends State<Pokedex> {
   @override
   Widget build(BuildContext context) {
-    PokemonRepository().getAllPokemons();
     return Scaffold(
       body: Column(
         children: [
