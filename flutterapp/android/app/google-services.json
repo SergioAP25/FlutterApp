@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "587126562561",
+    "project_id": "flutter-app-sergio",
+    "storage_bucket": "flutter-app-sergio.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:587126562561:android:ca25ee0f773515cfab0500",
+        "android_client_info": {
+          "package_name": "com.sergio.flutterapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "587126562561-s9j1kj6c4k1p11bqlvdk9jsqdgu4d15c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZDr-C1GsKlSGoz-vdqDC7YqH1wYjVDb4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "587126562561-s9j1kj6c4k1p11bqlvdk9jsqdgu4d15c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
