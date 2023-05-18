@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutterapp/services/api/api_service.dart';
+import 'package:flutterapp/services/repository.dart';
 import 'package:http/http.dart' as http;
 
 class Pokedex extends StatefulWidget {
@@ -14,7 +15,7 @@ class Pokedex extends StatefulWidget {
 class _PokedexState extends State<Pokedex> {
   @override
   Widget build(BuildContext context) {
-    ApiService().getAllPokemons();
+    PokemonRepository().getAllPokemons();
     return Scaffold(
       body: Column(
         children: [
