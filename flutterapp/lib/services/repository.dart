@@ -1,4 +1,5 @@
 import 'package:flutterapp/services/api/api_service.dart';
+import 'package:flutterapp/services/api/models/api_description_model.dart';
 import 'package:flutterapp/services/api/models/api_filtered_pokemon.dart';
 import 'package:flutterapp/services/api/models/api_pokemon_model.dart';
 
@@ -16,16 +17,17 @@ class PokemonRepository {
 
   Future<PokemonApiModel> getAllPokemons() async {
     final result = await _api.getAllPokemons();
-    return PokemonApiModel.fromJson(result);
+    return result;
   }
 
   Future<FilteredPokemonApiModel> getPokemonByUrl(String endpoint) async {
     final result = await _api.getPokemonByUrl(endpoint);
-    return FilteredPokemonApiModel.fromJson(result);
+    return result;
   }
 
-  Future<PokemonApiModel> getPokemonDescriptionByUrls(String endpoint) async {
+  Future<DescriptionApiModel> getPokemonDescriptionByUrls(
+      String endpoint) async {
     final result = await _api.getPokemonDescriptionByUrl(endpoint);
-    return PokemonApiModel.fromJson(result);
+    return result;
   }
 }
