@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutterapp/services/api/api_service.dart';
 import 'package:http/http.dart' as http;
 
 class Pokedex extends StatefulWidget {
@@ -13,7 +14,7 @@ class Pokedex extends StatefulWidget {
 class _PokedexState extends State<Pokedex> {
   @override
   Widget build(BuildContext context) {
-    getResponse();
+    ApiService().getAllPokemons();
     return Scaffold(
       body: Column(
         children: [
@@ -38,16 +39,5 @@ class _PokedexState extends State<Pokedex> {
         ],
       ),
     );
-  }
-
-  void getResponse() async {
-    print("Recogiendo info");
-    const url = "https://pokeapi.co/api/v2/pokemon";
-    final uri = Uri.parse(url);
-    final response = await http.get(uri);
-    final body = response.body;
-    final json = jsonDecode(body);
-    print(json);
-    print("Operación finalizada con éxito");
   }
 }
