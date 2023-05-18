@@ -1,5 +1,7 @@
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class Pokedex extends StatefulWidget {
   const Pokedex({super.key});
@@ -11,6 +13,41 @@ class Pokedex extends StatefulWidget {
 class _PokedexState extends State<Pokedex> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    getResponse();
+    return Scaffold(
+      body: Column(
+        children: [
+          const SizedBox(
+            height: 20.0,
+          ),
+          TextField(
+            decoration: InputDecoration(
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0),
+                    borderSide: BorderSide.none),
+                hintText: "Search Here",
+                prefixIcon: const Icon(Icons.search),
+                prefixIconColor: Colors.grey),
+          ),
+          const SizedBox(
+            height: 20.0,
+          ),
+          Expanded(
+            child: ListView(), // Usar listView.builder
+          )
+        ],
+      ),
+    );
+  }
+
+  void getResponse() async {
+    print("Recogiendo info");
+    const url = "https://pokeapi.co/api/v2/pokemon";
+    final uri = Uri.parse(url);
+    final response = await http.get(uri);
+    final body = response.body;
+    final json = jsonDecode(body);
+    print(json);
+    print("Operación finalizada con éxito");
   }
 }
