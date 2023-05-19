@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
+import 'package:flutterapp/services/api/models/api_filtered_pokemon.dart';
+
+import '../../services/repository.dart';
 
 class Pokedex extends StatefulWidget {
   const Pokedex({super.key});
@@ -8,8 +12,20 @@ class Pokedex extends StatefulWidget {
 }
 
 class _PokedexState extends State<Pokedex> {
+  PokemonRepository repo = PokemonRepository();
+
+  Future<List<FilteredPokemonApiModel>> updateList() async {
+    List<FilteredPokemonApiModel> aux = [];
+    final allPokemons = await repo.getAllPokemons();
+    for (var i = 0; i < allPokemons.results!.length; i++) {
+      aux.add(await repo.getPokemonByUrl(allPokemons.results![i].url));
+    }
+    return aux;
+  }
+
   @override
   Widget build(BuildContext context) {
+    Future<List<FilteredPokemonApiModel>> list = updateList();
     return Scaffold(
       body: Column(
         children: [
@@ -25,12 +41,28 @@ class _PokedexState extends State<Pokedex> {
                 prefixIcon: const Icon(Icons.search),
                 prefixIconColor: Colors.grey),
           ),
-          const SizedBox(
-            height: 20.0,
+          FutureBuilder(
+            future: list,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final list = snapshot.data;
+                return Expanded(
+                  child: ListView.builder(
+                    itemCount: list!.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        title: Text(list[index].name!),
+                        leading:
+                            Image.network(list[index].sprites!.frontDefault!),
+                      );
+                    },
+                  ), // Usar listView.builder
+                );
+              } else {
+                return const CircularProgressIndicator();
+              }
+            },
           ),
-          Expanded(
-            child: ListView(), // Usar listView.builder
-          )
         ],
       ),
     );

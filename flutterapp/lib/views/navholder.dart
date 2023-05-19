@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/services/repository.dart';
 
 import 'package:google_nav_bar/google_nav_bar.dart';
 
@@ -16,6 +17,7 @@ class NavHolder extends StatefulWidget {
 
 class _NavHolderState extends State<NavHolder> {
   int _selectedIndex = 0;
+
   static final List<Widget> _screens = <Widget>[
     const Home(),
     const Pokedex(),

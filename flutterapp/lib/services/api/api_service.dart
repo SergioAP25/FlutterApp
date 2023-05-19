@@ -22,8 +22,8 @@ class ApiService {
     return PokemonApiModel.fromJson(json);
   }
 
-  Future<FilteredPokemonApiModel> getPokemonByUrl(String endpoint) async {
-    final uri = Uri.parse(endpoint);
+  Future<FilteredPokemonApiModel> getPokemonByUrl(String? endpoint) async {
+    final uri = Uri.parse(endpoint!);
     final response = await http.get(uri);
     final json = jsonDecode(response.body);
     return FilteredPokemonApiModel.fromJson(json);
