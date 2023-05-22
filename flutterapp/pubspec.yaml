@@ -46,6 +46,7 @@ dependencies:
   firebase_auth: ^4.6.1
   flutter_svg: ^2.0.5
   flutter_native_splash: ^2.2.19
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +55,13 @@ dev_dependencies:
 flutter_native_splash:
   image: assets/logo_rayquaza_mega_bold.png
   color: "#ffffff"
+
+flutter_icons:
+  image_path: "assets/logo.png"
+  android: true
+  ios: true
+  adaptative_icon_background: "#ffffff"
+  adaptative_icon_foreground: "assets/logo.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
