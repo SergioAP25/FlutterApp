@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/views/login.dart';
 import 'package:flutterapp/views/navholder.dart';
 
 void main() {
