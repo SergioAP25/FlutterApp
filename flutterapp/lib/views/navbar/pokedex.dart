@@ -45,19 +45,36 @@ class _PokedexState extends State<Pokedex> {
               children: [
                 SizedBox(
                   height: double.infinity,
-                  width: 50,
+                  width: 85,
                   child: ListView(
                     children: [
-                      Text("data"),
-                      Text("data"),
-                      Text("data"),
-                      Text("data"),
-                      Text("data"),
-                      Text("data"),
-                      Text("data"),
-                      Text("data"),
+                      Image.asset("assets/azfilled.png"),
+                      Image.asset("assets/zafilled.png"),
+                      SizedBox(
+                          height: 35, child: Image.asset("assets/line.png")),
+                      Image.asset("assets/normal.png"),
+                      Image.asset("assets/fire.png"),
+                      Image.asset("assets/water.png"),
+                      Image.asset("assets/grass.png"),
+                      Image.asset("assets/electric.png"),
+                      Image.asset("assets/ice.png"),
+                      Image.asset("assets/ground.png"),
+                      Image.asset("assets/flying.png"),
+                      Image.asset("assets/poison.png"),
+                      Image.asset("assets/fighting.png"),
+                      Image.asset("assets/psychic.png"),
+                      Image.asset("assets/dark.png"),
+                      Image.asset("assets/rock.png"),
+                      Image.asset("assets/bug.png"),
+                      Image.asset("assets/ghost.png"),
+                      Image.asset("assets/steel.png"),
+                      Image.asset("assets/dragon.png"),
+                      Image.asset("assets/fairy.png"),
                     ],
                   ),
+                ),
+                SizedBox(
+                  width: 15,
                 ),
                 FutureBuilder(
                   future: list,
@@ -68,10 +85,52 @@ class _PokedexState extends State<Pokedex> {
                         child: ListView.builder(
                           itemCount: list!.length,
                           itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(list[index].name!),
-                              leading: Image.network(
-                                  list[index].sprites!.frontDefault!),
+                            return Column(
+                              children: [
+                                Container(
+                                  decoration: const BoxDecoration(
+                                      color: Color.fromARGB(255, 238, 233, 233),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(20))),
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        print("tapped:   " + list[index].name!);
+                                      },
+                                      child: Column(
+                                        children: [
+                                          Image.network(list[index]
+                                              .sprites!
+                                              .frontDefault!),
+                                          SizedBox(
+                                            width: double.infinity,
+                                            child: Container(
+                                                decoration: BoxDecoration(
+                                                    color: Colors.green
+                                                        .withOpacity(0.5),
+                                                    borderRadius:
+                                                        const BorderRadius.only(
+                                                            bottomLeft:
+                                                                Radius.circular(
+                                                                    20),
+                                                            bottomRight:
+                                                                Radius.circular(
+                                                                    20))),
+                                                child: Align(
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                        list[index].name!))),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 15,
+                                )
+                              ],
                             );
                           },
                         ),
@@ -84,6 +143,9 @@ class _PokedexState extends State<Pokedex> {
                     }
                   },
                 ),
+                const SizedBox(
+                  width: 15,
+                )
               ],
             ),
           ),
