@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
 import 'package:flutterapp/services/api/models/api_filtered_pokemon.dart';
 
 import '../../services/repository.dart';
@@ -41,27 +40,49 @@ class _PokedexState extends State<Pokedex> {
                 prefixIcon: const Icon(Icons.search),
                 prefixIconColor: Colors.grey),
           ),
-          FutureBuilder(
-            future: list,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                final list = snapshot.data;
-                return Expanded(
-                  child: ListView.builder(
-                    itemCount: list!.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(list[index].name!),
-                        leading:
-                            Image.network(list[index].sprites!.frontDefault!),
+          Expanded(
+            child: Row(
+              children: [
+                Flexible(
+                  child: ListView(
+                    children: [
+                      Text("Type1"),
+                      Text("Type1"),
+                      Text("Type1"),
+                      Text("Type1"),
+                      Text("Type1"),
+                      Text("Type1"),
+                      Text("Type1"),
+                      Text("Type1"),
+                      Text("Type1"),
+                      Text("Type1"),
+                    ],
+                  ),
+                ),
+                FutureBuilder(
+                  future: list,
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      final list = snapshot.data;
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: list!.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              title: Text(list[index].name!),
+                              leading: Image.network(
+                                  list[index].sprites!.frontDefault!),
+                            );
+                          },
+                        ), // Usar listView.builder
                       );
-                    },
-                  ), // Usar listView.builder
-                );
-              } else {
-                return const CircularProgressIndicator();
-              }
-            },
+                    } else {
+                      return const CircularProgressIndicator();
+                    }
+                  },
+                ),
+              ],
+            ),
           ),
         ],
       ),
