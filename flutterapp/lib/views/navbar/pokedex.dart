@@ -22,11 +22,21 @@ class _PokedexState extends State<Pokedex> {
     return aux;
   }
 
+  Future<List<FilteredPokemonApiModel>>? list;
+
+  Future<void> _pullRefresh() async {
+    List<FilteredPokemonApiModel> aux = await updateList();
+    setState(() {
+      list = Future.value(aux);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    Future<List<FilteredPokemonApiModel>> list = updateList();
+    list = updateList();
     return Scaffold(
       body: Column(
+        mainAxisSize: MainAxisSize.max,
         children: [
           const SizedBox(
             height: 20.0,
@@ -47,6 +57,7 @@ class _PokedexState extends State<Pokedex> {
                   height: double.infinity,
                   width: 85,
                   child: ListView(
+                    padding: EdgeInsets.zero,
                     children: [
                       Image.asset("assets/azfilled.png"),
                       Image.asset("assets/zafilled.png"),
@@ -73,7 +84,7 @@ class _PokedexState extends State<Pokedex> {
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 15,
                 ),
                 FutureBuilder(
@@ -82,57 +93,66 @@ class _PokedexState extends State<Pokedex> {
                     if (snapshot.hasData) {
                       final list = snapshot.data;
                       return Expanded(
-                        child: ListView.builder(
-                          itemCount: list!.length,
-                          itemBuilder: (context, index) {
-                            return Column(
-                              children: [
-                                Container(
-                                  decoration: const BoxDecoration(
-                                      color: Color.fromARGB(255, 238, 233, 233),
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(20))),
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        print("tapped:   " + list[index].name!);
-                                      },
-                                      child: Column(
-                                        children: [
-                                          Image.network(list[index]
-                                              .sprites!
-                                              .frontDefault!),
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: Container(
-                                                decoration: BoxDecoration(
-                                                    color: Colors.green
-                                                        .withOpacity(0.5),
-                                                    borderRadius:
-                                                        const BorderRadius.only(
-                                                            bottomLeft:
-                                                                Radius.circular(
-                                                                    20),
-                                                            bottomRight:
-                                                                Radius.circular(
-                                                                    20))),
-                                                child: Align(
-                                                    alignment: Alignment.center,
-                                                    child: Text(
-                                                        list[index].name!))),
-                                          ),
-                                        ],
+                        child: RefreshIndicator(
+                          onRefresh: _pullRefresh,
+                          child: ListView.builder(
+                            padding: EdgeInsets.zero,
+                            itemCount: list!.length,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      print("tapped:   " + list[index].name!);
+                                    },
+                                    child: Container(
+                                      decoration: const BoxDecoration(
+                                          color: Color.fromARGB(
+                                              255, 247, 242, 242),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(20))),
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        child: Column(
+                                          children: [
+                                            Image.network(
+                                              list[index]
+                                                  .sprites!
+                                                  .frontDefault!,
+                                              fit: BoxFit.contain,
+                                            ),
+                                            SizedBox(
+                                              width: double.infinity,
+                                              child: Container(
+                                                  decoration: BoxDecoration(
+                                                      color: const Color.fromARGB(
+                                                              255, 82, 207, 86)
+                                                          .withOpacity(0.5),
+                                                      borderRadius:
+                                                          const BorderRadius.only(
+                                                              bottomLeft: Radius
+                                                                  .circular(20),
+                                                              bottomRight:
+                                                                  Radius.circular(
+                                                                      20))),
+                                                  child: Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child:
+                                                          Text(list[index].name!))),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(
-                                  height: 15,
-                                )
-                              ],
-                            );
-                          },
+                                  const SizedBox(
+                                    height: 15,
+                                  )
+                                ],
+                              );
+                            },
+                          ),
                         ),
                       );
                     } else {
