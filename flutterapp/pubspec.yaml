@@ -57,7 +57,7 @@ flutter_native_splash:
   color: "#ffffff"
 
 flutter_icons:
-  image_path: "assets/logo.png"
+  image_path: "assets/render_rayquaza_mega.png"
   android: true
   ios: true
   adaptative_icon_background: "#ffffff"
