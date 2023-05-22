@@ -43,19 +43,19 @@ class _PokedexState extends State<Pokedex> {
           Expanded(
             child: Row(
               children: [
-                Flexible(
+                SizedBox(
+                  height: double.infinity,
+                  width: 50,
                   child: ListView(
                     children: [
-                      Text("Type1"),
-                      Text("Type1"),
-                      Text("Type1"),
-                      Text("Type1"),
-                      Text("Type1"),
-                      Text("Type1"),
-                      Text("Type1"),
-                      Text("Type1"),
-                      Text("Type1"),
-                      Text("Type1"),
+                      Text("data"),
+                      Text("data"),
+                      Text("data"),
+                      Text("data"),
+                      Text("data"),
+                      Text("data"),
+                      Text("data"),
+                      Text("data"),
                     ],
                   ),
                 ),
@@ -74,10 +74,13 @@ class _PokedexState extends State<Pokedex> {
                                   list[index].sprites!.frontDefault!),
                             );
                           },
-                        ), // Usar listView.builder
+                        ),
                       );
                     } else {
-                      return const CircularProgressIndicator();
+                      return const Expanded(
+                          child: Align(
+                              alignment: Alignment.center,
+                              child: CircularProgressIndicator()));
                     }
                   },
                 ),
