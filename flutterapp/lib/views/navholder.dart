@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/services/repository.dart';
-
-import 'package:google_nav_bar/google_nav_bar.dart';
 
 import 'navbar/home.dart';
 import 'navbar/options.dart';
@@ -29,30 +26,33 @@ class _NavHolderState extends State<NavHolder> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _screens[_selectedIndex],
-      bottomNavigationBar: GNav(
-          onTabChange: (index) {
+      bottomNavigationBar: BottomNavigationBar(
+          fixedColor: Color.fromARGB(255, 41, 41, 41),
+          unselectedItemColor: Color.fromARGB(255, 41, 41, 41),
+          type: BottomNavigationBarType.shifting,
+          currentIndex: _selectedIndex,
+          onTap: (index) {
             setState(() {
               _selectedIndex = index;
             });
           },
-          gap: 20,
-          padding: const EdgeInsets.all(16),
-          tabs: const [
-            GButton(
-              icon: Icons.home,
-              text: "Home",
+          elevation: 0,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: "Home",
             ),
-            GButton(
-              icon: Icons.search,
-              text: "Pokédex",
+            BottomNavigationBarItem(
+              icon: ImageIcon(AssetImage("assets/pokedex.png")),
+              label: "Pokédex",
             ),
-            GButton(
-              icon: Icons.favorite,
-              text: "Favorites",
+            BottomNavigationBarItem(
+              icon: Icon(Icons.star),
+              label: "Favorites",
             ),
-            GButton(
-              icon: Icons.settings,
-              text: "Options",
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: "Options",
             ),
           ]),
     );
