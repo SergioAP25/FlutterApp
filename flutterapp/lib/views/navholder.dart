@@ -27,8 +27,8 @@ class _NavHolderState extends State<NavHolder> {
     return Scaffold(
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
-          fixedColor: Color.fromARGB(255, 41, 41, 41),
-          unselectedItemColor: Color.fromARGB(255, 41, 41, 41),
+          fixedColor: const Color.fromARGB(255, 41, 41, 41),
+          unselectedItemColor: const Color.fromARGB(255, 41, 41, 41),
           type: BottomNavigationBarType.shifting,
           currentIndex: _selectedIndex,
           onTap: (index) {

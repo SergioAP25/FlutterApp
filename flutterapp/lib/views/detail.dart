@@ -1,14 +1,16 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
-class MyWidget extends StatelessWidget {
-  const MyWidget({super.key});
+class DetailWindow extends StatefulWidget {
+  const DetailWindow({super.key});
 
   @override
+  State<DetailWindow> createState() => _DetailWindowState();
+}
+
+class _DetailWindowState extends State<DetailWindow> {
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(children: []),
-    );
+    return const Placeholder();
   }
 }

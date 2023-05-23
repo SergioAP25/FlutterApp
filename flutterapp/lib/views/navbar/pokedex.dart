@@ -12,6 +12,7 @@ class Pokedex extends StatefulWidget {
 
 class _PokedexState extends State<Pokedex> {
   PokemonRepository repo = PokemonRepository();
+  Future<List<FilteredPokemonApiModel>>? list;
 
   Future<List<FilteredPokemonApiModel>> updateList() async {
     List<FilteredPokemonApiModel> aux = [];
@@ -21,8 +22,6 @@ class _PokedexState extends State<Pokedex> {
     }
     return aux;
   }
-
-  Future<List<FilteredPokemonApiModel>>? list;
 
   Future<void> _pullRefresh() async {
     List<FilteredPokemonApiModel> aux = await updateList();
