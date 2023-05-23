@@ -14,31 +14,18 @@ class Pokedex extends StatefulWidget {
 
 class _PokedexState extends State<Pokedex> {
   PokemonRepository repo = PokemonRepository();
-  Future<List<FilteredPokemonApiModel>>? list;
   Future<List<FilteredPokemonModel>>? dblist;
 
-  Future<List<FilteredPokemonApiModel>> updateList() async {
-    List<FilteredPokemonApiModel> aux = [];
-    final allPokemons = await repo.getAllPokemons();
-    for (var i = 0; i < allPokemons.results!.length; i++) {
-      aux.add(await repo.getPokemonByUrl(allPokemons.results![i].url));
-    }
-    return aux;
+  Future<void> _pullRefresh() async {
+    setState(() {});
   }
 
   Future<void> testDB() async {
     final allPokemons = await repo.getAllPokemons();
-    for (var i = 0; i < allPokemons.results!.length; i++) {
-      final pokemon = await repo.getPokemonByUrl(allPokemons.results![i].url);
+    for (var i = 0; i < allPokemons.results.length; i++) {
+      final pokemon = await repo.getPokemonByUrl(allPokemons.results[i].url);
       repo.insertPokemon(pokemon);
     }
-  }
-
-  Future<void> _pullRefresh() async {
-    List<FilteredPokemonApiModel> aux = await updateList();
-    setState(() {
-      list = Future.value(aux);
-    });
   }
 
   Future<List<FilteredPokemonModel>> get() async {
@@ -49,9 +36,7 @@ class _PokedexState extends State<Pokedex> {
 
   @override
   Widget build(BuildContext context) {
-    //list = updateList();
     dblist = get();
-    repo.getPokemonByNameFromDatabase("");
     return Scaffold(
       body: Column(
         mainAxisSize: MainAxisSize.max,

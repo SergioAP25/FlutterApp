@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
 
 import '../../constants/routes.dart';
 import '../../services/api/models/api_filtered_pokemon.dart';
@@ -13,13 +14,13 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   PokemonRepository repo = PokemonRepository();
-  Future<List<FilteredPokemonApiModel>>? list;
+  Future<List<FilteredPokemonModel>>? list;
 
-  Future<List<FilteredPokemonApiModel>> updateList() async {
-    List<FilteredPokemonApiModel> aux = [];
+  Future<List<FilteredPokemonModel>> updateList() async {
+    List<FilteredPokemonModel> aux = [];
     final allPokemons = await repo.getAllPokemons();
-    for (var i = 0; i < allPokemons.results!.length; i++) {
-      aux.add(await repo.getPokemonByUrl(allPokemons.results![i].url));
+    for (var i = 0; i < allPokemons.results.length; i++) {
+      aux.add(await repo.getPokemonByUrl(allPokemons.results[i].url));
     }
     return aux;
   }
@@ -43,13 +44,13 @@ class _HomeState extends State<Home> {
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushNamed(fullSizeImageRoute,
-                            arguments: list[0].sprites!.frontDefault!);
+                            arguments: list[0].sprites.frontDefault!);
                       },
                       child: SizedBox(
                         height: 200,
                         width: double.infinity,
                         child: Image.network(
-                          list![0].sprites!.frontDefault!,
+                          list![0].sprites.frontDefault!,
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -66,7 +67,7 @@ class _HomeState extends State<Home> {
                           children: [
                             Align(
                                 alignment: Alignment.center,
-                                child: Text(list[0].name!,
+                                child: Text(list[0].name,
                                     style: const TextStyle(
                                         fontSize: 30,
                                         fontWeight: FontWeight.bold))),

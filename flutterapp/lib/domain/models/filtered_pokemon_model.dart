@@ -5,7 +5,6 @@ import 'package:flutterapp/services/database/models/database_pokemon_model.dart'
 
 @immutable
 class FilteredPokemonModel {
-  final int id;
   final String name;
   final Species species;
   final Sprites sprites;
@@ -14,8 +13,8 @@ class FilteredPokemonModel {
   final int height;
   final int weight;
 
-  const FilteredPokemonModel(this.id, this.name, this.species, this.sprites,
-      this.stats, this.types, this.height, this.weight);
+  const FilteredPokemonModel(this.name, this.species, this.sprites, this.stats,
+      this.types, this.height, this.weight);
 
   static List<Stats> _decodeStatsList(PokemonDatabaseModel pokemon) {
     final List<Stats> aux = [];
@@ -35,8 +34,18 @@ class FilteredPokemonModel {
     return aux;
   }
 
+  static FilteredPokemonModel fromApi(FilteredPokemonApiModel pokemon) {
+    return FilteredPokemonModel(
+        pokemon.name!,
+        pokemon.species!,
+        pokemon.sprites!,
+        pokemon.stats!,
+        pokemon.types!,
+        pokemon.height!,
+        pokemon.weight!);
+  }
+
   static FilteredPokemonModel fromDatabase(PokemonDatabaseModel pokemon) {
-    final id = pokemon.id;
     final name = pokemon.name;
     final species = Species.fromJson(jsonDecode(pokemon.species));
     final sprites = Sprites.fromJson(jsonDecode(pokemon.sprites));
@@ -46,6 +55,6 @@ class FilteredPokemonModel {
     final weight = pokemon.weight;
 
     return FilteredPokemonModel(
-        id, name, species, sprites, statsList, typesList, height, weight);
+        name, species, sprites, statsList, typesList, height, weight);
   }
 }

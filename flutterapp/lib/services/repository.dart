@@ -1,4 +1,6 @@
+import 'package:flutterapp/domain/models/description_pokemon_model.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
+import 'package:flutterapp/domain/models/pokemon_model.dart';
 import 'package:flutterapp/services/api/api_service.dart';
 import 'package:flutterapp/services/api/models/api_description_model.dart';
 import 'package:flutterapp/services/api/models/api_filtered_pokemon.dart';
@@ -18,20 +20,19 @@ class PokemonRepository {
 
   PokemonRepository._sharedInstance();
 
-  Future<PokemonApiModel> getAllPokemons() async {
+  Future<PokemonModel> getAllPokemons() async {
     final result = await _api.getAllPokemons();
-    return result;
+    return PokemonModel.fromApi(result);
   }
 
-  Future<FilteredPokemonApiModel> getPokemonByUrl(String? endpoint) async {
+  Future<FilteredPokemonModel> getPokemonByUrl(String? endpoint) async {
     final result = await _api.getPokemonByUrl(endpoint);
-    return result;
+    return FilteredPokemonModel.fromApi(result);
   }
 
-  Future<DescriptionApiModel> getPokemonDescriptionByUrls(
-      String endpoint) async {
+  Future<DescriptionModel> getPokemonDescriptionByUrls(String endpoint) async {
     final result = await _api.getPokemonDescriptionByUrl(endpoint);
-    return result;
+    return DescriptionModel.fromApi(result);
   }
 
   Future<List<FilteredPokemonModel>> getPokemonByNameFromDatabase(
@@ -42,7 +43,7 @@ class PokemonRepository {
         .toList();
   }
 
-  Future<void> insertPokemon(FilteredPokemonApiModel pokemon) async {
+  Future<void> insertPokemon(FilteredPokemonModel pokemon) async {
     await _database.insertPokemon(pokemon: pokemon);
   }
 }

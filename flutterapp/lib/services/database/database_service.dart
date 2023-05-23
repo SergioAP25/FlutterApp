@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:flutterapp/domain/models/description_pokemon_model.dart';
+import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
 import 'package:flutterapp/services/api/models/api_filtered_pokemon.dart';
 import 'package:flutterapp/services/api/models/api_pokemon_model.dart';
 import 'package:flutterapp/services/database/models/database_pokemon_model.dart';
@@ -68,20 +70,26 @@ class PokemonService {
     }
   }
 
-  Future<void> insertPokemon({required FilteredPokemonApiModel pokemon}) async {
+  Future<void> insertPokemon({required FilteredPokemonModel pokemon}) async {
     await _ensureDbIsOpen();
     final db = getDatabaseOrThrow();
     await db.insert(pokemonTable, {
       nameColumn: pokemon.name,
-      speciesColumn: jsonEncode(pokemon.species?.toJson()),
-      spritesColumn: jsonEncode(pokemon.sprites?.toJson()),
+      speciesColumn: jsonEncode(pokemon.species.toJson()),
+      spritesColumn: jsonEncode(pokemon.sprites.toJson()),
       statsColumn: jsonEncode(pokemon.stats),
       typesColumn: jsonEncode(pokemon.types),
       heightColumn: pokemon.height,
       weightColumn: pokemon.weight
     });
+  }
 
-    //print(jsonEncode(pokemon.stats));
+  Future<void> insertDescriptions(
+      {required DescriptionModel description}) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+    await db.insert(descriptionTable,
+        {descriptionColumn: jsonEncode(description.descriptions)});
   }
 
   Future<Iterable<PokemonDatabaseModel>> getPokemonByName(
