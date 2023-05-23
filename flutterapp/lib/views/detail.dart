@@ -3,6 +3,7 @@ import 'package:flutterapp/services/api/models/api_filtered_pokemon.dart';
 import 'package:flutterapp/util/generics/get_arguments.dart';
 
 import '../constants/routes.dart';
+import '../domain/models/filtered_pokemon_model.dart';
 
 class DetailWindow extends StatefulWidget {
   const DetailWindow({super.key});
@@ -14,7 +15,7 @@ class DetailWindow extends StatefulWidget {
 class _DetailWindowState extends State<DetailWindow> {
   @override
   Widget build(BuildContext context) {
-    final pokemon = context.getArgument<FilteredPokemonApiModel>();
+    final pokemon = context.getArgument<FilteredPokemonModel>();
     return Scaffold(
       body: Column(
         children: [
@@ -26,13 +27,13 @@ class _DetailWindowState extends State<DetailWindow> {
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).pushNamed(fullSizeImageRoute,
-                      arguments: pokemon.sprites!.frontDefault);
+                      arguments: pokemon.sprites.frontDefault);
                 },
                 child: SizedBox(
                   height: 200,
                   width: double.infinity,
                   child: Image.network(
-                    pokemon!.sprites!.frontDefault!,
+                    pokemon!.sprites.frontDefault!,
                     fit: BoxFit.contain,
                   ),
                 ),
@@ -49,7 +50,7 @@ class _DetailWindowState extends State<DetailWindow> {
                     children: [
                       Align(
                           alignment: Alignment.center,
-                          child: Text(pokemon.name!,
+                          child: Text(pokemon.name,
                               style: const TextStyle(
                                   fontSize: 30, fontWeight: FontWeight.bold))),
                       const SizedBox(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/constants/routes.dart';
+import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
 import 'package:flutterapp/services/api/models/api_filtered_pokemon.dart';
 
 import '../../services/repository.dart';
@@ -14,6 +15,7 @@ class Pokedex extends StatefulWidget {
 class _PokedexState extends State<Pokedex> {
   PokemonRepository repo = PokemonRepository();
   Future<List<FilteredPokemonApiModel>>? list;
+  Future<List<FilteredPokemonModel>>? dblist;
 
   Future<List<FilteredPokemonApiModel>> updateList() async {
     List<FilteredPokemonApiModel> aux = [];
@@ -24,6 +26,14 @@ class _PokedexState extends State<Pokedex> {
     return aux;
   }
 
+  Future<void> testDB() async {
+    final allPokemons = await repo.getAllPokemons();
+    for (var i = 0; i < allPokemons.results!.length; i++) {
+      final pokemon = await repo.getPokemonByUrl(allPokemons.results![i].url);
+      repo.insertPokemon(pokemon);
+    }
+  }
+
   Future<void> _pullRefresh() async {
     List<FilteredPokemonApiModel> aux = await updateList();
     setState(() {
@@ -31,9 +41,17 @@ class _PokedexState extends State<Pokedex> {
     });
   }
 
+  Future<List<FilteredPokemonModel>> get() async {
+    List<FilteredPokemonModel> aux =
+        await repo.getPokemonByNameFromDatabase("");
+    return aux;
+  }
+
   @override
   Widget build(BuildContext context) {
-    list = updateList();
+    //list = updateList();
+    dblist = get();
+    repo.getPokemonByNameFromDatabase("");
     return Scaffold(
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -88,7 +106,7 @@ class _PokedexState extends State<Pokedex> {
                   width: 15,
                 ),
                 FutureBuilder(
-                  future: list,
+                  future: dblist,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       final list = snapshot.data;
@@ -118,9 +136,7 @@ class _PokedexState extends State<Pokedex> {
                                         child: Column(
                                           children: [
                                             Image.network(
-                                              list[index]
-                                                  .sprites!
-                                                  .frontDefault!,
+                                              list[index].sprites.frontDefault!,
                                               fit: BoxFit.contain,
                                             ),
                                             SizedBox(
@@ -141,7 +157,7 @@ class _PokedexState extends State<Pokedex> {
                                                       alignment:
                                                           Alignment.center,
                                                       child:
-                                                          Text(list[index].name!))),
+                                                          Text(list[index].name))),
                                             ),
                                           ],
                                         ),

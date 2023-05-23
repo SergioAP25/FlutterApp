@@ -75,28 +75,13 @@ class PokemonService {
       nameColumn: pokemon.name,
       speciesColumn: jsonEncode(pokemon.species?.toJson()),
       spritesColumn: jsonEncode(pokemon.sprites?.toJson()),
-      statsColumn: jsonEncode(pokemon.stats
-              ?.map((stats) => jsonEncode(stats.toJson()))
-              .toString()
-              .replaceAll("(", "[")
-              .replaceAll(")", "]"))
-          .replaceAll(" ...,", ""),
-      typesColumn: pokemon.types
-          ?.map((type) => jsonEncode(type.toJson()))
-          .toString()
-          .replaceAll("(", "[")
-          .replaceAll(")", "]"),
+      statsColumn: jsonEncode(pokemon.stats),
+      typesColumn: jsonEncode(pokemon.types),
       heightColumn: pokemon.height,
       weightColumn: pokemon.weight
     });
 
-    print(
-      pokemon.stats
-          ?.map((type) => type.toJson())
-          .toString()
-          .replaceAll("(", "[")
-          .replaceAll(")", "]"),
-    );
+    //print(jsonEncode(pokemon.stats));
   }
 
   Future<Iterable<PokemonDatabaseModel>> getPokemonByName(
