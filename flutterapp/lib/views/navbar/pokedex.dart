@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/constants/routes.dart';
 import 'package:flutterapp/services/api/models/api_filtered_pokemon.dart';
 
 import '../../services/repository.dart';
@@ -102,7 +103,9 @@ class _PokedexState extends State<Pokedex> {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      print("tapped:   " + list[index].name!);
+                                      Navigator.of(context).pushNamed(
+                                          detailRoute,
+                                          arguments: list[index]);
                                     },
                                     child: Container(
                                       decoration: const BoxDecoration(

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterapp/constants/routes.dart';
 import 'package:flutterapp/services/auth/bloc/auth_bloc.dart';
 import 'package:flutterapp/services/auth/bloc/auth_event.dart';
 import 'package:flutterapp/services/auth/bloc/auth_state.dart';
 import 'package:flutterapp/services/auth/firebase_auth_provider.dart';
+import 'package:flutterapp/views/detail.dart';
+import 'package:flutterapp/views/full_size_image.dart';
 import 'package:flutterapp/views/login.dart';
 import 'package:flutterapp/views/navholder.dart';
 
@@ -25,7 +28,10 @@ class MyApp extends StatelessWidget {
         create: (context) => AuthBloc(FirebaseAuthProvider()),
         child: const StartingPage(),
       ),
-      routes: {},
+      routes: {
+        detailRoute: (context) => const DetailWindow(),
+        fullSizeImageRoute: (context) => const FullSizeImageWindow()
+      },
     );
   }
 }
@@ -45,8 +51,9 @@ class StartingPage extends StatelessWidget {
           return const LoginView();
         } else {
           return const Scaffold(
-            body: CircularProgressIndicator(),
-          );
+              body: Align(
+                  alignment: Alignment.center,
+                  child: CircularProgressIndicator()));
         }
       },
     );
