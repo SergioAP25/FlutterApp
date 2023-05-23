@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../services/auth/auth_service.dart';
+import '../../services/auth/bloc/auth_bloc.dart';
+import '../../services/auth/bloc/auth_event.dart';
+import '../../util/dialogs/log_out_dialog.dart';
 
 class Options extends StatelessWidget {
   const Options({super.key});
@@ -41,7 +47,12 @@ class Options extends StatelessWidget {
                       color: Color.fromARGB(255, 79, 165, 235),
                       borderRadius: BorderRadius.all(Radius.circular(16))),
                   child: TextButton(
-                    onPressed: () async {},
+                    onPressed: () async {
+                      await AuthService.firebase().logOut();
+                      if (context.mounted) {
+                        context.read<AuthBloc>().add(const AuthEventLogout());
+                      }
+                    },
                     child: const Text(
                         style: TextStyle(color: Colors.black), "LOG OUT"),
                   ),
