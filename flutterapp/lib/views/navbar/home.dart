@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../constants/routes.dart';
 import '../../services/api/models/api_filtered_pokemon.dart';
 import '../../services/repository.dart';
 
@@ -39,12 +40,18 @@ class _HomeState extends State<Home> {
                 final list = snapshot.data;
                 return Column(
                   children: [
-                    SizedBox(
-                      height: 200,
-                      width: double.infinity,
-                      child: Image.network(
-                        list![0].sprites!.frontDefault!,
-                        fit: BoxFit.contain,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushNamed(fullSizeImageRoute,
+                            arguments: list[0].sprites!.frontDefault!);
+                      },
+                      child: SizedBox(
+                        height: 200,
+                        width: double.infinity,
+                        child: Image.network(
+                          list![0].sprites!.frontDefault!,
+                          fit: BoxFit.contain,
+                        ),
                       ),
                     ),
                     Container(

@@ -34,15 +34,15 @@ class PokemonRepository {
     return result;
   }
 
+  Future<void> insertPokemon(FilteredPokemonApiModel pokemon) async {
+    await _database.insertPokemon(pokemon: pokemon);
+  }
+
   Future<List<FilteredPokemonModel>> getPokemonByNameFromDatabase(
       String name) async {
     final databaseResult = await _database.getPokemonByName(name: name);
     return databaseResult
         .map((e) => FilteredPokemonModel.fromDatabase(e))
         .toList();
-  }
-
-  Future<void> insertPokemon(FilteredPokemonApiModel pokemon) async {
-    await _database.insertPokemon(pokemon: pokemon);
   }
 }
