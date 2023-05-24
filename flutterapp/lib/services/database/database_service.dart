@@ -255,6 +255,21 @@ class PokemonService {
         .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
   }
 
+  Future<Iterable<PokemonDatabaseModel>> getFavoritePokemonByName({
+    required String name,
+  }) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final results = await db.rawQuery(
+        "SELECT * FROM pokemon p, favorite f WHERE p.name = f.pokemonName AND name LIKE ?",
+        ["%$name%"]);
+
+    print(results);
+    return results
+        .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
+  }
+
   Future<PokemonDatabaseModel> getRandomPokemon() async {
     await _ensureDbIsOpen();
     final db = getDatabaseOrThrow();

@@ -35,17 +35,13 @@ class _NavHolderState extends State<NavHolder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(index: _selectedIndex, children: _screens),
+      body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
           fixedColor: const Color.fromARGB(255, 41, 41, 41),
           unselectedItemColor: const Color.fromARGB(255, 41, 41, 41),
           type: BottomNavigationBarType.shifting,
           currentIndex: _selectedIndex,
           onTap: (index) {
-            if (index == 0) {
-              _screens.removeAt(0);
-              _screens.insert(0, Home());
-            }
             setState(() {
               _selectedIndex = index;
             });
