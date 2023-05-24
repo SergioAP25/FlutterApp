@@ -35,7 +35,7 @@ class _NavHolderState extends State<NavHolder> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_selectedIndex],
+      body: IndexedStack(index: _selectedIndex, children: _screens),
       bottomNavigationBar: BottomNavigationBar(
           fixedColor: const Color.fromARGB(255, 41, 41, 41),
           unselectedItemColor: const Color.fromARGB(255, 41, 41, 41),
