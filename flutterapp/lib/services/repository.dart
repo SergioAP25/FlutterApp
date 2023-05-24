@@ -64,6 +64,83 @@ class PokemonRepository {
         .toList();
   }
 
+  Future<List<FilteredPokemonModel>> getPokemonByNameAZFromDatabase(
+      String name) async {
+    final databaseResult = await _database.getPokemonByNameAZ(name: name);
+    return databaseResult
+        .map((e) => FilteredPokemonModel.fromDatabase(e))
+        .toList();
+  }
+
+  Future<List<FilteredPokemonModel>> getPokemonByNameZAFromDatabase(
+      String name) async {
+    final databaseResult = await _database.getPokemonByNameZA(name: name);
+    return databaseResult
+        .map((e) => FilteredPokemonModel.fromDatabase(e))
+        .toList();
+  }
+
+  Future<List<FilteredPokemonModel>> getPokemonByNameFilteredByTypeFromDatabase(
+      String name, String type) async {
+    final databaseResult =
+        await _database.getPokemonByNameFilteredByType(name: name, type: type);
+    return databaseResult
+        .map((e) => FilteredPokemonModel.fromDatabase(e))
+        .toList();
+  }
+
+  Future<List<FilteredPokemonModel>>
+      getPokemonByNameFilteredByMultiTypeFromDatabase(
+          String name, String type1, String type2) async {
+    final databaseResult = await _database.getPokemonByNameFilteredByMultiType(
+        name: name, type1: type1, type2: type2);
+    return databaseResult
+        .map((e) => FilteredPokemonModel.fromDatabase(e))
+        .toList();
+  }
+
+  Future<List<FilteredPokemonModel>>
+      getPokemonByNameFilteredByTypeFromDatabaseAZ(
+          String name, String type) async {
+    final databaseResult = await _database.getPokemonByNameFilteredByTypeAZ(
+        name: name, type: type);
+    return databaseResult
+        .map((e) => FilteredPokemonModel.fromDatabase(e))
+        .toList();
+  }
+
+  Future<List<FilteredPokemonModel>>
+      getPokemonByNameFilteredByTypeFromDatabaseZA(
+          String name, String type) async {
+    final databaseResult = await _database.getPokemonByNameFilteredByTypeZA(
+        name: name, type: type);
+    return databaseResult
+        .map((e) => FilteredPokemonModel.fromDatabase(e))
+        .toList();
+  }
+
+  Future<List<FilteredPokemonModel>>
+      getPokemonByNameFilteredByMultiTypeFromDatabaseAZ(
+          String name, String type1, String type2) async {
+    final databaseResult =
+        await _database.getPokemonByNameFilteredByMultiTypeAZ(
+            name: name, type1: type1, type2: type2);
+    return databaseResult
+        .map((e) => FilteredPokemonModel.fromDatabase(e))
+        .toList();
+  }
+
+  Future<List<FilteredPokemonModel>>
+      getPokemonByNameFilteredByMultiTypeFromDatabaseZA(
+          String name, String type1, String type2) async {
+    final databaseResult =
+        await _database.getPokemonByNameFilteredByMultiTypeZA(
+            name: name, type1: type1, type2: type2);
+    return databaseResult
+        .map((e) => FilteredPokemonModel.fromDatabase(e))
+        .toList();
+  }
+
   Future<FilteredPokemonModel> getRandomPokemonFromDatabase() async {
     final databaseResult = await _database.getRandomPokemon();
     return FilteredPokemonModel.fromDatabase(databaseResult);

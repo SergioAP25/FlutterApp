@@ -123,6 +123,132 @@ class PokemonService {
         .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
   }
 
+  Future<Iterable<PokemonDatabaseModel>> getPokemonByNameAZ(
+      {required String name}) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final results = await db.query(
+      pokemonTable,
+      where: "name LIKE ? ORDER BY name ASC",
+      whereArgs: ["%$name%"],
+    );
+
+    return results
+        .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
+  }
+
+  Future<Iterable<PokemonDatabaseModel>> getPokemonByNameZA(
+      {required String name}) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final results = await db.query(
+      pokemonTable,
+      where: "name LIKE ? ORDER BY name DESC",
+      whereArgs: ["%$name%"],
+    );
+
+    return results
+        .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
+  }
+
+  Future<Iterable<PokemonDatabaseModel>> getPokemonByNameFilteredByType(
+      {required String name, required String type}) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final results = await db.query(
+      pokemonTable,
+      where: "name LIKE ? AND types LIKE ?",
+      whereArgs: ["%$name%", "%$type%"],
+    );
+
+    return results
+        .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
+  }
+
+  Future<Iterable<PokemonDatabaseModel>> getPokemonByNameFilteredByMultiType(
+      {required String name,
+      required String type1,
+      required String type2}) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final results = await db.query(
+      pokemonTable,
+      where: "name LIKE ? AND types LIKE ? AND types LIKE ?",
+      whereArgs: ["%$name%", "%$type1%", "%$type2%"],
+    );
+
+    return results
+        .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
+  }
+
+  Future<Iterable<PokemonDatabaseModel>> getPokemonByNameFilteredByTypeAZ(
+      {required String name, required String type}) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final results = await db.query(
+      pokemonTable,
+      where: "name LIKE ? AND types LIKE ? ORDER BY name ASC",
+      whereArgs: ["%$name%", "%$type%"],
+    );
+
+    return results
+        .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
+  }
+
+  Future<Iterable<PokemonDatabaseModel>> getPokemonByNameFilteredByTypeZA(
+      {required String name, required String type}) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final results = await db.query(
+      pokemonTable,
+      where: "name LIKE ? AND types LIKE ? ORDER BY name DESC",
+      whereArgs: ["%$name%", "%$type%"],
+    );
+
+    return results
+        .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
+  }
+
+  Future<Iterable<PokemonDatabaseModel>> getPokemonByNameFilteredByMultiTypeAZ(
+      {required String name,
+      required String type1,
+      required String type2}) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final results = await db.query(
+      pokemonTable,
+      where: "name LIKE ? AND types LIKE ? AND types LIKE ? ORDER BY name ASC",
+      whereArgs: ["%$name%", "%$type1%", "%$type2%"],
+    );
+
+    return results
+        .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
+  }
+
+  Future<Iterable<PokemonDatabaseModel>> getPokemonByNameFilteredByMultiTypeZA(
+      {required String name,
+      required String type1,
+      required String type2}) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final results = await db.query(
+      pokemonTable,
+      where: "name LIKE ? AND types LIKE ? AND types LIKE ? ORDER BY name DESC",
+      whereArgs: ["%$name%", "%$type1%", "%$type2%"],
+    );
+
+    return results
+        .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
+  }
+
   Future<PokemonDatabaseModel> getRandomPokemon() async {
     await _ensureDbIsOpen();
     final db = getDatabaseOrThrow();
