@@ -155,7 +155,7 @@ class PokemonService {
     final db = getDatabaseOrThrow();
 
     final result = await db.rawQuery(
-        "SELECT (SELECT COUNT(*) FROM pokemon WHERE name = ?) == 1", ["$name"]);
+        "SELECT (SELECT COUNT(*) FROM pokemon WHERE name = ?) == 1", [name]);
     String aux = jsonEncode(result.first);
     int integer = int.parse(aux[aux.length - 2]);
     bool boolean = integer == 0 ? false : true;

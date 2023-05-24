@@ -10,14 +10,15 @@ class GetPokemons {
   List<Results> _apilist = [];
 
   void getPokemons() async {
+    print("FINISHED DATABASE UPDATE");
     final list = await _repository.getAllPokemons();
     _apilist = list.results;
     bool exists =
         await _repository.exists(list.results.last.name!.capitalize());
-    print(exists);
     if (!exists) {
       _insertPokemonsIntoDatabase();
     }
+    print("FINISHED DATABASE UPDATE");
   }
 
   void _insertPokemonsIntoDatabase() async {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/cli_commands.dart';
 import 'package:flutterapp/constants/routes.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
 

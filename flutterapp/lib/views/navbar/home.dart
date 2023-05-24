@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
-
 import '../../constants/routes.dart';
-import '../../domain/get_pokemons.dart';
-import '../../services/api/models/api_filtered_pokemon.dart';
 import '../../services/repository.dart';
 
 class Home extends StatefulWidget {
@@ -16,7 +13,6 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   PokemonRepository repo = PokemonRepository();
   Future<FilteredPokemonModel>? pokemon;
-  GetPokemons get = GetPokemons();
 
   Future<FilteredPokemonModel> getRandomPokemon() async {
     return await repo.getRandomPokemonFromDatabase();
@@ -24,7 +20,6 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    get.getPokemons();
     pokemon = getRandomPokemon();
     return Scaffold(
       body: Column(

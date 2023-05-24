@@ -26,21 +26,10 @@ class _NavHolderState extends State<NavHolder> {
     const Options(),
   ];
 
-  Future<void> updateDB() async {
-    final allPokemons = await repo.getAllPokemons();
-    debugPrint("Starting db update");
-    for (var i = 0; i < allPokemons.results.length; i++) {
-      final pokemon = await repo.getPokemonByUrl(allPokemons.results[i].url!);
-      repo.insertPokemon(pokemon);
-    }
-    debugPrint("Finished db update");
-  }
-
   @override
   void initState() {
-    print("INIT DATABASE UPDATE");
+    get.getPokemons();
     super.initState();
-    print("FINISHED DATABASE UPDATE");
   }
 
   @override
