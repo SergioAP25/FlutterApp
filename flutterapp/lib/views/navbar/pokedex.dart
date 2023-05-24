@@ -14,6 +14,27 @@ class Pokedex extends StatefulWidget {
 class _PokedexState extends State<Pokedex> {
   PokemonRepository repo = PokemonRepository();
   Future<List<FilteredPokemonModel>>? dblist;
+  List<bool> isSelectedAZ = [false, false];
+  List<bool> isSelectedTypes = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
 
   Future<void> _pullRefresh() async {
     setState(() {});
@@ -27,6 +48,23 @@ class _PokedexState extends State<Pokedex> {
     setState(() {
       dblist = getPokemonsByName(query);
     });
+  }
+
+  bool allowedSelection() {
+    int total = 0;
+    bool allowed = false;
+    for (int i = 0; i < isSelectedTypes.length; i++) {
+      if (isSelectedTypes[i]) {
+        total++;
+      }
+      if (total == 2) {
+        break;
+      }
+    }
+    if (total < 2) {
+      return allowed = true;
+    }
+    return allowed;
   }
 
   @override
@@ -65,28 +103,62 @@ class _PokedexState extends State<Pokedex> {
                   child: ListView(
                     padding: EdgeInsets.zero,
                     children: [
-                      Image.asset("assets/azfilled.png"),
-                      Image.asset("assets/zafilled.png"),
+                      ToggleButtons(
+                          direction: Axis.vertical,
+                          renderBorder: false,
+                          isSelected: isSelectedAZ,
+                          onPressed: (index) {
+                            setState(() {
+                              for (int i = 0; i < isSelectedAZ.length; i++) {
+                                if (i == index) {
+                                  isSelectedAZ[i] = !isSelectedAZ[i];
+                                } else {
+                                  isSelectedAZ[i] = false;
+                                }
+                              }
+                            });
+                          },
+                          children: [
+                            Image.asset("assets/azfilled.png"),
+                            Image.asset("assets/zafilled.png"),
+                          ]),
                       SizedBox(
                           height: 35, child: Image.asset("assets/line.png")),
-                      Image.asset("assets/normal.png"),
-                      Image.asset("assets/fire.png"),
-                      Image.asset("assets/water.png"),
-                      Image.asset("assets/grass.png"),
-                      Image.asset("assets/electric.png"),
-                      Image.asset("assets/ice.png"),
-                      Image.asset("assets/ground.png"),
-                      Image.asset("assets/flying.png"),
-                      Image.asset("assets/poison.png"),
-                      Image.asset("assets/fighting.png"),
-                      Image.asset("assets/psychic.png"),
-                      Image.asset("assets/dark.png"),
-                      Image.asset("assets/rock.png"),
-                      Image.asset("assets/bug.png"),
-                      Image.asset("assets/ghost.png"),
-                      Image.asset("assets/steel.png"),
-                      Image.asset("assets/dragon.png"),
-                      Image.asset("assets/fairy.png"),
+                      ToggleButtons(
+                          direction: Axis.vertical,
+                          renderBorder: false,
+                          isSelected: isSelectedTypes,
+                          onPressed: (index) {
+                            setState(() {
+                              if (isSelectedTypes[index]) {
+                                isSelectedTypes[index] =
+                                    !isSelectedTypes[index];
+                              } else if (allowedSelection()) {
+                                isSelectedTypes[index] =
+                                    !isSelectedTypes[index];
+                              }
+                            });
+                          },
+                          children: [
+                            Image.asset("assets/normal.png"),
+                            Image.asset("assets/fire.png"),
+                            Image.asset("assets/water.png"),
+                            Image.asset("assets/grass.png"),
+                            Image.asset("assets/electric.png"),
+                            Image.asset("assets/ice.png"),
+                            Image.asset("assets/ground.png"),
+                            Image.asset("assets/flying.png"),
+                            Image.asset("assets/poison.png"),
+                            Image.asset("assets/fighting.png"),
+                            Image.asset("assets/psychic.png"),
+                            Image.asset("assets/dark.png"),
+                            Image.asset("assets/rock.png"),
+                            Image.asset("assets/bug.png"),
+                            Image.asset("assets/ghost.png"),
+                            Image.asset("assets/steel.png"),
+                            Image.asset("assets/dragon.png"),
+                            Image.asset("assets/fairy.png"),
+                          ]),
                     ],
                   ),
                 ),
