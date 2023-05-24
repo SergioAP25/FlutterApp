@@ -14,20 +14,15 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   PokemonRepository repo = PokemonRepository();
-  Future<List<FilteredPokemonModel>>? list;
+  Future<FilteredPokemonModel>? pokemon;
 
-  Future<List<FilteredPokemonModel>> updateList() async {
-    List<FilteredPokemonModel> aux = [];
-    final allPokemons = await repo.getAllPokemons();
-    for (var i = 0; i < allPokemons.results.length; i++) {
-      aux.add(await repo.getPokemonByUrl(allPokemons.results[i].url));
-    }
-    return aux;
+  Future<FilteredPokemonModel> getRandomPokemon() async {
+    return await repo.getRandomPokemonFromDatabase();
   }
 
   @override
   Widget build(BuildContext context) {
-    list = updateList();
+    pokemon = getRandomPokemon();
     return Scaffold(
       body: Column(
         children: [
@@ -35,22 +30,22 @@ class _HomeState extends State<Home> {
             height: 20.0,
           ),
           FutureBuilder(
-            future: list,
+            future: pokemon,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                final list = snapshot.data;
+                final pokemon = snapshot.data;
                 return Column(
                   children: [
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushNamed(fullSizeImageRoute,
-                            arguments: list[0].sprites.frontDefault!);
+                            arguments: pokemon.sprites.frontDefault!);
                       },
                       child: SizedBox(
                         height: 200,
                         width: double.infinity,
                         child: Image.network(
-                          list![0].sprites.frontDefault!,
+                          pokemon!.sprites.frontDefault!,
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -67,7 +62,7 @@ class _HomeState extends State<Home> {
                           children: [
                             Align(
                                 alignment: Alignment.center,
-                                child: Text(list[0].name,
+                                child: Text(pokemon.name,
                                     style: const TextStyle(
                                         fontSize: 30,
                                         fontWeight: FontWeight.bold))),

@@ -51,4 +51,9 @@ class PokemonRepository {
         .map((e) => FilteredPokemonModel.fromDatabase(e))
         .toList();
   }
+
+  Future<FilteredPokemonModel> getRandomPokemonFromDatabase() async {
+    final databaseResult = await _database.getRandomPokemon();
+    return FilteredPokemonModel.fromDatabase(databaseResult);
+  }
 }

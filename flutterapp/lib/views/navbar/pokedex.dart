@@ -1,9 +1,6 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutterapp/constants/routes.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
-import 'package:flutterapp/services/api/models/api_filtered_pokemon.dart';
 
 import '../../services/repository.dart';
 

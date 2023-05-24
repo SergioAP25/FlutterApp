@@ -122,4 +122,14 @@ class PokemonService {
     return results
         .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
   }
+
+  Future<PokemonDatabaseModel> getRandomPokemon() async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final result =
+        await db.rawQuery("SELECT * FROM pokemon ORDER BY RANDOM () LIMIT 1.");
+
+    return PokemonDatabaseModel.fromRow(result.first);
+  }
 }
