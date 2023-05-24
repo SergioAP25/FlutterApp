@@ -42,6 +42,10 @@ class _NavHolderState extends State<NavHolder> {
           type: BottomNavigationBarType.shifting,
           currentIndex: _selectedIndex,
           onTap: (index) {
+            if (index == 0) {
+              _screens.removeAt(0);
+              _screens.insert(0, Home());
+            }
             setState(() {
               _selectedIndex = index;
             });
