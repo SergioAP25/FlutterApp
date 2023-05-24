@@ -132,4 +132,33 @@ class PokemonService {
 
     return PokemonDatabaseModel.fromRow(result.first);
   }
+
+  Future<int> countPokemons() async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final result = await db.rawQuery("SELECT COUNT(*) FROM pokemon");
+    return result.first["COUNT(*)"] as int;
+  }
+
+  Future<int> countDescriptions() async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final result = await db.rawQuery("SELECT COUNT(*) FROM description");
+
+    return result.first["COUNT(*)"] as int;
+  }
+
+  Future<bool> exists(String name) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final result = await db.rawQuery(
+        "SELECT (SELECT COUNT(*) FROM pokemon WHERE name = ?) == 1", ["$name"]);
+    String aux = jsonEncode(result.first);
+    int integer = int.parse(aux[aux.length - 2]);
+    bool boolean = integer == 0 ? false : true;
+    return boolean;
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/domain/get_pokemons.dart';
 
 import '../services/repository.dart';
 import 'navbar/home.dart';
@@ -16,6 +17,7 @@ class NavHolder extends StatefulWidget {
 class _NavHolderState extends State<NavHolder> {
   int _selectedIndex = 0;
   PokemonRepository repo = PokemonRepository();
+  GetPokemons get = GetPokemons();
 
   static final List<Widget> _screens = <Widget>[
     const Home(),
@@ -28,7 +30,7 @@ class _NavHolderState extends State<NavHolder> {
     final allPokemons = await repo.getAllPokemons();
     debugPrint("Starting db update");
     for (var i = 0; i < allPokemons.results.length; i++) {
-      final pokemon = await repo.getPokemonByUrl(allPokemons.results[i].url);
+      final pokemon = await repo.getPokemonByUrl(allPokemons.results[i].url!);
       repo.insertPokemon(pokemon);
     }
     debugPrint("Finished db update");
@@ -36,8 +38,9 @@ class _NavHolderState extends State<NavHolder> {
 
   @override
   void initState() {
-    updateDB();
+    print("INIT DATABASE UPDATE");
     super.initState();
+    print("FINISHED DATABASE UPDATE");
   }
 
   @override

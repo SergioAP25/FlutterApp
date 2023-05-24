@@ -22,7 +22,7 @@ class PokemonRepository {
     return PokemonModel.fromApi(result);
   }
 
-  Future<FilteredPokemonModel> getPokemonByUrl(String? endpoint) async {
+  Future<FilteredPokemonModel> getPokemonByUrl(String endpoint) async {
     final result = await _api.getPokemonByUrl(endpoint);
     return FilteredPokemonModel.fromApi(result);
   }
@@ -42,6 +42,18 @@ class PokemonRepository {
 
   Future<void> insertFavorite(String name) async {
     await _database.insertFavorite(name: name);
+  }
+
+  Future<int> countPokemons() async {
+    return await _database.countPokemons();
+  }
+
+  Future<int> countDescriptions() async {
+    return await _database.countDescriptions();
+  }
+
+  Future<bool> exists(String name) async {
+    return await _database.exists(name);
   }
 
   Future<List<FilteredPokemonModel>> getPokemonByNameFromDatabase(

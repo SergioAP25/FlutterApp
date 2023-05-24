@@ -5,7 +5,7 @@ import 'package:flutterapp/services/database/models/database_pokemon_model.dart'
 
 @immutable
 class FilteredPokemonModel {
-  final String name;
+  String name;
   final Species species;
   final Sprites sprites;
   final List<Stats> stats;
@@ -13,7 +13,7 @@ class FilteredPokemonModel {
   final int height;
   final int weight;
 
-  const FilteredPokemonModel(this.name, this.species, this.sprites, this.stats,
+  FilteredPokemonModel(this.name, this.species, this.sprites, this.stats,
       this.types, this.height, this.weight);
 
   static List<Stats> _decodeStatsList(PokemonDatabaseModel pokemon) {
