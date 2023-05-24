@@ -23,7 +23,7 @@ const pokemonNameColumn = "pokemonName";
 // Table creations
 const createPokemonTable = """ CREATE TABLE IF NOT EXISTS "pokemon" (
         "id" INTEGER NOT NULL,
-        "name" TEXT NOT NULL,
+        "name" TEXT NOT NULL UNIQUE,
         "species" TEXT NOT NULL,
         "sprites" TEXT NOT NULL,
         "stats" TEXT NOT NULL,
@@ -35,13 +35,13 @@ const createPokemonTable = """ CREATE TABLE IF NOT EXISTS "pokemon" (
 
 const createDescriptionTable = """ CREATE TABLE IF NOT EXISTS "description" (
         "description_id" INTEGER NOT NULL,
-        "description" TEXT NOT NULL UNIQUE,
+        "description" TEXT NOT NULL,
         FOREIGN KEY("description_id") REFERENCES "pokemon"("id"),
         PRIMARY KEY("description_id")
       );""";
 
 const createFavoriteTable = """ CREATE TABLE IF NOT EXISTS "favorite" (
-        "pokemonName" TEXT NOT NULL UNIQUE,
+        "pokemonName" TEXT NOT NULL,
         PRIMARY KEY("pokemonName")
       );""";
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../services/repository.dart';
 import 'navbar/home.dart';
 import 'navbar/options.dart';
 import 'navbar/pokedex.dart';
@@ -14,6 +15,7 @@ class NavHolder extends StatefulWidget {
 
 class _NavHolderState extends State<NavHolder> {
   int _selectedIndex = 0;
+  PokemonRepository repo = PokemonRepository();
 
   static final List<Widget> _screens = <Widget>[
     const Home(),
@@ -21,6 +23,22 @@ class _NavHolderState extends State<NavHolder> {
     const Favorites(),
     const Options(),
   ];
+
+  Future<void> updateDB() async {
+    final allPokemons = await repo.getAllPokemons();
+    debugPrint("Starting db update");
+    for (var i = 0; i < allPokemons.results.length; i++) {
+      final pokemon = await repo.getPokemonByUrl(allPokemons.results[i].url);
+      repo.insertPokemon(pokemon);
+    }
+    debugPrint("Finished db update");
+  }
+
+  @override
+  void initState() {
+    updateDB();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

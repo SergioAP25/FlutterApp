@@ -3,8 +3,6 @@ import 'dart:convert';
 
 import 'package:flutterapp/domain/models/description_pokemon_model.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
-import 'package:flutterapp/services/api/models/api_filtered_pokemon.dart';
-import 'package:flutterapp/services/api/models/api_pokemon_model.dart';
 import 'package:flutterapp/services/database/models/database_pokemon_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -73,23 +71,41 @@ class PokemonService {
   Future<void> insertPokemon({required FilteredPokemonModel pokemon}) async {
     await _ensureDbIsOpen();
     final db = getDatabaseOrThrow();
-    await db.insert(pokemonTable, {
-      nameColumn: pokemon.name,
-      speciesColumn: jsonEncode(pokemon.species.toJson()),
-      spritesColumn: jsonEncode(pokemon.sprites.toJson()),
-      statsColumn: jsonEncode(pokemon.stats),
-      typesColumn: jsonEncode(pokemon.types),
-      heightColumn: pokemon.height,
-      weightColumn: pokemon.weight
-    });
+    await db.insert(
+        pokemonTable,
+        {
+          nameColumn: pokemon.name,
+          speciesColumn: jsonEncode(pokemon.species.toJson()),
+          spritesColumn: jsonEncode(pokemon.sprites.toJson()),
+          statsColumn: jsonEncode(pokemon.stats),
+          typesColumn: jsonEncode(pokemon.types),
+          heightColumn: pokemon.height,
+          weightColumn: pokemon.weight
+        },
+        conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
-  Future<void> insertDescriptions(
+  Future<void> insertDescription(
       {required DescriptionModel description}) async {
     await _ensureDbIsOpen();
     final db = getDatabaseOrThrow();
-    await db.insert(descriptionTable,
-        {descriptionColumn: jsonEncode(description.descriptions)});
+    await db.insert(
+      descriptionTable,
+      {
+        descriptionColumn: jsonEncode(
+          description.description,
+        )
+      },
+    );
+  }
+
+  Future<void> insertFavorite({required String name}) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+    await db.insert(
+      favoriteTable,
+      {pokemonNameColumn: name},
+    );
   }
 
   Future<Iterable<PokemonDatabaseModel>> getPokemonByName(

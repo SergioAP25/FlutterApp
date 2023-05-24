@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutterapp/constants/routes.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
@@ -20,23 +22,24 @@ class _PokedexState extends State<Pokedex> {
     setState(() {});
   }
 
-  Future<void> testDB() async {
-    final allPokemons = await repo.getAllPokemons();
-    for (var i = 0; i < allPokemons.results.length; i++) {
-      final pokemon = await repo.getPokemonByUrl(allPokemons.results[i].url);
-      repo.insertPokemon(pokemon);
-    }
+  Future<List<FilteredPokemonModel>> getPokemonsByName(String name) async {
+    return await repo.getPokemonByNameFromDatabase(name);
   }
 
-  Future<List<FilteredPokemonModel>> get() async {
-    List<FilteredPokemonModel> aux =
-        await repo.getPokemonByNameFromDatabase("");
-    return aux;
+  void updateQuery(String query) {
+    setState(() {
+      dblist = getPokemonsByName(query);
+    });
+  }
+
+  @override
+  void initState() {
+    dblist = getPokemonsByName("");
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    dblist = get();
     return Scaffold(
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -52,6 +55,9 @@ class _PokedexState extends State<Pokedex> {
                 hintText: "Search Here",
                 prefixIcon: const Icon(Icons.search),
                 prefixIconColor: Colors.grey),
+            onChanged: (query) {
+              updateQuery(query);
+            },
           ),
           Expanded(
             child: Row(

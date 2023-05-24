@@ -2,9 +2,6 @@ import 'package:flutterapp/domain/models/description_pokemon_model.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
 import 'package:flutterapp/domain/models/pokemon_model.dart';
 import 'package:flutterapp/services/api/api_service.dart';
-import 'package:flutterapp/services/api/models/api_description_model.dart';
-import 'package:flutterapp/services/api/models/api_filtered_pokemon.dart';
-import 'package:flutterapp/services/api/models/api_pokemon_model.dart';
 import 'package:flutterapp/services/database/database_service.dart';
 
 class PokemonRepository {
@@ -35,15 +32,23 @@ class PokemonRepository {
     return DescriptionModel.fromApi(result);
   }
 
+  Future<void> insertPokemon(FilteredPokemonModel pokemon) async {
+    await _database.insertPokemon(pokemon: pokemon);
+  }
+
+  Future<void> insertDescriptions(DescriptionModel description) async {
+    await _database.insertDescription(description: description);
+  }
+
+  Future<void> insertFavorite(String name) async {
+    await _database.insertFavorite(name: name);
+  }
+
   Future<List<FilteredPokemonModel>> getPokemonByNameFromDatabase(
       String name) async {
     final databaseResult = await _database.getPokemonByName(name: name);
     return databaseResult
         .map((e) => FilteredPokemonModel.fromDatabase(e))
         .toList();
-  }
-
-  Future<void> insertPokemon(FilteredPokemonModel pokemon) async {
-    await _database.insertPokemon(pokemon: pokemon);
   }
 }

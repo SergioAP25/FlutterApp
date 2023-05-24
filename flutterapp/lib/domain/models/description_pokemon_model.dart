@@ -5,9 +5,9 @@ import 'package:flutterapp/services/database/models/database_description_model.d
 
 @immutable
 class DescriptionModel {
-  final List<FlavorTextEntries> descriptions;
+  final List<FlavorTextEntries> description;
 
-  const DescriptionModel(this.descriptions);
+  const DescriptionModel(this.description);
 
   static DescriptionModel fromApi(DescriptionApiModel description) {
     return DescriptionModel(description.flavorTextEntries!);
