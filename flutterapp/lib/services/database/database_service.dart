@@ -108,6 +108,12 @@ class PokemonService {
     );
   }
 
+  Future<void> deleteFavorite({required String name}) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+    await db.delete(favoriteTable, where: "pokemonName = ?", whereArgs: [name]);
+  }
+
   Future<Iterable<PokemonDatabaseModel>> getPokemonByName(
       {required String name}) async {
     await _ensureDbIsOpen();
@@ -282,6 +288,19 @@ class PokemonService {
 
     final result = await db.rawQuery(
         "SELECT (SELECT COUNT(*) FROM pokemon WHERE name = ?) == 1", [name]);
+    String aux = jsonEncode(result.first);
+    int integer = int.parse(aux[aux.length - 2]);
+    bool boolean = integer == 0 ? false : true;
+    return boolean;
+  }
+
+  Future<bool> isFavorite(String name) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final result = await db.rawQuery(
+        "SELECT (SELECT COUNT(*) FROM favorite WHERE pokemonName = ?) == 1",
+        [name]);
     String aux = jsonEncode(result.first);
     int integer = int.parse(aux[aux.length - 2]);
     bool boolean = integer == 0 ? false : true;

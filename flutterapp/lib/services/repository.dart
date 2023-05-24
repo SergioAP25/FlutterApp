@@ -44,6 +44,10 @@ class PokemonRepository {
     await _database.insertFavorite(name: name);
   }
 
+  Future<void> deleteFavorite(String name) async {
+    await _database.deleteFavorite(name: name);
+  }
+
   Future<int> countPokemons() async {
     return await _database.countPokemons();
   }
@@ -54,6 +58,10 @@ class PokemonRepository {
 
   Future<bool> exists(String name) async {
     return await _database.exists(name);
+  }
+
+  Future<bool> isFavorite(String name) async {
+    return await _database.isFavorite(name);
   }
 
   Future<List<FilteredPokemonModel>> getPokemonByNameFromDatabase(

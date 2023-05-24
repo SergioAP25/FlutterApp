@@ -36,6 +36,7 @@ class GetPokemons {
 
     for (var i = startingIndex; i < _apilist.length; i++) {
       pokemon = await _repository.getPokemonByUrl(_apilist[i].url!);
+      print(pokemon.name);
       description =
           await _repository.getPokemonDescriptionByUrls(pokemon.species.url!);
       pokemon.name = pokemon.name.capitalize();
