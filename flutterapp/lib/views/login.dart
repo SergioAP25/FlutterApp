@@ -156,7 +156,11 @@ class _LoginViewState extends State<LoginView> {
                 child: Container(
                     color: const Color.fromARGB(255, 235, 231, 231),
                     child: TextButton(
-                        onPressed: () async {},
+                        onPressed: () async {
+                          context
+                              .read<AuthBloc>()
+                              .add(const AuthEventLogInWithGoogle());
+                        },
                         child: Row(
                           children: [
                             Image.asset("assets/google.png"),

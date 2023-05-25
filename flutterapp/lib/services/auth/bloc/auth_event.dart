@@ -15,6 +15,10 @@ class AuthEventLogIn extends AuthEvent {
   const AuthEventLogIn(this.email, this.password);
 }
 
+class AuthEventLogInWithGoogle extends AuthEvent {
+  const AuthEventLogInWithGoogle();
+}
+
 class AuthEventLogout extends AuthEvent {
   const AuthEventLogout();
 }

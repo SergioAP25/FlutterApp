@@ -50,10 +50,7 @@ class StartingPage extends StatelessWidget {
             state is AuthStateRegistering) {
           return const LoginView();
         } else {
-          return const Scaffold(
-              body: Align(
-                  alignment: Alignment.center,
-                  child: CircularProgressIndicator()));
+          return const Scaffold();
         }
       },
     );
