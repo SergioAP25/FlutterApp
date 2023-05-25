@@ -265,7 +265,123 @@ class PokemonService {
         "SELECT * FROM pokemon p, favorite f WHERE p.name = f.pokemonName AND name LIKE ?",
         ["%$name%"]);
 
-    print(results);
+    return results
+        .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
+  }
+
+  Future<Iterable<PokemonDatabaseModel>> getFavoritePokemonByNameAZ({
+    required String name,
+  }) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final results = await db.rawQuery(
+        "SELECT * FROM pokemon p, favorite f WHERE p.name = f.pokemonName AND name LIKE ? ORDER BY pokemonName ASC",
+        ["%$name%"]);
+
+    return results
+        .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
+  }
+
+  Future<Iterable<PokemonDatabaseModel>> getFavoritePokemonByNameZA({
+    required String name,
+  }) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final results = await db.rawQuery(
+        "SELECT * FROM pokemon p, favorite f WHERE p.name = f.pokemonName AND name LIKE ? ORDER BY pokemonName DESC",
+        ["%$name%"]);
+
+    return results
+        .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
+  }
+
+  Future<Iterable<PokemonDatabaseModel>> getFavoritePokemonByNameFilteredByType(
+      {required String name, required String type}) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final results = await db.rawQuery(
+        "SELECT * FROM pokemon p, favorite f WHERE p.name = f.pokemonName AND name LIKE ? AND types LIKE ?",
+        ["%$name%", "%$type%"]);
+
+    return results
+        .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
+  }
+
+  Future<Iterable<PokemonDatabaseModel>>
+      getFavoritePokemonByNameFilteredByMultiType(
+          {required String name,
+          required String type1,
+          required String type2}) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final results = await db.rawQuery(
+        "SELECT * FROM pokemon p, favorite f WHERE p.name = f.pokemonName AND name LIKE ? AND types LIKE ? AND types LIKE ?",
+        ["%$name%", "%$type1%", "%$type2%"]);
+
+    return results
+        .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
+  }
+
+  Future<Iterable<PokemonDatabaseModel>>
+      getFavoritePokemonByNameFilteredByTypeAZ(
+          {required String name, required String type}) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final results = await db.rawQuery(
+        "SELECT * FROM pokemon p, favorite f WHERE p.name = f.pokemonName AND name LIKE ? AND types LIKE ? ORDER BY pokemonName ASC",
+        ["%$name%", "%$type%"]);
+
+    return results
+        .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
+  }
+
+  Future<Iterable<PokemonDatabaseModel>>
+      getFavoritePokemonByNameFilteredByTypeZA(
+          {required String name, required String type}) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final results = await db.rawQuery(
+        "SELECT * FROM pokemon p, favorite f WHERE p.name = f.pokemonName AND name LIKE ? AND types LIKE ? ORDER BY pokemonName DESC",
+        ["%$name%", "%$type%"]);
+
+    return results
+        .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
+  }
+
+  Future<Iterable<PokemonDatabaseModel>>
+      getFavoritePokemonByNameFilteredByMultiTypeAZ(
+          {required String name,
+          required String type1,
+          required String type2}) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final results = await db.rawQuery(
+        "SELECT * FROM pokemon p, favorite f WHERE p.name = f.pokemonName AND name LIKE ? AND types LIKE ? AND types LIKE ? ORDER BY pokemonName ASC",
+        ["%$name%", "%$type1%", "%$type2%"]);
+
+    return results
+        .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
+  }
+
+  Future<Iterable<PokemonDatabaseModel>>
+      getFavoritePokemonByNameFilteredByMultiTypeZA(
+          {required String name,
+          required String type1,
+          required String type2}) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final results = await db.rawQuery(
+        "SELECT * FROM pokemon p, favorite f WHERE p.name = f.pokemonName AND name LIKE ? AND types LIKE ? AND types LIKE ? ORDER BY pokemonName DESC",
+        ["%$name%", "%$type1%", "%$type2%"]);
+
     return results
         .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
   }

@@ -77,11 +77,11 @@ class _FavoritesState extends State<Favorites> {
             aux = repo.getFavoritePokemonByNameFromDatabase(query);
             break;
           case 1:
-            aux = repo.getPokemonByNameFilteredByTypeFromDatabase(
+            aux = repo.getFavoritePokemonByNameFilteredByTypeFromDatabase(
                 query, types[0]);
             break;
           case 2:
-            aux = repo.getPokemonByNameFilteredByMultiTypeFromDatabase(
+            aux = repo.getFavoritePokemonByNameFilteredByMultiTypeFromDatabase(
                 query, types[0], types[1]);
             break;
         }
@@ -89,31 +89,33 @@ class _FavoritesState extends State<Favorites> {
       case "az":
         switch (types.length) {
           case 0:
-            aux = repo.getPokemonByNameAZFromDatabase(query);
+            aux = repo.getFavoritePokemonByNameAZFromDatabase(query);
             break;
 
           case 1:
-            aux = repo.getPokemonByNameFilteredByTypeFromDatabaseAZ(
+            aux = repo.getFavoritePokemonByNameFilteredByTypeFromDatabaseAZ(
                 query, types[0]);
             break;
           case 2:
-            aux = repo.getPokemonByNameFilteredByMultiTypeFromDatabaseAZ(
-                query, types[0], types[1]);
+            aux =
+                repo.getFavoritePokemonByNameFilteredByMultiTypeFromDatabaseAZ(
+                    query, types[0], types[1]);
             break;
         }
         break;
       case "za":
         switch (types.length) {
           case 0:
-            aux = repo.getPokemonByNameZAFromDatabase(query);
+            aux = repo.getFavoritePokemonByNameZAFromDatabase(query);
             break;
           case 1:
-            aux = repo.getPokemonByNameFilteredByTypeFromDatabaseZA(
+            aux = repo.getFavoritePokemonByNameFilteredByTypeFromDatabaseZA(
                 query, types[0]);
             break;
           case 2:
-            aux = repo.getPokemonByNameFilteredByMultiTypeFromDatabaseZA(
-                query, types[0], types[1]);
+            aux =
+                repo.getFavoritePokemonByNameFilteredByMultiTypeFromDatabaseZA(
+                    query, types[0], types[1]);
             break;
         }
         break;
