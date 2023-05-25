@@ -152,7 +152,6 @@ class PokemonRepository {
   Future<List<FilteredPokemonModel>> getFavoritePokemonByNameFromDatabase(
       String name) async {
     final databaseResult = await _database.getFavoritePokemonByName(name: name);
-    print(databaseResult);
     return databaseResult
         .map((e) => FilteredPokemonModel.fromDatabase(e))
         .toList();
