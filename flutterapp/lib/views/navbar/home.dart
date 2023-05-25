@@ -134,7 +134,7 @@ class _HomeState extends State<Home> {
                             ),
                             FittedBox(
                               child: Container(
-                                color: Colors.blue,
+                                color: Color.fromARGB(255, 247, 242, 242),
                                 child: SizedBox(
                                   height: 200,
                                   width: 375,
@@ -144,7 +144,7 @@ class _HomeState extends State<Home> {
                                       Row(
                                         children: [
                                           const SizedBox(
-                                            width: 8,
+                                            width: 22,
                                           ),
                                           Container(
                                               color: const Color.fromARGB(
@@ -153,7 +153,7 @@ class _HomeState extends State<Home> {
                                                 height: pokemon
                                                     .stats[0].baseStat!
                                                     .toDouble(),
-                                                width: 35,
+                                                width: 45,
                                               )),
                                           const SizedBox(
                                             width: 8,
@@ -165,7 +165,7 @@ class _HomeState extends State<Home> {
                                                 height: pokemon
                                                     .stats[1].baseStat!
                                                     .toDouble(),
-                                                width: 35,
+                                                width: 45,
                                               )),
                                           const SizedBox(
                                             width: 8,
@@ -177,7 +177,7 @@ class _HomeState extends State<Home> {
                                                 height: pokemon
                                                     .stats[2].baseStat!
                                                     .toDouble(),
-                                                width: 35,
+                                                width: 45,
                                               )),
                                           const SizedBox(
                                             width: 8,
@@ -189,7 +189,7 @@ class _HomeState extends State<Home> {
                                                 height: pokemon
                                                     .stats[3].baseStat!
                                                     .toDouble(),
-                                                width: 35,
+                                                width: 45,
                                               )),
                                           const SizedBox(
                                             width: 8,
@@ -201,7 +201,7 @@ class _HomeState extends State<Home> {
                                                 height: pokemon
                                                     .stats[4].baseStat!
                                                     .toDouble(),
-                                                width: 35,
+                                                width: 45,
                                               )),
                                           const SizedBox(
                                             width: 8,
@@ -213,14 +213,17 @@ class _HomeState extends State<Home> {
                                                 height: pokemon
                                                     .stats[5].baseStat!
                                                     .toDouble(),
-                                                width: 35,
+                                                width: 45,
                                               )),
                                         ],
+                                      ),
+                                      SizedBox(
+                                        height: 5,
                                       ),
                                       Row(
                                         children: const [
                                           SizedBox(
-                                            width: 20,
+                                            width: 42,
                                           ),
                                           Text(
                                             "Hp",
@@ -238,7 +241,7 @@ class _HomeState extends State<Home> {
                                             ),
                                           ),
                                           SizedBox(
-                                            width: 30,
+                                            width: 20,
                                           ),
                                           Text(
                                             "Defense",
@@ -247,7 +250,7 @@ class _HomeState extends State<Home> {
                                             ),
                                           ),
                                           SizedBox(
-                                            width: 30,
+                                            width: 10,
                                           ),
                                           Text(
                                             "Special a...",
@@ -256,16 +259,16 @@ class _HomeState extends State<Home> {
                                             ),
                                           ),
                                           SizedBox(
-                                            width: 30,
+                                            width: 5,
                                           ),
                                           Text(
-                                            "Special ",
+                                            "Special ...",
                                             style: TextStyle(
                                               fontSize: 10,
                                             ),
                                           ),
                                           SizedBox(
-                                            width: 30,
+                                            width: 15,
                                           ),
                                           Text(
                                             "Speed",
