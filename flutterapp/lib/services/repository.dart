@@ -238,6 +238,15 @@ class PokemonRepository {
         .toList();
   }
 
+  Future<List<FilteredPokemonModel>> getPokemonDescriptionByNameFromDatabase(
+      String name) async {
+    final databaseResult =
+        await _database.getPokemonDescriptionByName(name: name);
+    return databaseResult
+        .map((e) => FilteredPokemonModel.fromDatabase(e))
+        .toList();
+  }
+
   Future<FilteredPokemonModel> getRandomPokemonFromDatabase() async {
     final databaseResult = await _database.getRandomPokemon();
     return FilteredPokemonModel.fromDatabase(databaseResult);

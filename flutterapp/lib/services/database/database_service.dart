@@ -386,6 +386,20 @@ class PokemonService {
         .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
   }
 
+  Future<Iterable<PokemonDatabaseModel>> getPokemonDescriptionByName({
+    required String name,
+  }) async {
+    await _ensureDbIsOpen();
+    final db = getDatabaseOrThrow();
+
+    final results = await db.rawQuery(
+        "SELECT * FROM pokemon p, description d WHERE p.id = d.description_id AND name = ?",
+        [name]);
+
+    return results
+        .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
+  }
+
   Future<PokemonDatabaseModel> getRandomPokemon() async {
     await _ensureDbIsOpen();
     final db = getDatabaseOrThrow();

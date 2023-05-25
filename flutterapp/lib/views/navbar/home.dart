@@ -18,9 +18,18 @@ class _HomeState extends State<Home> {
     return await repo.getRandomPokemonFromDatabase();
   }
 
+  Future<bool> _isFavorite(String name) async {
+    return await repo.isFavorite(name);
+  }
+
+  @override
+  void initState() {
+    pokemon = getRandomPokemon();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    pokemon = getRandomPokemon();
     return Scaffold(
       body: Column(
         children: [
@@ -34,6 +43,51 @@ class _HomeState extends State<Home> {
                 final pokemon = snapshot.data;
                 return Column(
                   children: [
+                    Row(
+                      children: [
+                        const SizedBox(
+                          width: 300,
+                        ),
+                        FutureBuilder(
+                          future: _isFavorite(pokemon!.name),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              print(pokemon.stats[0].baseStat);
+                              print(pokemon.stats[0].baseStat!.toDouble());
+
+                              final hp = pokemon.stats[0].baseStat;
+                              return IconButton(
+                                  splashColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  iconSize: 55,
+                                  onPressed: () async {
+                                    setState(() {
+                                      if (!snapshot.data!) {
+                                        repo.insertFavorite(pokemon.name);
+                                      } else {
+                                        repo.deleteFavorite(pokemon.name);
+                                      }
+                                    });
+                                  },
+                                  icon: snapshot.data!
+                                      ? const Icon(
+                                          Icons.star,
+                                          color: Colors.yellow,
+                                        )
+                                      : const Icon(
+                                          Icons.star_border,
+                                          color: Colors.yellow,
+                                        ));
+                            } else {
+                              return const Expanded(
+                                  child: Align(
+                                      alignment: Alignment.center,
+                                      child: CircularProgressIndicator()));
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushNamed(fullSizeImageRoute,
@@ -43,7 +97,7 @@ class _HomeState extends State<Home> {
                         height: 200,
                         width: double.infinity,
                         child: Image.network(
-                          pokemon!.sprites.frontDefault!,
+                          pokemon.sprites.frontDefault!,
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -78,79 +132,154 @@ class _HomeState extends State<Home> {
                             const SizedBox(
                               height: 10,
                             ),
-                            Container(
-                              color: Colors.blue,
-                              child: SizedBox(
-                                height: 200,
-                                width: 350,
-                                child: Column(
-                                  children: [
-                                    const Spacer(),
-                                    Row(
-                                      children: [],
-                                    ),
-                                    Row(
-                                      children: const [
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Text(
-                                          "Hp",
-                                          style: TextStyle(
-                                            fontSize: 10,
+                            FittedBox(
+                              child: Container(
+                                color: Colors.blue,
+                                child: SizedBox(
+                                  height: 200,
+                                  width: 375,
+                                  child: Column(
+                                    children: [
+                                      const Spacer(),
+                                      Row(
+                                        children: [
+                                          const SizedBox(
+                                            width: 8,
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Text(
-                                          "Attack",
-                                          style: TextStyle(
-                                            fontSize: 10,
+                                          Container(
+                                              color: const Color.fromARGB(
+                                                  255, 65, 208, 252),
+                                              child: SizedBox(
+                                                height: pokemon
+                                                    .stats[0].baseStat!
+                                                    .toDouble(),
+                                                width: 35,
+                                              )),
+                                          const SizedBox(
+                                            width: 8,
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Text(
-                                          "Defense",
-                                          style: TextStyle(
-                                            fontSize: 10,
+                                          Container(
+                                              color: const Color.fromARGB(
+                                                  255, 231, 48, 48),
+                                              child: SizedBox(
+                                                height: pokemon
+                                                    .stats[1].baseStat!
+                                                    .toDouble(),
+                                                width: 35,
+                                              )),
+                                          const SizedBox(
+                                            width: 8,
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Text(
-                                          "Special attack",
-                                          style: TextStyle(
-                                            fontSize: 10,
+                                          Container(
+                                              color: const Color.fromARGB(
+                                                  255, 245, 170, 58),
+                                              child: SizedBox(
+                                                height: pokemon
+                                                    .stats[2].baseStat!
+                                                    .toDouble(),
+                                                width: 35,
+                                              )),
+                                          const SizedBox(
+                                            width: 8,
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Text(
-                                          "Special defense",
-                                          style: TextStyle(
-                                            fontSize: 10,
+                                          Container(
+                                              color: const Color.fromARGB(
+                                                  255, 25, 226, 35),
+                                              child: SizedBox(
+                                                height: pokemon
+                                                    .stats[3].baseStat!
+                                                    .toDouble(),
+                                                width: 35,
+                                              )),
+                                          const SizedBox(
+                                            width: 8,
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: 15,
-                                        ),
-                                        Text(
-                                          "Speed",
-                                          style: TextStyle(
-                                            fontSize: 10,
+                                          Container(
+                                              color: const Color.fromARGB(
+                                                  255, 224, 100, 42),
+                                              child: SizedBox(
+                                                height: pokemon
+                                                    .stats[4].baseStat!
+                                                    .toDouble(),
+                                                width: 35,
+                                              )),
+                                          const SizedBox(
+                                            width: 8,
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 7,
-                                    ),
-                                  ],
+                                          Container(
+                                              color: const Color.fromARGB(
+                                                  255, 29, 15, 219),
+                                              child: SizedBox(
+                                                height: pokemon
+                                                    .stats[5].baseStat!
+                                                    .toDouble(),
+                                                width: 35,
+                                              )),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: const [
+                                          SizedBox(
+                                            width: 20,
+                                          ),
+                                          Text(
+                                            "Hp",
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 30,
+                                          ),
+                                          Text(
+                                            "Attack",
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 30,
+                                          ),
+                                          Text(
+                                            "Defense",
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 30,
+                                          ),
+                                          Text(
+                                            "Special a...",
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 30,
+                                          ),
+                                          Text(
+                                            "Special ",
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 30,
+                                          ),
+                                          Text(
+                                            "Speed",
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 7,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -158,68 +287,75 @@ class _HomeState extends State<Home> {
                               height: 25,
                             ),
                             Row(
-                              children: const [
-                                Text(
+                              children: [
+                                const Text(
                                   "Types",
                                   style: TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 15,
                                 ),
-                                Text(
-                                  "TYPE 1",
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                SizedBox(
-                                  width: 15,
-                                ),
-                                Text(
-                                  "TYPE 2",
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
-                                ),
+                                if (pokemon.types.length < 2)
+                                  SizedBox(
+                                    height: 40,
+                                    child: Row(
+                                      children: [
+                                        Image.asset(
+                                            "assets/${pokemon.types[0].type!.name!}.png"),
+                                      ],
+                                    ), //
+                                  )
+                                else
+                                  SizedBox(
+                                    height: 40,
+                                    child: Row(
+                                      children: [
+                                        Image.asset(
+                                            "assets/${pokemon.types[0].type!.name!}.png"),
+                                        Image.asset(
+                                            "assets/${pokemon.types[1].type!.name!}.png"),
+                                      ],
+                                    ), //
+                                  ),
                               ],
                             ),
                             const SizedBox(
                               height: 25,
                             ),
                             Row(
-                              children: const [
-                                Text(
+                              children: [
+                                const Text(
                                   "Height:",
                                   style: TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 15,
                                 ),
                                 Text(
-                                  "0.00",
-                                  style: TextStyle(
+                                  pokemon.height.toString(),
+                                  style: const TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 30,
                                 ),
-                                Text(
+                                const Text(
                                   "Weight",
                                   style: TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 15,
                                 ),
                                 Text(
-                                  "0.00",
-                                  style: TextStyle(
+                                  pokemon.weight.toString(),
+                                  style: const TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold),
                                 ),
