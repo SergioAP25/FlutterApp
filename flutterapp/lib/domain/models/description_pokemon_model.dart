@@ -16,8 +16,7 @@ class DescriptionModel {
 
   static DescriptionModel fromDatabase(DescriptionDatabaseModel description) {
     final List<FlavorTextEntries> descriptions = [];
-    final aux = description.description.replaceAll("\n", " ");
-    final List<dynamic> flavorTextEntries = jsonDecode(aux);
+    final List<dynamic> flavorTextEntries = jsonDecode(description.description);
     for (var i = 0; i < flavorTextEntries.length; i++) {
       descriptions.add(FlavorTextEntries.fromJson(flavorTextEntries[i]));
     }
