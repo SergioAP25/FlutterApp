@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutterapp/domain/models/description_pokemon_model.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
+import 'package:flutterapp/services/database/models/database_description_model.dart';
 import 'package:flutterapp/services/database/models/database_pokemon_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
@@ -386,7 +387,7 @@ class PokemonService {
         .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
   }
 
-  Future<Iterable<PokemonDatabaseModel>> getPokemonDescriptionByName({
+  Future<DescriptionDatabaseModel> getPokemonDescriptionByName({
     required String name,
   }) async {
     await _ensureDbIsOpen();
@@ -395,9 +396,7 @@ class PokemonService {
     final results = await db.rawQuery(
         "SELECT * FROM pokemon p, description d WHERE p.id = d.description_id AND name = ?",
         [name]);
-
-    return results
-        .map((pokemonRow) => PokemonDatabaseModel.fromRow(pokemonRow));
+    return DescriptionDatabaseModel.fromRow(results.first);
   }
 
   Future<PokemonDatabaseModel> getRandomPokemon() async {

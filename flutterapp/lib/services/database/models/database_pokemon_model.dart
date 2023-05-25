@@ -23,5 +23,5 @@ class PokemonDatabaseModel {
         stats = map[statsColumn] as String,
         types = map[typesColumn] as String,
         height = map[heightColumn] as int,
-        weight = map[heightColumn] as int;
+        weight = map[weightColumn] as int;
 }

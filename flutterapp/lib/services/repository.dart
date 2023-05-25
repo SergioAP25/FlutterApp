@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutterapp/domain/models/description_pokemon_model.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
 import 'package:flutterapp/domain/models/pokemon_model.dart';
@@ -238,13 +240,12 @@ class PokemonRepository {
         .toList();
   }
 
-  Future<List<FilteredPokemonModel>> getPokemonDescriptionByNameFromDatabase(
+  Future<DescriptionModel> getPokemonDescriptionByNameFromDatabase(
       String name) async {
     final databaseResult =
         await _database.getPokemonDescriptionByName(name: name);
-    return databaseResult
-        .map((e) => FilteredPokemonModel.fromDatabase(e))
-        .toList();
+
+    return DescriptionModel.fromDatabase(databaseResult);
   }
 
   Future<FilteredPokemonModel> getRandomPokemonFromDatabase() async {

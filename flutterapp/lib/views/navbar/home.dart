@@ -31,85 +31,80 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 20.0,
-          ),
-          FutureBuilder(
-            future: pokemon,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                final pokemon = snapshot.data;
-                return Column(
-                  children: [
-                    Row(
-                      children: [
-                        const SizedBox(
-                          width: 300,
-                        ),
-                        FutureBuilder(
-                          future: _isFavorite(pokemon!.name),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              print(pokemon.stats[0].baseStat);
-                              print(pokemon.stats[0].baseStat!.toDouble());
-
-                              final hp = pokemon.stats[0].baseStat;
-                              return IconButton(
-                                  splashColor: Colors.transparent,
-                                  highlightColor: Colors.transparent,
-                                  iconSize: 55,
-                                  onPressed: () async {
-                                    setState(() {
-                                      if (!snapshot.data!) {
-                                        repo.insertFavorite(pokemon.name);
-                                      } else {
-                                        repo.deleteFavorite(pokemon.name);
-                                      }
-                                    });
-                                  },
-                                  icon: snapshot.data!
-                                      ? const Icon(
-                                          Icons.star,
-                                          color: Colors.yellow,
-                                        )
-                                      : const Icon(
-                                          Icons.star_border,
-                                          color: Colors.yellow,
-                                        ));
-                            } else {
-                              return const Expanded(
-                                  child: Align(
-                                      alignment: Alignment.center,
-                                      child: CircularProgressIndicator()));
-                            }
-                          },
-                        ),
-                      ],
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(fullSizeImageRoute,
-                            arguments: pokemon.sprites.frontDefault!);
-                      },
-                      child: SizedBox(
-                        height: 200,
-                        width: double.infinity,
-                        child: Image.network(
-                          pokemon.sprites.frontDefault!,
-                          fit: BoxFit.contain,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 20.0,
+            ),
+            FutureBuilder(
+              future: pokemon,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  final pokemon = snapshot.data;
+                  return Column(
+                    children: [
+                      Row(
+                        children: [
+                          const SizedBox(
+                            width: 300,
+                          ),
+                          FutureBuilder(
+                            future: _isFavorite(pokemon!.name),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return IconButton(
+                                    splashColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    iconSize: 55,
+                                    onPressed: () async {
+                                      setState(() {
+                                        if (!snapshot.data!) {
+                                          repo.insertFavorite(pokemon.name);
+                                        } else {
+                                          repo.deleteFavorite(pokemon.name);
+                                        }
+                                      });
+                                    },
+                                    icon: snapshot.data!
+                                        ? const Icon(
+                                            Icons.star,
+                                            color: Colors.yellow,
+                                          )
+                                        : const Icon(
+                                            Icons.star_border,
+                                            color: Colors.yellow,
+                                          ));
+                              } else {
+                                return const Expanded(
+                                    child: Align(
+                                        alignment: Alignment.center,
+                                        child: CircularProgressIndicator()));
+                              }
+                            },
+                          ),
+                        ],
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(fullSizeImageRoute,
+                              arguments: pokemon.sprites.frontDefault!);
+                        },
+                        child: SizedBox(
+                          height: 200,
+                          width: double.infinity,
+                          child: Image.network(
+                            pokemon.sprites.frontDefault!,
+                            fit: BoxFit.contain,
+                          ),
                         ),
                       ),
-                    ),
-                    Container(
-                      decoration: const BoxDecoration(
-                          color: Color.fromARGB(255, 247, 242, 242),
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20))),
-                      child: SizedBox(
-                        height: 525,
+                      Container(
+                        decoration: const BoxDecoration(
+                            color: Color.fromARGB(255, 247, 242, 242),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20))),
                         child: Column(
                           children: [
                             Align(
@@ -126,7 +121,7 @@ class _HomeState extends State<Home> {
                               child: Text(
                                 "Base stats",
                                 style: TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.bold),
+                                    fontSize: 20, fontWeight: FontWeight.bold),
                               ),
                             ),
                             const SizedBox(
@@ -134,7 +129,7 @@ class _HomeState extends State<Home> {
                             ),
                             FittedBox(
                               child: Container(
-                                color: Color.fromARGB(255, 247, 242, 242),
+                                color: const Color.fromARGB(255, 247, 242, 242),
                                 child: SizedBox(
                                   height: 200,
                                   width: 375,
@@ -217,7 +212,7 @@ class _HomeState extends State<Home> {
                                               )),
                                         ],
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 5,
                                       ),
                                       Row(
@@ -294,7 +289,7 @@ class _HomeState extends State<Home> {
                                 const Text(
                                   "Types",
                                   style: TextStyle(
-                                      fontSize: 24,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(
@@ -332,17 +327,17 @@ class _HomeState extends State<Home> {
                                 const Text(
                                   "Height:",
                                   style: TextStyle(
-                                      fontSize: 24,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(
                                   width: 15,
                                 ),
                                 Text(
-                                  pokemon.height.toString(),
+                                  "${(pokemon.height / 10).toString()} m",
                                   style: const TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
+                                    fontSize: 18,
+                                  ),
                                 ),
                                 const SizedBox(
                                   width: 30,
@@ -350,60 +345,78 @@ class _HomeState extends State<Home> {
                                 const Text(
                                   "Weight",
                                   style: TextStyle(
-                                      fontSize: 24,
+                                      fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 const SizedBox(
                                   width: 15,
                                 ),
                                 Text(
-                                  pokemon.weight.toString(),
+                                  "${pokemon.weight.toString()} kg",
                                   style: const TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
+                                    fontSize: 18,
+                                  ),
                                 ),
                               ],
                             ),
                             const SizedBox(
                               height: 25,
                             ),
-                            Column(
-                              children: const [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Description",
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Lore ipsum",
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                              ],
+                            FutureBuilder(
+                              future:
+                                  repo.getPokemonDescriptionByNameFromDatabase(
+                                      pokemon.name),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return Column(
+                                    children: [
+                                      const Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          "Description",
+                                          style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          snapshot
+                                              .data!.description[0].flavorText!,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                } else {
+                                  return const Expanded(
+                                      child: Align(
+                                          alignment: Alignment.center,
+                                          child: CircularProgressIndicator()));
+                                }
+                              },
                             )
                           ],
                         ),
-                      ),
-                    )
-                  ],
-                );
-              } else {
-                return const Expanded(
-                    child: Align(
-                        alignment: Alignment.center,
-                        child: CircularProgressIndicator()));
-              }
-            },
-          ),
-        ],
+                      )
+                    ],
+                  );
+                } else {
+                  return const Expanded(
+                      child: Align(
+                          alignment: Alignment.center,
+                          child: CircularProgressIndicator()));
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

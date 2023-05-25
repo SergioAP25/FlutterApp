@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutterapp/services/api/models/api_description_model.dart';
 import 'package:flutterapp/services/database/models/database_description_model.dart';
@@ -14,10 +15,12 @@ class DescriptionModel {
   }
 
   static DescriptionModel fromDatabase(DescriptionDatabaseModel description) {
-    final descriptions =
-        DescriptionApiModel.fromJson(jsonDecode(description.description))
-            .flavorTextEntries;
-
-    return DescriptionModel(descriptions!);
+    final List<FlavorTextEntries> descriptions = [];
+    final aux = description.description.replaceAll("\n", " ");
+    final List<dynamic> flavorTextEntries = jsonDecode(aux);
+    for (var i = 0; i < flavorTextEntries.length; i++) {
+      descriptions.add(FlavorTextEntries.fromJson(flavorTextEntries[i]));
+    }
+    return DescriptionModel(descriptions);
   }
 }
