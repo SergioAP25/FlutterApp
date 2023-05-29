@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:flutterapp/services/api/models/api_filtered_pokemon.dart';
-import 'package:flutterapp/services/database/models/database_pokemon_model.dart';
+import 'package:flutterapp/data/services/api/models/api_filtered_pokemon.dart';
+import 'package:flutterapp/data/services/database/models/database_pokemon_model.dart';
 
 @immutable
 class FilteredPokemonModel {

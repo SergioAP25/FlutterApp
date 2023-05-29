@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutterapp/services/database/constants/database_constants.dart';
+import 'package:flutterapp/data/services/database/constants/database_constants.dart';
 
 @immutable
 class DescriptionDatabaseModel {

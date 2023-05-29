@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:flutterapp/services/api/models/api_description_model.dart';
-import 'package:flutterapp/services/api/models/api_filtered_pokemon.dart';
-import 'package:flutterapp/services/api/models/api_pokemon_model.dart';
+import 'package:flutterapp/data/services/api/models/api_description_model.dart';
+import 'package:flutterapp/data/services/api/models/api_filtered_pokemon.dart';
+import 'package:flutterapp/data/services/api/models/api_pokemon_model.dart';
 import 'package:http/http.dart' as http;
 import 'constants/api_constants.dart';
 

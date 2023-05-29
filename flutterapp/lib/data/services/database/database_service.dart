@@ -3,8 +3,8 @@ import 'dart:convert';
 
 import 'package:flutterapp/domain/models/description_pokemon_model.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
-import 'package:flutterapp/services/database/models/database_description_model.dart';
-import 'package:flutterapp/services/database/models/database_pokemon_model.dart';
+import 'package:flutterapp/data/services/database/models/database_description_model.dart';
+import 'package:flutterapp/data/services/database/models/database_pokemon_model.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';

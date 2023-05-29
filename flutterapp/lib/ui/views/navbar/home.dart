@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
-import '../../constants/routes.dart';
-import '../../services/repository.dart';
+import '../../../constants/routes.dart';
+import '../../../data/services/repository.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/util/generics/get_arguments.dart';
 
-import '../constants/routes.dart';
-import '../domain/models/filtered_pokemon_model.dart';
-import '../services/repository.dart';
+import '../../constants/routes.dart';
+import '../../domain/models/filtered_pokemon_model.dart';
+import '../../data/services/repository.dart';
 
 class DetailWindow extends StatefulWidget {
   const DetailWindow({super.key});

@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutterapp/constants/routes.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
 
-import '../../services/repository.dart';
+import '../../../data/services/repository.dart';
 
-class Pokedex extends StatefulWidget {
-  const Pokedex({super.key});
+class Favorites extends StatefulWidget {
+  const Favorites({super.key});
 
   @override
-  State<Pokedex> createState() => _PokedexState();
+  State<Favorites> createState() => _FavoritesState();
 }
 
-class _PokedexState extends State<Pokedex> {
+class _FavoritesState extends State<Favorites> {
   PokemonRepository repo = PokemonRepository();
   Future<List<FilteredPokemonModel>>? dblist;
   List<bool> isSelectedAZ = [false, false];
@@ -74,14 +74,14 @@ class _PokedexState extends State<Pokedex> {
       case "":
         switch (types.length) {
           case 0:
-            aux = repo.getPokemonByNameFromDatabase(query);
+            aux = repo.getFavoritePokemonByNameFromDatabase(query);
             break;
           case 1:
-            aux = repo.getPokemonByNameFilteredByTypeFromDatabase(
+            aux = repo.getFavoritePokemonByNameFilteredByTypeFromDatabase(
                 query, types[0]);
             break;
           case 2:
-            aux = repo.getPokemonByNameFilteredByMultiTypeFromDatabase(
+            aux = repo.getFavoritePokemonByNameFilteredByMultiTypeFromDatabase(
                 query, types[0], types[1]);
             break;
         }
@@ -89,31 +89,33 @@ class _PokedexState extends State<Pokedex> {
       case "az":
         switch (types.length) {
           case 0:
-            aux = repo.getPokemonByNameAZFromDatabase(query);
+            aux = repo.getFavoritePokemonByNameAZFromDatabase(query);
             break;
 
           case 1:
-            aux = repo.getPokemonByNameFilteredByTypeFromDatabaseAZ(
+            aux = repo.getFavoritePokemonByNameFilteredByTypeFromDatabaseAZ(
                 query, types[0]);
             break;
           case 2:
-            aux = repo.getPokemonByNameFilteredByMultiTypeFromDatabaseAZ(
-                query, types[0], types[1]);
+            aux =
+                repo.getFavoritePokemonByNameFilteredByMultiTypeFromDatabaseAZ(
+                    query, types[0], types[1]);
             break;
         }
         break;
       case "za":
         switch (types.length) {
           case 0:
-            aux = repo.getPokemonByNameZAFromDatabase(query);
+            aux = repo.getFavoritePokemonByNameZAFromDatabase(query);
             break;
           case 1:
-            aux = repo.getPokemonByNameFilteredByTypeFromDatabaseZA(
+            aux = repo.getFavoritePokemonByNameFilteredByTypeFromDatabaseZA(
                 query, types[0]);
             break;
           case 2:
-            aux = repo.getPokemonByNameFilteredByMultiTypeFromDatabaseZA(
-                query, types[0], types[1]);
+            aux =
+                repo.getFavoritePokemonByNameFilteredByMultiTypeFromDatabaseZA(
+                    query, types[0], types[1]);
             break;
         }
         break;
@@ -121,126 +123,6 @@ class _PokedexState extends State<Pokedex> {
     setState(() {
       dblist = aux;
     });
-  }
-
-  void removeTypes(int index) {
-    switch (index) {
-      case 0:
-        types.remove("normal");
-        break;
-      case 1:
-        types.remove("fire");
-        break;
-      case 2:
-        types.remove("water");
-        break;
-      case 3:
-        types.remove("grass");
-        break;
-      case 4:
-        types.remove("electric");
-        break;
-      case 5:
-        types.remove("ice");
-        break;
-      case 6:
-        types.remove("ground");
-        break;
-      case 7:
-        types.remove("flying");
-        break;
-      case 8:
-        types.remove("poison");
-        break;
-      case 9:
-        types.remove("fighting");
-        break;
-      case 10:
-        types.remove("psychic");
-        break;
-      case 11:
-        types.remove("dark");
-        break;
-      case 12:
-        types.remove("rock");
-        break;
-      case 13:
-        types.remove("bug");
-        break;
-      case 14:
-        types.remove("ghost");
-        break;
-      case 15:
-        types.remove("steel");
-        break;
-      case 16:
-        types.remove("dragon");
-        break;
-      case 17:
-        types.remove("fairy");
-        break;
-    }
-    selectAssignSearchType(generalQuery, ordering, types);
-  }
-
-  void addTypes(int index) {
-    switch (index) {
-      case 0:
-        types.add("normal");
-        break;
-      case 1:
-        types.add("fire");
-        break;
-      case 2:
-        types.add("water");
-        break;
-      case 3:
-        types.add("grass");
-        break;
-      case 4:
-        types.add("electric");
-        break;
-      case 5:
-        types.add("ice");
-        break;
-      case 6:
-        types.add("ground");
-        break;
-      case 7:
-        types.add("flying");
-        break;
-      case 8:
-        types.add("poison");
-        break;
-      case 9:
-        types.add("fighting");
-        break;
-      case 10:
-        types.add("psychic");
-        break;
-      case 11:
-        types.add("dark");
-        break;
-      case 12:
-        types.add("rock");
-        break;
-      case 13:
-        types.add("bug");
-        break;
-      case 14:
-        types.add("ghost");
-        break;
-      case 15:
-        types.add("steel");
-        break;
-      case 16:
-        types.add("dragon");
-        break;
-      case 17:
-        types.add("fairy");
-        break;
-    }
-    selectAssignSearchType(generalQuery, ordering, types);
   }
 
   @override
@@ -323,11 +205,125 @@ class _PokedexState extends State<Pokedex> {
                               if (isSelectedTypes[index]) {
                                 isSelectedTypes[index] =
                                     !isSelectedTypes[index];
-                                removeTypes(index);
+                                switch (index) {
+                                  case 0:
+                                    types.remove("normal");
+                                    break;
+                                  case 1:
+                                    types.remove("fire");
+                                    break;
+                                  case 2:
+                                    types.remove("water");
+                                    break;
+                                  case 3:
+                                    types.remove("grass");
+                                    break;
+                                  case 4:
+                                    types.remove("electric");
+                                    break;
+                                  case 5:
+                                    types.remove("ice");
+                                    break;
+                                  case 6:
+                                    types.remove("ground");
+                                    break;
+                                  case 7:
+                                    types.remove("flying");
+                                    break;
+                                  case 8:
+                                    types.remove("poison");
+                                    break;
+                                  case 9:
+                                    types.remove("fighting");
+                                    break;
+                                  case 10:
+                                    types.remove("psychic");
+                                    break;
+                                  case 11:
+                                    types.remove("dark");
+                                    break;
+                                  case 12:
+                                    types.remove("rock");
+                                    break;
+                                  case 13:
+                                    types.remove("bug");
+                                    break;
+                                  case 14:
+                                    types.remove("ghost");
+                                    break;
+                                  case 15:
+                                    types.remove("steel");
+                                    break;
+                                  case 16:
+                                    types.remove("dragon");
+                                    break;
+                                  case 17:
+                                    types.remove("fairy");
+                                    break;
+                                }
+                                selectAssignSearchType(
+                                    generalQuery, ordering, types);
                               } else if (allowedSelection()) {
                                 isSelectedTypes[index] =
                                     !isSelectedTypes[index];
-                                addTypes(index);
+                                switch (index) {
+                                  case 0:
+                                    types.add("normal");
+                                    break;
+                                  case 1:
+                                    types.add("fire");
+                                    break;
+                                  case 2:
+                                    types.add("water");
+                                    break;
+                                  case 3:
+                                    types.add("grass");
+                                    break;
+                                  case 4:
+                                    types.add("electric");
+                                    break;
+                                  case 5:
+                                    types.add("ice");
+                                    break;
+                                  case 6:
+                                    types.add("ground");
+                                    break;
+                                  case 7:
+                                    types.add("flying");
+                                    break;
+                                  case 8:
+                                    types.add("poison");
+                                    break;
+                                  case 9:
+                                    types.add("fighting");
+                                    break;
+                                  case 10:
+                                    types.add("psychic");
+                                    break;
+                                  case 11:
+                                    types.add("dark");
+                                    break;
+                                  case 12:
+                                    types.add("rock");
+                                    break;
+                                  case 13:
+                                    types.add("bug");
+                                    break;
+                                  case 14:
+                                    types.add("ghost");
+                                    break;
+                                  case 15:
+                                    types.add("steel");
+                                    break;
+                                  case 16:
+                                    types.add("dragon");
+                                    break;
+                                  case 17:
+                                    types.add("fairy");
+                                    break;
+                                }
+                                selectAssignSearchType(
+                                    generalQuery, ordering, types);
                               }
                             });
                           },

@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/cupertino.dart';
-import 'package:flutterapp/services/api/models/api_description_model.dart';
-import 'package:flutterapp/services/database/models/database_description_model.dart';
+import 'package:flutterapp/data/services/api/models/api_description_model.dart';
+import 'package:flutterapp/data/services/database/models/database_description_model.dart';
 
 @immutable
 class DescriptionModel {

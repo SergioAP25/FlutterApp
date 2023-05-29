@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/domain/get_pokemons.dart';
 
-import '../services/repository.dart';
-import 'navbar/home.dart';
+import '../../data/services/repository.dart';
+import '../../ui/views/navbar/home.dart';
+import '../../ui/views/navbar/pokedex.dart';
 import 'navbar/options.dart';
-import 'navbar/pokedex.dart';
 import 'navbar/favorites.dart';
 
 class NavHolder extends StatefulWidget {

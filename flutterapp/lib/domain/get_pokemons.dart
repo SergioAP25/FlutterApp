@@ -1,9 +1,9 @@
 import 'package:flutter_native_splash/cli_commands.dart';
 import 'package:flutterapp/domain/models/description_pokemon_model.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
-import 'package:flutterapp/services/api/models/api_pokemon_model.dart';
+import 'package:flutterapp/data/services/api/models/api_pokemon_model.dart';
 
-import '../services/repository.dart';
+import '../data/services/repository.dart';
 
 class GetPokemons {
   final PokemonRepository _repository = PokemonRepository();

@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutterapp/domain/models/description_pokemon_model.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
 import 'package:flutterapp/domain/models/pokemon_model.dart';
-import 'package:flutterapp/services/api/api_service.dart';
-import 'package:flutterapp/services/database/database_service.dart';
+import 'package:flutterapp/data/services/api/api_service.dart';
+import 'package:flutterapp/data/services/database/database_service.dart';
 
 class PokemonRepository {
   final ApiService _api = ApiService();

@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import '../../services/api/models/api_pokemon_model.dart';
+import '../../data/services/api/models/api_pokemon_model.dart';
 
 @immutable
 class PokemonModel {
