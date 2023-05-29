@@ -1,9 +1,9 @@
 import '../data/services/repository.dart';
 
-class AddFavorite {
+class Exists {
   final PokemonRepository _repository = PokemonRepository();
 
-  void addFavorite(String name) async {
-    await _repository.insertFavorite(name);
+  void exists(String name) async {
+    await _repository.exists(name);
   }
 }
