@@ -1,4 +1,5 @@
 import 'package:flutter_native_splash/cli_commands.dart';
+import 'package:flutterapp/domain/constants/domain_constants.dart';
 import 'package:flutterapp/domain/models/description_pokemon_model.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
 import 'package:flutterapp/data/services/api/models/api_pokemon_model.dart';
@@ -10,7 +11,7 @@ class GetPokemons {
   List<Results> _apilist = [];
 
   void getPokemons() async {
-    print("FINISHED DATABASE UPDATE");
+    print("STARTED DATABASE UPDATE");
     final list = await _repository.getAllPokemons();
     _apilist = list.results;
     bool exists =
@@ -36,10 +37,11 @@ class GetPokemons {
 
     for (var i = startingIndex; i < _apilist.length; i++) {
       pokemon = await _repository.getPokemonByUrl(_apilist[i].url!);
-      print(pokemon.name);
       description =
           await _repository.getPokemonDescriptionByUrls(pokemon.species.url!);
       pokemon.name = pokemon.name.capitalize();
+      pokemon.sprites.frontDefault ??= default_sprite;
+      print(pokemon.name);
       await _repository.insertPokemon(pokemon);
       await _repository.insertDescriptions(description);
     }

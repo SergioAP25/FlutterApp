@@ -136,8 +136,8 @@ class DomainBloc extends Bloc<DomainEvent, DomainState> {
     on<IsFavoriteEvent>((event, emit) async {
       try {
         emit(const DomainStateLoading());
-        isFavorite.isFavorite(event.name);
-        emit(const DomainStateLoaded());
+        final favorite = await isFavorite.isFavorite(event.name);
+        emit(DomainStateLoadedIsFavorite(favorite));
       } catch (e) {
         emit(const DomainError("An error ocurred"));
       }

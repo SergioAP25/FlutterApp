@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../data/services/auth/auth_service.dart';
 import '../../../data/services/auth/bloc/auth_bloc.dart';
 import '../../../data/services/auth/bloc/auth_event.dart';
-import '../../../util/dialogs/log_out_dialog.dart';
 
 class Options extends StatelessWidget {
   const Options({super.key});

@@ -45,7 +45,9 @@ class StartingPage extends StatelessWidget {
     return BlocBuilder<AuthBloc, AuthState>(
       builder: (context, state) {
         if (state is AuthStateLoggedIn) {
-          return const NavHolder();
+          return NavHolder(
+            user: state.user,
+          );
         } else if (state is AuthStateLoggedOut ||
             state is AuthStateRegistering) {
           return const LoginView();

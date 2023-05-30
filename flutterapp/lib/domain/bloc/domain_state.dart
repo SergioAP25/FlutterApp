@@ -34,6 +34,11 @@ class DomainStateLoadedDescription extends DomainState {
   const DomainStateLoadedDescription(this.description);
 }
 
+class DomainStateLoadedIsFavorite extends DomainState {
+  final bool favorite;
+  const DomainStateLoadedIsFavorite(this.favorite);
+}
+
 class DomainError extends DomainState {
   final String? error;
   const DomainError(this.error);

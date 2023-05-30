@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/domain/get_pokemons.dart';
 
+import '../../data/services/auth/auth_user.dart';
 import '../../data/services/repository.dart';
 import 'navbar/home.dart';
 import 'navbar/options.dart';
@@ -8,13 +9,15 @@ import 'navbar/pokedex.dart';
 import 'navbar/favorites.dart';
 
 class NavHolder extends StatefulWidget {
-  const NavHolder({super.key});
+  final AuthUser user;
+  const NavHolder({super.key, required this.user});
 
   @override
   State<NavHolder> createState() => _NavHolderState();
 }
 
 class _NavHolderState extends State<NavHolder> {
+  late final AuthUser user;
   int _selectedIndex = 0;
   PokemonRepository repo = PokemonRepository();
   GetPokemons get = GetPokemons();
@@ -28,6 +31,7 @@ class _NavHolderState extends State<NavHolder> {
 
   @override
   void initState() {
+    user = widget.user;
     get.getPokemons();
     super.initState();
   }

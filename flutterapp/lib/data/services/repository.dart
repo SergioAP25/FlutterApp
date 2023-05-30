@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutterapp/domain/models/description_pokemon_model.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
 import 'package:flutterapp/domain/models/pokemon_model.dart';

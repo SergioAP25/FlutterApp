@@ -124,7 +124,7 @@ class _DetailWindowState extends State<DetailWindow> {
                               child: Container(
                                 color: const Color.fromARGB(255, 247, 242, 242),
                                 child: SizedBox(
-                                  height: 200,
+                                  height: 254,
                                   width: 375,
                                   child: Column(
                                     children: [
