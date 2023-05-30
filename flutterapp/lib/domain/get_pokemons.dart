@@ -47,8 +47,6 @@ class GetPokemons {
             flavorText: "This pokemon has no description known",
             language: Language(name: "en")));
       }
-      print(description.description);
-      print(pokemon.name);
       await _repository.insertPokemon(pokemon);
       await _repository.insertDescriptions(description);
     }
