@@ -4,6 +4,7 @@ import 'package:flutterapp/domain/models/description_pokemon_model.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
 import 'package:flutterapp/data/services/api/models/api_pokemon_model.dart';
 
+import '../data/services/api/models/api_description_model.dart';
 import '../data/services/repository.dart';
 
 class GetPokemons {
@@ -41,6 +42,12 @@ class GetPokemons {
           await _repository.getPokemonDescriptionByUrls(pokemon.species.url!);
       pokemon.name = pokemon.name.capitalize();
       pokemon.sprites.frontDefault ??= default_sprite;
+      if (description.description.isEmpty) {
+        description.description.add(FlavorTextEntries(
+            flavorText: "This pokemon has no description known",
+            language: Language(name: "en")));
+      }
+      print(description.description);
       print(pokemon.name);
       await _repository.insertPokemon(pokemon);
       await _repository.insertDescriptions(description);
