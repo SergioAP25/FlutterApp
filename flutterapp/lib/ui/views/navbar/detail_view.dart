@@ -25,7 +25,7 @@ class _DetailViewState extends State<DetailView> {
   bool? favorite;
   PokemonRepository repo = PokemonRepository();
   FilteredPokemonModel? pokemon;
-  DescriptionModel? description;
+  String? description;
 
   void assignList(FilteredPokemonModel statePokemon) {
     if (widget.view == home) {
@@ -33,6 +33,18 @@ class _DetailViewState extends State<DetailView> {
     } else if (widget.view == detail) {
       pokemon = context.getArgument<FilteredPokemonModel>();
     }
+  }
+
+  String? getEnglishDescription(DescriptionModel? description) {
+    String? englishDescription = "";
+    for (int i = 0; i < description!.description.length; i++) {
+      if (description.description[i].language!.name == "en") {
+        englishDescription =
+            description.description[i].flavorText!.replaceAll("\n", "");
+        break;
+      }
+    }
+    return englishDescription;
   }
 
   Future<void> _pullRefresh() async {
@@ -430,7 +442,9 @@ class _DetailViewState extends State<DetailView> {
                                           builder: (context, state) {
                                             if (state
                                                 is DomainStateLoadedDescription) {
-                                              description = state.description;
+                                              description =
+                                                  getEnglishDescription(
+                                                      state.description);
                                               return Column(
                                                 children: [
                                                   const Align(
@@ -451,9 +465,7 @@ class _DetailViewState extends State<DetailView> {
                                                     alignment:
                                                         Alignment.centerLeft,
                                                     child: Text(
-                                                      description!
-                                                          .description[0]
-                                                          .flavorText!,
+                                                      description!,
                                                       style: const TextStyle(
                                                         fontSize: 18,
                                                       ),
@@ -477,6 +489,9 @@ class _DetailViewState extends State<DetailView> {
                             )
                           ],
                         ),
+                        const SizedBox(
+                          height: 50,
+                        )
                       ],
                     ),
                   ),
