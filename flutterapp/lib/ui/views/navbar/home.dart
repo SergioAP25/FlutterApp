@@ -379,7 +379,7 @@ class _HomeState extends State<Home> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
                                       Align(
