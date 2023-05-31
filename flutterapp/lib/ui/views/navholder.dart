@@ -11,36 +11,30 @@ import 'navbar/search_view.dart';
 
 class NavHolder extends StatefulWidget {
   final AuthUser user;
-  const NavHolder({super.key, required this.user});
+  const NavHolder({Key? key, required this.user}) : super(key: key);
 
   @override
   State<NavHolder> createState() => _NavHolderState();
 }
 
 class _NavHolderState extends State<NavHolder> {
-  late final AuthUser user;
+  late AuthUser user;
 
   int _selectedIndex = 0;
 
-  static List<Widget> _screens = [];
+  late List<GlobalKey<SearchViewState>> _searchViewKeys;
 
   final DomainBloc _getPokemonsBloc = DomainBloc();
 
   @override
   void initState() {
-    user = widget.user;
-    _screens = <Widget>[
-      DetailView(view: home),
-      SearchView(
-        view: pokedex,
-      ),
-      SearchView(
-        view: favorites,
-      ),
-      Options(user: user),
-    ];
-    _getPokemonsBloc.add(const GetPokemonsEvent());
     super.initState();
+    user = widget.user;
+
+    _searchViewKeys = List<GlobalKey<SearchViewState>>.generate(
+        2, (_) => GlobalKey<SearchViewState>());
+
+    _getPokemonsBloc.add(const GetPokemonsEvent());
   }
 
   @override
@@ -50,36 +44,45 @@ class _NavHolderState extends State<NavHolder> {
       child: BlocBuilder<DomainBloc, DomainState>(
         builder: (context, state) {
           return Scaffold(
-            body: _screens[_selectedIndex],
+            body: IndexedStack(
+              index: _selectedIndex,
+              children: <Widget>[
+                DetailView(view: home),
+                SearchView(key: _searchViewKeys[0], view: pokedex),
+                SearchView(key: _searchViewKeys[1], view: favorites),
+                Options(user: user),
+              ],
+            ),
             bottomNavigationBar: BottomNavigationBar(
-                fixedColor: const Color.fromARGB(255, 41, 41, 41),
-                unselectedItemColor: const Color.fromARGB(255, 41, 41, 41),
-                type: BottomNavigationBarType.shifting,
-                currentIndex: _selectedIndex,
-                onTap: (index) {
-                  setState(() {
-                    _selectedIndex = index;
-                  });
-                },
-                elevation: 0,
-                items: const [
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: "Home",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: ImageIcon(AssetImage("assets/pokedex.png")),
-                    label: "Pokédex",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.star),
-                    label: "Favorites",
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.person),
-                    label: "Options",
-                  ),
-                ]),
+              fixedColor: const Color.fromARGB(255, 41, 41, 41),
+              unselectedItemColor: const Color.fromARGB(255, 41, 41, 41),
+              type: BottomNavigationBarType.shifting,
+              currentIndex: _selectedIndex,
+              onTap: (index) {
+                setState(() {
+                  _selectedIndex = index;
+                });
+              },
+              elevation: 0,
+              items: const [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.home),
+                  label: "Home",
+                ),
+                BottomNavigationBarItem(
+                  icon: ImageIcon(AssetImage("assets/pokedex.png")),
+                  label: "Pokédex",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.star),
+                  label: "Favorites",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: "Options",
+                ),
+              ],
+            ),
           );
         },
       ),

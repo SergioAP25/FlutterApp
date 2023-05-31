@@ -15,10 +15,14 @@ class SearchView extends StatefulWidget {
   const SearchView({super.key, required this.view});
 
   @override
-  State<SearchView> createState() => _SearchViewState();
+  State<SearchView> createState() => SearchViewState();
 }
 
-class _SearchViewState extends State<SearchView> {
+class SearchViewState extends State<SearchView>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
+
   List<FilteredPokemonModel>? pokemons = [];
   List<FilteredPokemonModel>? favoritesList = [];
   String generalQuery = "";
