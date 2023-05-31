@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutterapp/data/services/auth/constants/providers.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../../../firebase_options.dart';
 import 'auth_provider.dart';
@@ -47,8 +50,15 @@ class FirebaseAuthProvider implements AuthProvider {
   @override
   AuthUser? get currentUser {
     final user = FirebaseAuth.instance.currentUser;
+    late final String provider;
+
     if (user != null) {
-      return AuthUser.fromFirebase(user);
+      if (user.providerData[0].providerId == "password") {
+        provider = basic;
+      } else if (user.providerData[0].providerId == "google.com") {
+        provider = google;
+      }
+      return AuthUser.fromFirebase(user, provider);
     } else {
       return null;
     }

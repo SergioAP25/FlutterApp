@@ -4,10 +4,10 @@ import 'package:flutter/foundation.dart';
 @immutable
 class AuthUser {
   final String? email;
+  final String? provider;
 
-  const AuthUser({required this.email});
+  const AuthUser({required this.email, required this.provider});
 
-  factory AuthUser.fromFirebase(User user) => AuthUser(
-        email: user.email,
-      );
+  factory AuthUser.fromFirebase(User user, String provider) =>
+      AuthUser(email: user.email, provider: provider);
 }

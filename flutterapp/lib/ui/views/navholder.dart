@@ -18,20 +18,22 @@ class NavHolder extends StatefulWidget {
 
 class _NavHolderState extends State<NavHolder> {
   late final AuthUser user;
+
   int _selectedIndex = 0;
   PokemonRepository repo = PokemonRepository();
   GetPokemons get = GetPokemons();
 
-  static final List<Widget> _screens = <Widget>[
-    const Home(),
-    const Pokedex(),
-    const Favorites(),
-    const Options(),
-  ];
+  static List<Widget> _screens = [];
 
   @override
   void initState() {
     user = widget.user;
+    _screens = <Widget>[
+      const Home(),
+      const Pokedex(),
+      const Favorites(),
+      Options(user: user),
+    ];
     get.getPokemons();
     super.initState();
   }
