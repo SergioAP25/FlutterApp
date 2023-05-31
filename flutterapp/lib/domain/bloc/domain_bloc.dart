@@ -117,7 +117,8 @@ class DomainBloc extends Bloc<DomainEvent, DomainState> {
       try {
         emit(const DomainStateLoading());
         addFavorite.addFavorite(event.name);
-        emit(const DomainStateLoaded());
+        final favorite = await isFavorite.isFavorite(event.name);
+        emit(DomainStateLoadedIsFavorite(favorite));
       } catch (e) {
         emit(const DomainError("An error ocurred"));
       }
@@ -127,7 +128,8 @@ class DomainBloc extends Bloc<DomainEvent, DomainState> {
       try {
         emit(const DomainStateLoading());
         removeFavorite.removeFavorite(event.name);
-        emit(const DomainStateLoaded());
+        final favorite = await isFavorite.isFavorite(event.name);
+        emit(DomainStateLoadedIsFavorite(favorite));
       } catch (e) {
         emit(const DomainError("An error ocurred"));
       }
