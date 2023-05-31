@@ -46,6 +46,7 @@ class GetPokemons {
         description.description.add(FlavorTextEntries(
             flavorText: defaultDescription, language: Language(name: "en")));
       }
+      print(pokemon.name);
       await _repository.insertPokemon(pokemon);
       await _repository.insertDescriptions(description);
     }
