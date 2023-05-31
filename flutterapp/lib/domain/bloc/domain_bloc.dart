@@ -85,7 +85,7 @@ class DomainBloc extends Bloc<DomainEvent, DomainState> {
       try {
         emit(const DomainStateLoading());
         final pokemons = await selectAssignSearchType(
-            event.query, event.ordering, event.types, event.favorite);
+            event.query, event.ordering, event.types, event.view);
         emit(DomainStateLoadedPokemonList(pokemons));
       } catch (e) {
         emit(const DomainError("An error ocurred"));
@@ -145,10 +145,10 @@ class DomainBloc extends Bloc<DomainEvent, DomainState> {
   }
 
   Future<List<FilteredPokemonModel>>? selectAssignSearchType(
-      String query, String ordering, List<String> types, String favorite) {
+      String query, String ordering, List<String> types, String view) {
     Future<List<FilteredPokemonModel>>? aux;
-    switch (favorite) {
-      case "NO":
+    switch (view) {
+      case "POKEDEX":
         switch (ordering) {
           case "":
             switch (types.length) {
@@ -201,7 +201,7 @@ class DomainBloc extends Bloc<DomainEvent, DomainState> {
             break;
         }
         break;
-      case "YES":
+      case "FAVORITES":
         switch (ordering) {
           case "":
             switch (types.length) {

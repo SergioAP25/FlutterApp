@@ -9,9 +9,9 @@ class GetPokemonList extends DomainEvent {
   final String query;
   final String ordering;
   final List<String> types;
-  final String favorite;
+  final String view;
 
-  const GetPokemonList(this.query, this.ordering, this.types, this.favorite);
+  const GetPokemonList(this.query, this.ordering, this.types, this.view);
 }
 
 class GetRandomPokemonEvent extends DomainEvent {

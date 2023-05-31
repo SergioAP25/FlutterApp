@@ -5,7 +5,7 @@ import '../../data/services/auth/auth_user.dart';
 import '../../data/services/repository.dart';
 import 'navbar/detail_view.dart';
 import 'navbar/options.dart';
-import 'navbar/pokedex.dart';
+import 'navbar/search_view.dart';
 import 'navbar/favorites.dart';
 
 class NavHolder extends StatefulWidget {
@@ -30,8 +30,12 @@ class _NavHolderState extends State<NavHolder> {
     user = widget.user;
     _screens = <Widget>[
       DetailView(view: home),
-      const Pokedex(),
-      const Favorites(),
+      SearchView(
+        view: pokedex,
+      ),
+      SearchView(
+        view: favorites,
+      ),
       Options(user: user),
     ];
     get.getPokemons();

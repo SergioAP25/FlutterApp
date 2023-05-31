@@ -8,18 +8,18 @@ import '../../../data/services/repository.dart';
 import '../../../domain/bloc/domain_bloc.dart';
 import '../../../domain/bloc/domain_state.dart';
 
-class Pokedex extends StatefulWidget {
-  const Pokedex({super.key});
+class SearchView extends StatefulWidget {
+  final String view;
+  const SearchView({super.key, required this.view});
 
   @override
-  State<Pokedex> createState() => _PokedexState();
+  State<SearchView> createState() => _SearchViewState();
 }
 
-class _PokedexState extends State<Pokedex> {
+class _SearchViewState extends State<SearchView> {
   final DomainBloc _domainBloc = DomainBloc();
   final DomainBloc _domainBloc2 = DomainBloc();
   List<FilteredPokemonModel>? pokemons = [];
-  String favorite = "NO";
   PokemonRepository repo = PokemonRepository();
   List<bool> isSelectedAZ = [false, false];
   List<bool> isSelectedTypes = [
@@ -187,16 +187,11 @@ class _PokedexState extends State<Pokedex> {
   }
 
   @override
-  void initState() {
-    if (!_domainBloc.isClosed) {
-      _domainBloc.add(GetPokemonList(generalQuery, ordering, types, favorite));
-    }
-
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    if (!_domainBloc.isClosed) {
+      _domainBloc
+          .add(GetPokemonList(generalQuery, ordering, types, widget.view));
+    }
     return Scaffold(
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -216,7 +211,7 @@ class _PokedexState extends State<Pokedex> {
               generalQuery = query;
               if (!_domainBloc.isClosed) {
                 _domainBloc.add(
-                    GetPokemonList(generalQuery, ordering, types, favorite));
+                    GetPokemonList(generalQuery, ordering, types, widget.view));
               }
             },
           ),
@@ -248,20 +243,20 @@ class _PokedexState extends State<Pokedex> {
                             if (index == 0 && isSelectedAZ[index]) {
                               ordering = "az";
                               if (!_domainBloc.isClosed) {
-                                _domainBloc.add(GetPokemonList(
-                                    generalQuery, ordering, types, favorite));
+                                _domainBloc.add(GetPokemonList(generalQuery,
+                                    ordering, types, widget.view));
                               }
                             } else if (index == 1 && isSelectedAZ[index]) {
                               if (!_domainBloc.isClosed) {
                                 ordering = "za";
-                                _domainBloc.add(GetPokemonList(
-                                    generalQuery, ordering, types, favorite));
+                                _domainBloc.add(GetPokemonList(generalQuery,
+                                    ordering, types, widget.view));
                               }
                             } else if (!isSelectedAZ[0] && !isSelectedAZ[1]) {
                               if (!_domainBloc.isClosed) {
                                 ordering = "";
-                                _domainBloc.add(GetPokemonList(
-                                    generalQuery, ordering, types, favorite));
+                                _domainBloc.add(GetPokemonList(generalQuery,
+                                    ordering, types, widget.view));
                               }
                             }
                           },
@@ -284,8 +279,8 @@ class _PokedexState extends State<Pokedex> {
 
                               removeTypes(index);
                               if (!_domainBloc.isClosed) {
-                                _domainBloc.add(GetPokemonList(
-                                    generalQuery, ordering, types, favorite));
+                                _domainBloc.add(GetPokemonList(generalQuery,
+                                    ordering, types, widget.view));
                               }
                             } else if (allowedSelection()) {
                               setState(() {
@@ -295,8 +290,8 @@ class _PokedexState extends State<Pokedex> {
 
                               addTypes(index);
                               if (!_domainBloc.isClosed) {
-                                _domainBloc.add(GetPokemonList(
-                                    generalQuery, ordering, types, favorite));
+                                _domainBloc.add(GetPokemonList(generalQuery,
+                                    ordering, types, widget.view));
                               }
                             }
                           },
