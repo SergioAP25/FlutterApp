@@ -21,13 +21,14 @@ class _DetailViewState extends State<DetailView> {
   FilteredPokemonModel? pokemon;
   bool? favorite;
   String? description;
+  String? view;
 
   final DomainBloc _randomPokemonBloc = DomainBloc();
   final DomainBloc _favoriteBloc = DomainBloc();
   final DomainBloc _descriptionBloc = DomainBloc();
 
   Future<void> _pullRefresh() async {
-    if (widget.view == home) {
+    if (view == home) {
       if (!_randomPokemonBloc.isClosed) {
         _randomPokemonBloc.add(const GetRandomPokemonEvent());
       }
@@ -35,9 +36,9 @@ class _DetailViewState extends State<DetailView> {
   }
 
   void assignList(FilteredPokemonModel statePokemon) {
-    if (widget.view == home) {
+    if (view == home) {
       pokemon = statePokemon;
-    } else if (widget.view == detail) {
+    } else if (view == detail) {
       pokemon = context.getArgument<FilteredPokemonModel>();
     }
   }
@@ -56,6 +57,7 @@ class _DetailViewState extends State<DetailView> {
 
   @override
   void initState() {
+    view = widget.view;
     if (!_randomPokemonBloc.isClosed) {
       _randomPokemonBloc.add(const GetRandomPokemonEvent());
     }
@@ -93,8 +95,8 @@ class _DetailViewState extends State<DetailView> {
                               const SizedBox(
                                 width: 300,
                               ),
-                              BlocProvider(
-                                create: (context) => _favoriteBloc,
+                              BlocProvider.value(
+                                value: _favoriteBloc,
                                 child: BlocBuilder<DomainBloc, DomainState>(
                                   builder: (context, state) {
                                     if (state is DomainStateLoadedIsFavorite) {
