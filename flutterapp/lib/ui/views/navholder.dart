@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/domain/get_pokemons.dart';
-import 'package:flutterapp/ui/views/navbar/home_copy.dart';
-
+import 'package:flutterapp/ui/constants/view_selections.dart';
 import '../../data/services/auth/auth_user.dart';
 import '../../data/services/repository.dart';
-import 'navbar/home.dart';
+import 'navbar/detail_view.dart';
 import 'navbar/options.dart';
 import 'navbar/pokedex.dart';
 import 'navbar/favorites.dart';
@@ -30,7 +29,7 @@ class _NavHolderState extends State<NavHolder> {
   void initState() {
     user = widget.user;
     _screens = <Widget>[
-      const Home(),
+      DetailView(view: home),
       const Pokedex(),
       const Favorites(),
       Options(user: user),

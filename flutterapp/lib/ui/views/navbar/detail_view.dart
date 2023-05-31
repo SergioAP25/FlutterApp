@@ -2,20 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterapp/domain/bloc/domain_event.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
+import 'package:flutterapp/util/generics/get_arguments.dart';
 import '../../../constants/routes.dart';
 import '../../../data/services/repository.dart';
 import '../../../domain/bloc/domain_bloc.dart';
 import '../../../domain/bloc/domain_state.dart';
 import '../../../domain/models/description_pokemon_model.dart';
+import '../../constants/view_selections.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class DetailView extends StatefulWidget {
+  final String view;
+  const DetailView({super.key, required this.view});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<DetailView> createState() => _DetailViewState();
 }
 
-class _HomeState extends State<Home> {
+class _DetailViewState extends State<DetailView> {
   final DomainBloc _randomPokemonBloc = DomainBloc();
   final DomainBloc _favoriteBloc = DomainBloc();
   final DomainBloc _descriptionBloc = DomainBloc();
@@ -23,6 +26,14 @@ class _HomeState extends State<Home> {
   PokemonRepository repo = PokemonRepository();
   FilteredPokemonModel? pokemon;
   DescriptionModel? description;
+
+  void assignList(FilteredPokemonModel statePokemon) {
+    if (widget.view == home) {
+      pokemon = statePokemon;
+    } else if (widget.view == detail) {
+      pokemon = context.getArgument<FilteredPokemonModel>();
+    }
+  }
 
   @override
   void initState() {
@@ -41,7 +52,7 @@ class _HomeState extends State<Home> {
         child: BlocBuilder<DomainBloc, DomainState>(
           builder: (context, state) {
             if (state is DomainStateLoadedRandomPokemon) {
-              pokemon = state.pokemon;
+              assignList(state.pokemon);
               if (!_descriptionBloc.isClosed) {
                 _descriptionBloc.add(GetDescriptionEvent(pokemon!.name));
               }

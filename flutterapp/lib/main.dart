@@ -5,9 +5,10 @@ import 'package:flutterapp/data/services/auth/bloc/auth_bloc.dart';
 import 'package:flutterapp/data/services/auth/bloc/auth_event.dart';
 import 'package:flutterapp/data/services/auth/bloc/auth_state.dart';
 import 'package:flutterapp/data/services/auth/firebase_auth_provider.dart';
-import 'package:flutterapp/ui/views/detail.dart';
+import 'package:flutterapp/ui/constants/view_selections.dart';
 import 'package:flutterapp/ui/views/full_size_image.dart';
 import 'package:flutterapp/ui/views/login.dart';
+import 'package:flutterapp/ui/views/navbar/detail_view.dart';
 import 'package:flutterapp/ui/views/navholder.dart';
 
 void main() {
@@ -29,7 +30,9 @@ class MyApp extends StatelessWidget {
         child: const StartingPage(),
       ),
       routes: {
-        detailRoute: (context) => const DetailWindow(),
+        detailRoute: (context) => DetailView(
+              view: detail,
+            ),
         fullSizeImageRoute: (context) => const FullSizeImageWindow()
       },
     );
