@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/domain/get_pokemons.dart';
+import 'package:flutterapp/ui/views/navbar/home_copy.dart';
 
 import '../../data/services/auth/auth_user.dart';
 import '../../data/services/repository.dart';
