@@ -5,6 +5,10 @@ abstract class DomainEvent {
   const DomainEvent();
 }
 
+class GetPokemonsEvent extends DomainEvent {
+  const GetPokemonsEvent();
+}
+
 class GetPokemonList extends DomainEvent {
   final String query;
   final String ordering;

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutterapp/domain/get_pokemons.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterapp/domain/bloc/domain_event.dart';
 import 'package:flutterapp/ui/constants/view_selections.dart';
 import '../../data/services/auth/auth_user.dart';
-import '../../data/services/repository.dart';
+import '../../domain/bloc/domain_bloc.dart';
+import '../../domain/bloc/domain_state.dart';
 import 'navbar/detail_view.dart';
 import 'navbar/options.dart';
 import 'navbar/search_view.dart';
@@ -19,10 +21,10 @@ class _NavHolderState extends State<NavHolder> {
   late final AuthUser user;
 
   int _selectedIndex = 0;
-  PokemonRepository repo = PokemonRepository();
-  GetPokemons get = GetPokemons();
 
   static List<Widget> _screens = [];
+
+  final DomainBloc _getPokemonsBloc = DomainBloc();
 
   @override
   void initState() {
@@ -37,43 +39,50 @@ class _NavHolderState extends State<NavHolder> {
       ),
       Options(user: user),
     ];
-    get.getPokemons();
+    _getPokemonsBloc.add(const GetPokemonsEvent());
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: _screens[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-          fixedColor: const Color.fromARGB(255, 41, 41, 41),
-          unselectedItemColor: const Color.fromARGB(255, 41, 41, 41),
-          type: BottomNavigationBarType.shifting,
-          currentIndex: _selectedIndex,
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-            });
-          },
-          elevation: 0,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: "Home",
-            ),
-            BottomNavigationBarItem(
-              icon: ImageIcon(AssetImage("assets/pokedex.png")),
-              label: "Pokédex",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.star),
-              label: "Favorites",
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: "Options",
-            ),
-          ]),
+    return BlocProvider(
+      create: (context) => _getPokemonsBloc,
+      child: BlocBuilder<DomainBloc, DomainState>(
+        builder: (context, state) {
+          return Scaffold(
+            body: _screens[_selectedIndex],
+            bottomNavigationBar: BottomNavigationBar(
+                fixedColor: const Color.fromARGB(255, 41, 41, 41),
+                unselectedItemColor: const Color.fromARGB(255, 41, 41, 41),
+                type: BottomNavigationBarType.shifting,
+                currentIndex: _selectedIndex,
+                onTap: (index) {
+                  setState(() {
+                    _selectedIndex = index;
+                  });
+                },
+                elevation: 0,
+                items: const [
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.home),
+                    label: "Home",
+                  ),
+                  BottomNavigationBarItem(
+                    icon: ImageIcon(AssetImage("assets/pokedex.png")),
+                    label: "Pokédex",
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.star),
+                    label: "Favorites",
+                  ),
+                  BottomNavigationBarItem(
+                    icon: Icon(Icons.person),
+                    label: "Options",
+                  ),
+                ]),
+          );
+        },
+      ),
     );
   }
 }

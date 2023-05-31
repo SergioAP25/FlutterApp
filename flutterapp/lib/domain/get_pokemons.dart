@@ -11,7 +11,7 @@ class GetPokemons {
   final PokemonRepository _repository = PokemonRepository();
   List<Results> _apilist = [];
 
-  void getPokemons() async {
+  Future<void> getPokemons() async {
     print("STARTED DATABASE UPDATE");
     final list = await _repository.getAllPokemons();
     _apilist = list.results;

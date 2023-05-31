@@ -18,6 +18,7 @@ import '../get_favorite_pokemon_by_name_filtered_by_type.dart';
 import '../get_favorite_pokemon_by_name_filtered_by_type_az.dart';
 import '../get_favorite_pokemon_by_name_filtered_by_type_za.dart';
 import '../get_favorite_pokemon_za.dart';
+import '../get_pokemons.dart';
 import '../get_pokemons_by_name.dart';
 import '../get_pokemons_by_name_az.dart';
 import '../get_pokemons_by_name_filtered_by_multi_type.dart';
@@ -28,59 +29,67 @@ import '../get_pokemons_by_name_za.dart';
 import '../models/filtered_pokemon_model.dart';
 
 class DomainBloc extends Bloc<DomainEvent, DomainState> {
-  final GetPokemonsByName getPokemonsByName = GetPokemonsByName();
-  final GetPokemonsByNameAZ getPokemonsByNameAZ = GetPokemonsByNameAZ();
-  final GetPokemonsByNameZA getPokemonsByNameZA = GetPokemonsByNameZA();
-  final GetPokemonsByNameFilteredByType getPokemonsByNameFilteredByType =
+  final GetPokemons _getPokemons = GetPokemons();
+  final GetPokemonsByName _getPokemonsByName = GetPokemonsByName();
+  final GetPokemonsByNameAZ _getPokemonsByNameAZ = GetPokemonsByNameAZ();
+  final GetPokemonsByNameZA _getPokemonsByNameZA = GetPokemonsByNameZA();
+  final GetPokemonsByNameFilteredByType _getPokemonsByNameFilteredByType =
       GetPokemonsByNameFilteredByType();
-  final GetPokemonsByNameFilteredByTypeAZ getPokemonsByNameFilteredByTypeAZ =
+  final GetPokemonsByNameFilteredByTypeAZ _getPokemonsByNameFilteredByTypeAZ =
       GetPokemonsByNameFilteredByTypeAZ();
-  final GetPokemonsByNameFilteredByTypeZA getPokemonsByNameFilteredByTypeZA =
+  final GetPokemonsByNameFilteredByTypeZA _getPokemonsByNameFilteredByTypeZA =
       GetPokemonsByNameFilteredByTypeZA();
   final GetPokemonsByNameFilteredByMultiType
-      getPokemonsByNameFilteredByMultiType =
+      _getPokemonsByNameFilteredByMultiType =
       GetPokemonsByNameFilteredByMultiType();
   final GetPokemonsByNameFilteredByMultiTypeAZ
-      getPokemonsByNameFilteredByMultiTypeAZ =
+      _getPokemonsByNameFilteredByMultiTypeAZ =
       GetPokemonsByNameFilteredByMultiTypeAZ();
   final GetPokemonsByNameFilteredByMultiTypeZA
-      getPokemonsByNameFilteredByMultiTypeZA =
+      _getPokemonsByNameFilteredByMultiTypeZA =
       GetPokemonsByNameFilteredByMultiTypeZA();
 
-  final GetFavoritePokemon getFavoritePokemon = GetFavoritePokemon();
-  final GetFavoritePokemonAZ getFavoritePokemonAZ = GetFavoritePokemonAZ();
-  final GetFavoritePokemonZA getFavoritePokemonZA = GetFavoritePokemonZA();
+  final GetFavoritePokemon _getFavoritePokemon = GetFavoritePokemon();
+  final GetFavoritePokemonAZ _getFavoritePokemonAZ = GetFavoritePokemonAZ();
+  final GetFavoritePokemonZA _getFavoritePokemonZA = GetFavoritePokemonZA();
   final GetFavoritePokemonByNameFilteredByType
-      getFavoritePokemonByNameFilteredByType =
+      _getFavoritePokemonByNameFilteredByType =
       GetFavoritePokemonByNameFilteredByType();
   final GetFavoritePokemonByNameFilteredByTypeAZ
-      getFavoritePokemonsByNameFilteredByTypeAZ =
+      _getFavoritePokemonsByNameFilteredByTypeAZ =
       GetFavoritePokemonByNameFilteredByTypeAZ();
   final GetFavoritePokemonByNameFilteredByTypeZA
-      getFavoritePokemonByNameFilteredByTypeZA =
+      _getFavoritePokemonByNameFilteredByTypeZA =
       GetFavoritePokemonByNameFilteredByTypeZA();
   final GetFavoritePokemonByNameFilteredByMultiType
-      getFavoritePokemonByNameFilteredByMultiType =
+      _getFavoritePokemonByNameFilteredByMultiType =
       GetFavoritePokemonByNameFilteredByMultiType();
   final GetFavoritePokemonByNameFilteredByMultiTypeAZ
-      getFavoritePokemonByNameFilteredByMultiTypeAZ =
+      _getFavoritePokemonByNameFilteredByMultiTypeAZ =
       GetFavoritePokemonByNameFilteredByMultiTypeAZ();
   final GetFavoritePokemonByNameFilteredByMultiTypeZA
-      getFavoritePokemonByNameFilteredByMultiTypeZA =
+      _getFavoritePokemonByNameFilteredByMultiTypeZA =
       GetFavoritePokemonByNameFilteredByMultiTypeZA();
 
-  final GetPokemonsDescriptions getPokemonsDescriptions =
+  final GetPokemonsDescriptions _getPokemonsDescriptions =
       GetPokemonsDescriptions();
 
-  final GetRandomPokemon getRandomPokemon = GetRandomPokemon();
+  final GetRandomPokemon _getRandomPokemon = GetRandomPokemon();
 
-  final AddFavorite addFavorite = AddFavorite();
-  final RemoveFavorite removeFavorite = RemoveFavorite();
-  final IsFavorite isFavorite = IsFavorite();
-
-  final Exists exists = Exists();
+  final AddFavorite _addFavorite = AddFavorite();
+  final RemoveFavorite _removeFavorite = RemoveFavorite();
+  final IsFavorite _isFavorite = IsFavorite();
 
   DomainBloc() : super(const DomainStateInitial()) {
+    on<GetPokemonsEvent>((event, emit) async {
+      try {
+        await _getPokemons.getPokemons();
+        emit(const DomainStateLoaded());
+      } catch (e) {
+        emit(const DomainError("An error ocurred"));
+      }
+    });
+
     on<GetPokemonList>((event, emit) async {
       try {
         emit(const DomainStateLoading());
@@ -95,7 +104,7 @@ class DomainBloc extends Bloc<DomainEvent, DomainState> {
     on<GetRandomPokemonEvent>((event, emit) async {
       try {
         emit(const DomainStateLoading());
-        final pokemon = await getRandomPokemon.getRandomPokemon();
+        final pokemon = await _getRandomPokemon.getRandomPokemon();
         emit(DomainStateLoadedRandomPokemon(pokemon));
       } catch (e) {
         emit(const DomainError("An error ocurred"));
@@ -106,7 +115,7 @@ class DomainBloc extends Bloc<DomainEvent, DomainState> {
       try {
         emit(const DomainStateLoading());
         final description =
-            await getPokemonsDescriptions.getPokemonsDescriptions(event.name);
+            await _getPokemonsDescriptions.getPokemonsDescriptions(event.name);
         emit(DomainStateLoadedDescription(description));
       } catch (e) {
         emit(const DomainError("An error ocurred"));
@@ -116,8 +125,8 @@ class DomainBloc extends Bloc<DomainEvent, DomainState> {
     on<AddFavoriteEvent>((event, emit) async {
       try {
         emit(const DomainStateLoading());
-        addFavorite.addFavorite(event.name);
-        final favorite = await isFavorite.isFavorite(event.name);
+        _addFavorite.addFavorite(event.name);
+        final favorite = await _isFavorite.isFavorite(event.name);
         emit(DomainStateLoadedIsFavorite(favorite));
       } catch (e) {
         emit(const DomainError("An error ocurred"));
@@ -127,8 +136,8 @@ class DomainBloc extends Bloc<DomainEvent, DomainState> {
     on<RemoveFavoriteEvent>((event, emit) async {
       try {
         emit(const DomainStateLoading());
-        removeFavorite.removeFavorite(event.name);
-        final favorite = await isFavorite.isFavorite(event.name);
+        _removeFavorite.removeFavorite(event.name);
+        final favorite = await _isFavorite.isFavorite(event.name);
         emit(DomainStateLoadedIsFavorite(favorite));
       } catch (e) {
         emit(const DomainError("An error ocurred"));
@@ -138,7 +147,7 @@ class DomainBloc extends Bloc<DomainEvent, DomainState> {
     on<IsFavoriteEvent>((event, emit) async {
       try {
         emit(const DomainStateLoading());
-        final favorite = await isFavorite.isFavorite(event.name);
+        final favorite = await _isFavorite.isFavorite(event.name);
         emit(DomainStateLoadedIsFavorite(favorite));
       } catch (e) {
         emit(const DomainError("An error ocurred"));
@@ -155,14 +164,14 @@ class DomainBloc extends Bloc<DomainEvent, DomainState> {
           case "":
             switch (types.length) {
               case 0:
-                aux = getPokemonsByName.getPokemonsByName(query);
+                aux = _getPokemonsByName.getPokemonsByName(query);
                 break;
               case 1:
-                aux = getPokemonsByNameFilteredByType
+                aux = _getPokemonsByNameFilteredByType
                     .getPokemonsByNameFilteredByType(query, types[0]);
                 break;
               case 2:
-                aux = getPokemonsByNameFilteredByMultiType
+                aux = _getPokemonsByNameFilteredByMultiType
                     .getPokemonsByNameFilteredByMultiType(
                         query, types[0], types[1]);
                 break;
@@ -171,15 +180,15 @@ class DomainBloc extends Bloc<DomainEvent, DomainState> {
           case "az":
             switch (types.length) {
               case 0:
-                aux = getPokemonsByNameAZ.getPokemonsByNameAZ(query);
+                aux = _getPokemonsByNameAZ.getPokemonsByNameAZ(query);
                 break;
 
               case 1:
-                aux = getPokemonsByNameFilteredByTypeAZ
+                aux = _getPokemonsByNameFilteredByTypeAZ
                     .getPokemonsByNameFilteredByTypeAZ(query, types[0]);
                 break;
               case 2:
-                aux = getPokemonsByNameFilteredByMultiTypeAZ
+                aux = _getPokemonsByNameFilteredByMultiTypeAZ
                     .getPokemonsByNameFilteredByMultiTypeAZ(
                         query, types[0], types[1]);
                 break;
@@ -188,14 +197,14 @@ class DomainBloc extends Bloc<DomainEvent, DomainState> {
           case "za":
             switch (types.length) {
               case 0:
-                aux = getPokemonsByNameZA.getPokemonsByNameZA(query);
+                aux = _getPokemonsByNameZA.getPokemonsByNameZA(query);
                 break;
               case 1:
-                aux = getPokemonsByNameFilteredByTypeZA
+                aux = _getPokemonsByNameFilteredByTypeZA
                     .getPokemonsByNameFilteredByTypeZA(query, types[0]);
                 break;
               case 2:
-                aux = getPokemonsByNameFilteredByMultiTypeZA
+                aux = _getPokemonsByNameFilteredByMultiTypeZA
                     .getPokemonsByNameFilteredByMultiTypeZA(
                         query, types[0], types[1]);
                 break;
@@ -208,14 +217,14 @@ class DomainBloc extends Bloc<DomainEvent, DomainState> {
           case "":
             switch (types.length) {
               case 0:
-                aux = getFavoritePokemon.getFavoritePokemon(query);
+                aux = _getFavoritePokemon.getFavoritePokemon(query);
                 break;
               case 1:
-                aux = getFavoritePokemonByNameFilteredByType
+                aux = _getFavoritePokemonByNameFilteredByType
                     .getFavoritePokemonByNameFilteredByType(query, types[0]);
                 break;
               case 2:
-                aux = getFavoritePokemonByNameFilteredByMultiType
+                aux = _getFavoritePokemonByNameFilteredByMultiType
                     .getFavoritePokemonByNameFilteredByMultiType(
                         query, types[0], types[1]);
                 break;
@@ -224,15 +233,15 @@ class DomainBloc extends Bloc<DomainEvent, DomainState> {
           case "az":
             switch (types.length) {
               case 0:
-                aux = getFavoritePokemonAZ.getFavoritePokemonAZ(query);
+                aux = _getFavoritePokemonAZ.getFavoritePokemonAZ(query);
                 break;
 
               case 1:
-                aux = getFavoritePokemonsByNameFilteredByTypeAZ
+                aux = _getFavoritePokemonsByNameFilteredByTypeAZ
                     .getFavoritePokemonByNameFilteredByTypeAZ(query, types[0]);
                 break;
               case 2:
-                aux = getFavoritePokemonByNameFilteredByMultiTypeAZ
+                aux = _getFavoritePokemonByNameFilteredByMultiTypeAZ
                     .getFavoritePokemonByNameFilteredByMultiTypeAZ(
                         query, types[0], types[1]);
                 break;
@@ -241,14 +250,14 @@ class DomainBloc extends Bloc<DomainEvent, DomainState> {
           case "za":
             switch (types.length) {
               case 0:
-                aux = getFavoritePokemonZA.getFavoritePokemonZA(query);
+                aux = _getFavoritePokemonZA.getFavoritePokemonZA(query);
                 break;
               case 1:
-                aux = getFavoritePokemonByNameFilteredByTypeZA
+                aux = _getFavoritePokemonByNameFilteredByTypeZA
                     .getFavoritePokemonByNameFilteredByTypeZA(query, types[0]);
                 break;
               case 2:
-                aux = getFavoritePokemonByNameFilteredByMultiTypeZA
+                aux = _getFavoritePokemonByNameFilteredByMultiTypeZA
                     .getFavoritePokemonByNameFilteredByMultiTypeZA(
                         query, types[0], types[1]);
                 break;
