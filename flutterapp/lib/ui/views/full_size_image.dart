@@ -7,6 +7,18 @@ class FullSizeImageWindow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final image = context.getArgument<String>();
-    return Scaffold(body: Center(child: Image.network(image!)));
+    return Scaffold(
+      body: Center(
+        child: SizedBox(
+          height: 250,
+          child: Image.network(
+            image!,
+            fit: BoxFit.cover,
+            height: double.infinity,
+            width: double.infinity,
+          ),
+        ),
+      ),
+    );
   }
 }
