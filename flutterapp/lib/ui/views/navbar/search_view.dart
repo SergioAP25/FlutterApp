@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterapp/constants/routes.dart';
 import 'package:flutterapp/domain/bloc/domain_event.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
+import 'package:flutterapp/ui/constants/view_selections.dart';
 import '../../../data/services/repository.dart';
 import '../../../domain/bloc/domain_bloc.dart';
 import '../../../domain/bloc/domain_state.dart';
@@ -17,12 +20,15 @@ class SearchView extends StatefulWidget {
 
 class _SearchViewState extends State<SearchView> {
   List<FilteredPokemonModel>? pokemons = [];
+  List<FilteredPokemonModel>? favoritesList = [];
   String generalQuery = "";
   String ordering = "";
   List<String> types = [];
   final DomainBloc _filtersBloc = DomainBloc();
+  final DomainBloc _favoritesListBloc = DomainBloc();
   final DomainBloc _favoritesBloc = DomainBloc();
   PokemonRepository repo = PokemonRepository();
+
   bool? favorite;
   List<bool> isSelectedAZ = [false, false];
   List<bool> isSelectedTypes = [
@@ -326,208 +332,245 @@ class _SearchViewState extends State<SearchView> {
                     builder: (context, state) {
                       if (state is DomainStateLoadedPokemonList) {
                         pokemons = state.pokemons;
-                        return Expanded(
-                          child: RefreshIndicator(
-                            onRefresh: _pullRefresh,
-                            child: BlocProvider.value(
-                              value: _favoritesBloc,
-                              child: ListView.builder(
-                                padding: EdgeInsets.zero,
-                                itemCount: pokemons!.length,
-                                itemBuilder: (context, index) {
-                                  if (!_favoritesBloc.isClosed) {
-                                    _favoritesBloc.add(
-                                        IsFavoriteEvent(pokemons![index].name));
-                                  }
-
-                                  return Column(
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).pushNamed(
-                                              detailRoute,
-                                              arguments: pokemons![index]);
-                                        },
-                                        child: Container(
-                                          decoration: const BoxDecoration(
-                                              color: Color.fromARGB(
-                                                  255, 247, 242, 242),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(20))),
-                                          child: SizedBox(
-                                            width: double.infinity,
-                                            child: Column(
-                                              children: [
-                                                Column(children: [
-                                                  SizedBox(
-                                                    height: 55,
-                                                    child: Row(
-                                                      children: [
-                                                        const SizedBox(
-                                                          width: 200,
-                                                        ),
-                                                        BlocBuilder<DomainBloc,
-                                                            DomainState>(
-                                                          builder:
-                                                              (context, state) {
-                                                            if (state
-                                                                is DomainStateLoadedIsFavorite) {
-                                                              favorite = state
-                                                                  .favorite;
-                                                              return IconButton(
-                                                                  splashColor:
-                                                                      Colors
-                                                                          .transparent,
-                                                                  highlightColor:
-                                                                      Colors
-                                                                          .transparent,
-                                                                  iconSize: 50,
-                                                                  onPressed:
-                                                                      () async {
-                                                                    if (!state
-                                                                        .favorite) {
-                                                                      if (!_favoritesBloc
-                                                                          .isClosed) {
-                                                                        _favoritesBloc
-                                                                            .add(AddFavoriteEvent(pokemons![index].name));
-                                                                      }
-                                                                    } else {
-                                                                      setState(
-                                                                          () {
-                                                                        if (!_favoritesBloc
-                                                                            .isClosed) {
-                                                                          _favoritesBloc
-                                                                              .add(RemoveFavoriteEvent(pokemons![index].name));
-                                                                        }
-                                                                      });
-                                                                    }
-                                                                  },
-                                                                  icon: state
-                                                                          .favorite
-                                                                      ? const Icon(
-                                                                          Icons
-                                                                              .star,
-                                                                          color:
-                                                                              Colors.yellow,
-                                                                        )
-                                                                      : const Icon(
-                                                                          Icons
-                                                                              .star_border,
-                                                                          color:
-                                                                              Colors.yellow,
-                                                                        ));
-                                                            } else {
-                                                              return const Expanded(
-                                                                  child: Align(
-                                                                      alignment:
-                                                                          Alignment
-                                                                              .center,
-                                                                      child:
-                                                                          CircularProgressIndicator()));
-                                                            }
-                                                          },
-                                                        )
-                                                      ],
-                                                    ),
-                                                  )
-                                                ]),
-                                                Row(
-                                                  children: [
-                                                    const SizedBox(
-                                                      width: 85,
-                                                    ),
-                                                    Image.network(
-                                                      pokemons![index]
-                                                          .sprites
-                                                          .frontDefault!,
-                                                      fit: BoxFit.fill,
-                                                    ),
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  width: double.infinity,
-                                                  child: Container(
-                                                      decoration: BoxDecoration(
-                                                          color: const Color
-                                                                      .fromARGB(
+                        if (!_favoritesListBloc.isClosed) {
+                          _favoritesListBloc
+                              .add(GetPokemonList("", "", const [], favorites));
+                        }
+                        return BlocProvider.value(
+                          value: _favoritesListBloc,
+                          child: BlocBuilder<DomainBloc, DomainState>(
+                            builder: (context, state) {
+                              if (state is DomainStateLoadedPokemonList) {
+                                favoritesList = state.pokemons;
+                                return Expanded(
+                                  child: RefreshIndicator(
+                                    onRefresh: _pullRefresh,
+                                    child: BlocProvider.value(
+                                      value: _favoritesBloc,
+                                      child: ListView.builder(
+                                        padding: EdgeInsets.zero,
+                                        itemCount: pokemons!.length,
+                                        itemBuilder: (context, index) {
+                                          bool favorite = false;
+                                          for (int i = 0;
+                                              i < favoritesList!.length;
+                                              i++) {
+                                            if (pokemons![index].name ==
+                                                favoritesList![i].name) {
+                                              favorite = true;
+                                              break;
+                                            }
+                                          }
+                                          return Column(
+                                            children: [
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.of(context)
+                                                      .pushNamed(detailRoute,
+                                                          arguments:
+                                                              pokemons![index]);
+                                                },
+                                                child: Container(
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                          color:
+                                                              Color.fromARGB(
                                                                   255,
-                                                                  82,
-                                                                  207,
-                                                                  86)
-                                                              .withOpacity(0.5),
+                                                                  247,
+                                                                  242,
+                                                                  242),
                                                           borderRadius:
-                                                              const BorderRadius
-                                                                      .only(
-                                                                  bottomLeft: Radius
-                                                                      .circular(
-                                                                          20),
-                                                                  bottomRight: Radius
+                                                              BorderRadius.all(
+                                                                  Radius
                                                                       .circular(
                                                                           20))),
-                                                      child: Row(
-                                                        children: [
-                                                          const SizedBox(
-                                                            width: 35,
-                                                          ),
-                                                          Expanded(
-                                                            child: Text(
-                                                              pokemons![index]
-                                                                  .name,
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
+                                                  child: SizedBox(
+                                                    width: double.infinity,
+                                                    child: Column(
+                                                      children: [
+                                                        Column(children: [
+                                                          SizedBox(
+                                                            height: 55,
+                                                            child: Row(
+                                                              children: [
+                                                                const SizedBox(
+                                                                  width: 200,
+                                                                ),
+                                                                BlocBuilder<
+                                                                    DomainBloc,
+                                                                    DomainState>(
+                                                                  builder:
+                                                                      (context,
+                                                                          state) {
+                                                                    if (state
+                                                                            is DomainStateInitial ||
+                                                                        state
+                                                                            is DomainStateLoadedIsFavorite) {
+                                                                      return IconButton(
+                                                                          splashColor: Colors
+                                                                              .transparent,
+                                                                          highlightColor: Colors
+                                                                              .transparent,
+                                                                          iconSize:
+                                                                              50,
+                                                                          onPressed:
+                                                                              () {
+                                                                            if (!favorite) {
+                                                                              if (!_favoritesBloc.isClosed) {
+                                                                                _favoritesBloc.add(AddFavoriteEvent(pokemons![index].name));
+                                                                                favorite = !favorite;
+                                                                              }
+                                                                            } else {
+                                                                              if (widget.view == pokedex) {
+                                                                                if (!_favoritesBloc.isClosed) {
+                                                                                  _favoritesBloc.add(RemoveFavoriteEvent(pokemons![index].name));
+                                                                                  favorite = !favorite;
+                                                                                }
+                                                                              } else {
+                                                                                setState(() {
+                                                                                  if (!_favoritesBloc.isClosed) {
+                                                                                    _favoritesBloc.add(RemoveFavoriteEvent(pokemons![index].name));
+                                                                                    favorite = !favorite;
+                                                                                  }
+                                                                                });
+                                                                              }
+                                                                            }
+                                                                          },
+                                                                          icon: favorite
+                                                                              ? const Icon(
+                                                                                  Icons.star,
+                                                                                  color: Colors.yellow,
+                                                                                )
+                                                                              : const Icon(
+                                                                                  Icons.star_border,
+                                                                                  color: Colors.yellow,
+                                                                                ));
+                                                                    } else {
+                                                                      return const Expanded(
+                                                                          child: Align(
+                                                                              alignment: Alignment.center,
+                                                                              child: CircularProgressIndicator()));
+                                                                    }
+                                                                  },
+                                                                )
+                                                              ],
                                                             ),
-                                                          ),
-                                                          const SizedBox(
-                                                            width: 35,
-                                                          ),
-                                                          if (pokemons![index]
-                                                                  .types
-                                                                  .length <
-                                                              2)
-                                                            SizedBox(
-                                                              height: 30,
+                                                          )
+                                                        ]),
+                                                        Row(
+                                                          children: [
+                                                            const SizedBox(
+                                                              width: 85,
+                                                            ),
+                                                            Image.network(
+                                                              pokemons![index]
+                                                                  .sprites
+                                                                  .frontDefault!,
+                                                              fit: BoxFit.fill,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        SizedBox(
+                                                          width:
+                                                              double.infinity,
+                                                          child: Container(
+                                                              decoration: BoxDecoration(
+                                                                  color: const Color
+                                                                              .fromARGB(
+                                                                          255,
+                                                                          82,
+                                                                          207,
+                                                                          86)
+                                                                      .withOpacity(
+                                                                          0.5),
+                                                                  borderRadius: const BorderRadius
+                                                                          .only(
+                                                                      bottomLeft:
+                                                                          Radius.circular(
+                                                                              20),
+                                                                      bottomRight:
+                                                                          Radius.circular(
+                                                                              20))),
                                                               child: Row(
                                                                 children: [
-                                                                  Image.asset(
-                                                                      "assets/${pokemons![index].types[0].type!.name!}.png"),
                                                                   const SizedBox(
-                                                                    width: 55,
+                                                                    width: 35,
+                                                                  ),
+                                                                  Expanded(
+                                                                    child: Text(
+                                                                      pokemons![
+                                                                              index]
+                                                                          .name,
+                                                                      overflow:
+                                                                          TextOverflow
+                                                                              .ellipsis,
+                                                                    ),
+                                                                  ),
+                                                                  const SizedBox(
+                                                                    width: 35,
+                                                                  ),
+                                                                  if (pokemons![
+                                                                              index]
+                                                                          .types
+                                                                          .length <
+                                                                      2)
+                                                                    SizedBox(
+                                                                      height:
+                                                                          30,
+                                                                      child:
+                                                                          Row(
+                                                                        children: [
+                                                                          Image.asset(
+                                                                              "assets/${pokemons![index].types[0].type!.name!}.png"),
+                                                                          const SizedBox(
+                                                                            width:
+                                                                                55,
+                                                                          )
+                                                                        ],
+                                                                      ), //
+                                                                    )
+                                                                  else
+                                                                    SizedBox(
+                                                                      height:
+                                                                          30,
+                                                                      child:
+                                                                          Row(
+                                                                        children: [
+                                                                          Image.asset(
+                                                                              "assets/${pokemons![index].types[0].type!.name!}.png"),
+                                                                          Image.asset(
+                                                                              "assets/${pokemons![index].types[1].type!.name!}.png"),
+                                                                        ],
+                                                                      ), //
+                                                                    ),
+                                                                  const SizedBox(
+                                                                    width: 30,
                                                                   )
                                                                 ],
-                                                              ), //
-                                                            )
-                                                          else
-                                                            SizedBox(
-                                                              height: 30,
-                                                              child: Row(
-                                                                children: [
-                                                                  Image.asset(
-                                                                      "assets/${pokemons![index].types[0].type!.name!}.png"),
-                                                                  Image.asset(
-                                                                      "assets/${pokemons![index].types[1].type!.name!}.png"),
-                                                                ],
-                                                              ), //
-                                                            ),
-                                                          const SizedBox(
-                                                            width: 30,
-                                                          )
-                                                        ],
-                                                      )),
+                                                              )),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
+                                              ),
+                                              const SizedBox(
+                                                height: 15,
+                                              )
+                                            ],
+                                          );
+                                        },
                                       ),
-                                      const SizedBox(
-                                        height: 15,
-                                      )
-                                    ],
-                                  );
-                                },
-                              ),
-                            ),
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                return const Expanded(
+                                    child: Align(
+                                        alignment: Alignment.center,
+                                        child: CircularProgressIndicator()));
+                              }
+                            },
                           ),
                         );
                       } else {
