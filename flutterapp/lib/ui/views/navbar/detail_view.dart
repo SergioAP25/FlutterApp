@@ -123,10 +123,13 @@ class _DetailViewState extends State<DetailView> {
                                                       color: Colors.yellow,
                                                     ));
                                         } else {
-                                          return const Align(
-                                              alignment: Alignment.center,
-                                              child:
-                                                  CircularProgressIndicator());
+                                          return Row(
+                                            children: const [
+                                              SizedBox(
+                                                height: 71,
+                                              )
+                                            ],
+                                          );
                                         }
                                       },
                                     ),
