@@ -9,14 +9,11 @@ class FullSizeImageWindow extends StatelessWidget {
     final image = context.getArgument<String>();
     return Scaffold(
       body: Center(
-        child: SizedBox(
-          height: 350,
-          child: Image.network(
-            image!,
-            fit: BoxFit.cover,
-            height: double.infinity,
-            width: double.infinity,
-          ),
+        child: Image.network(
+          image!,
+          fit: BoxFit.fitWidth,
+          height: double.infinity,
+          width: double.infinity,
         ),
       ),
     );
