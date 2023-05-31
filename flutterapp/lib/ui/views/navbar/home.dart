@@ -137,6 +137,9 @@ class _HomeState extends State<Home> {
                                     children: [
                                       const Spacer(),
                                       Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.end,
+                                        textBaseline: TextBaseline.alphabetic,
                                         children: [
                                           const SizedBox(
                                             width: 22,
