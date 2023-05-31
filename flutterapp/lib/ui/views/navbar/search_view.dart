@@ -492,6 +492,9 @@ class _SearchViewState extends State<SearchView> {
                                                                 children: [
                                                                   Image.asset(
                                                                       "assets/${pokemons![index].types[0].type!.name!}.png"),
+                                                                  SizedBox(
+                                                                    width: 55,
+                                                                  )
                                                                 ],
                                                               ), //
                                                             )
@@ -507,6 +510,9 @@ class _SearchViewState extends State<SearchView> {
                                                                 ],
                                                               ), //
                                                             ),
+                                                          const SizedBox(
+                                                            width: 30,
+                                                          )
                                                         ],
                                                       )),
                                                 ),
