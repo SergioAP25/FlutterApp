@@ -96,6 +96,7 @@ class DomainBloc extends Bloc<DomainEvent, DomainState> {
       try {
         emit(const DomainStateLoading());
         final pokemon = await getRandomPokemon.getRandomPokemon();
+        print(" aaaaaaaaaaa ${pokemon.name}");
         emit(DomainStateLoadedRandomPokemon(pokemon));
       } catch (e) {
         emit(const DomainError("An error ocurred"));

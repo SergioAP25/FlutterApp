@@ -45,9 +45,6 @@ class _HomeState extends State<Home> {
               if (!_favoriteBloc.isClosed) {
                 _favoriteBloc.add(IsFavoriteEvent(pokemon!.name));
               }
-              if (!_descriptionBloc.isClosed) {
-                _descriptionBloc.add(GetDescriptionEvent(pokemon!.name));
-              }
               return Scaffold(
                 body: SingleChildScrollView(
                   child: Column(
@@ -147,14 +144,13 @@ class _HomeState extends State<Home> {
                             onTap: () {
                               Navigator.of(context).pushNamed(
                                   fullSizeImageRoute,
-                                  arguments:
-                                      state.pokemon.sprites.frontDefault!);
+                                  arguments: pokemon!.sprites.frontDefault!);
                             },
                             child: SizedBox(
                               height: 200,
                               width: double.infinity,
                               child: Image.network(
-                                state.pokemon.sprites.frontDefault!,
+                                pokemon!.sprites.frontDefault!,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -171,7 +167,7 @@ class _HomeState extends State<Home> {
                                 children: [
                                   Align(
                                       alignment: Alignment.center,
-                                      child: Text(state.pokemon.name,
+                                      child: Text(pokemon!.name,
                                           style: const TextStyle(
                                               fontSize: 30,
                                               fontWeight: FontWeight.bold))),
@@ -212,7 +208,7 @@ class _HomeState extends State<Home> {
                                                   color: const Color.fromARGB(
                                                       255, 65, 208, 252),
                                                   child: SizedBox(
-                                                    height: state.pokemon
+                                                    height: pokemon!
                                                         .stats[0].baseStat!
                                                         .toDouble(),
                                                     width: 45,
@@ -224,7 +220,7 @@ class _HomeState extends State<Home> {
                                                   color: const Color.fromARGB(
                                                       255, 231, 48, 48),
                                                   child: SizedBox(
-                                                    height: state.pokemon
+                                                    height: pokemon!
                                                         .stats[1].baseStat!
                                                         .toDouble(),
                                                     width: 45,
@@ -236,7 +232,7 @@ class _HomeState extends State<Home> {
                                                   color: const Color.fromARGB(
                                                       255, 245, 170, 58),
                                                   child: SizedBox(
-                                                    height: state.pokemon
+                                                    height: pokemon!
                                                         .stats[2].baseStat!
                                                         .toDouble(),
                                                     width: 45,
@@ -248,7 +244,7 @@ class _HomeState extends State<Home> {
                                                   color: const Color.fromARGB(
                                                       255, 25, 226, 35),
                                                   child: SizedBox(
-                                                    height: state.pokemon
+                                                    height: pokemon!
                                                         .stats[3].baseStat!
                                                         .toDouble(),
                                                     width: 45,
@@ -260,7 +256,7 @@ class _HomeState extends State<Home> {
                                                   color: const Color.fromARGB(
                                                       255, 224, 100, 42),
                                                   child: SizedBox(
-                                                    height: state.pokemon
+                                                    height: pokemon!
                                                         .stats[4].baseStat!
                                                         .toDouble(),
                                                     width: 45,
@@ -272,7 +268,7 @@ class _HomeState extends State<Home> {
                                                   color: const Color.fromARGB(
                                                       255, 29, 15, 219),
                                                   child: SizedBox(
-                                                    height: state.pokemon
+                                                    height: pokemon!
                                                         .stats[5].baseStat!
                                                         .toDouble(),
                                                     width: 45,
@@ -361,13 +357,13 @@ class _HomeState extends State<Home> {
                                       const SizedBox(
                                         width: 15,
                                       ),
-                                      if (state.pokemon.types.length < 2)
+                                      if (pokemon!.types.length < 2)
                                         SizedBox(
                                           height: 40,
                                           child: Row(
                                             children: [
                                               Image.asset(
-                                                  "assets/${state.pokemon.types[0].type!.name!}.png"),
+                                                  "assets/${pokemon!.types[0].type!.name!}.png"),
                                             ],
                                           ), //
                                         )
@@ -377,9 +373,9 @@ class _HomeState extends State<Home> {
                                           child: Row(
                                             children: [
                                               Image.asset(
-                                                  "assets/${state.pokemon.types[0].type!.name!}.png"),
+                                                  "assets/${pokemon!.types[0].type!.name!}.png"),
                                               Image.asset(
-                                                  "assets/${state.pokemon.types[1].type!.name!}.png"),
+                                                  "assets/${pokemon!.types[1].type!.name!}.png"),
                                             ],
                                           ), //
                                         ),
@@ -400,7 +396,7 @@ class _HomeState extends State<Home> {
                                         width: 15,
                                       ),
                                       Text(
-                                        "${(state.pokemon.height / 10).toString()} m",
+                                        "${(pokemon!.height / 10).toString()} m",
                                         style: const TextStyle(
                                           fontSize: 18,
                                         ),
@@ -418,7 +414,7 @@ class _HomeState extends State<Home> {
                                         width: 15,
                                       ),
                                       Text(
-                                        "${state.pokemon.weight.toString()} kg",
+                                        "${pokemon!.weight.toString()} kg",
                                         style: const TextStyle(
                                           fontSize: 18,
                                         ),
@@ -428,11 +424,10 @@ class _HomeState extends State<Home> {
                                   const SizedBox(
                                     height: 25,
                                   ),
-                                  BlocProvider(
-                                    create: (context) => _descriptionBloc,
-                                    child:
-                                        BlocListener<DomainBloc, DomainState>(
-                                      listener: (context, state) {},
+                                  BlocListener<DomainBloc, DomainState>(
+                                    listener: (context, state) {},
+                                    child: BlocProvider(
+                                      create: (context) => _descriptionBloc,
                                       child:
                                           BlocBuilder<DomainBloc, DomainState>(
                                         builder: (context, state) {

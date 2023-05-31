@@ -41,11 +41,10 @@ class GetPokemons {
       description =
           await _repository.getPokemonDescriptionByUrls(pokemon.species.url!);
       pokemon.name = pokemon.name.capitalize();
-      pokemon.sprites.frontDefault ??= default_sprite;
+      pokemon.sprites.frontDefault ??= defaultSprite;
       if (description.description.isEmpty) {
         description.description.add(FlavorTextEntries(
-            flavorText: "This pokemon has no description known",
-            language: Language(name: "en")));
+            flavorText: defaultDescription, language: Language(name: "en")));
       }
       await _repository.insertPokemon(pokemon);
       await _repository.insertDescriptions(description);
