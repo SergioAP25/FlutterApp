@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterapp/constants/routes.dart';
 import 'package:flutterapp/domain/bloc/domain_event.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
-
 import '../../../data/services/repository.dart';
 import '../../../domain/bloc/domain_bloc.dart';
 import '../../../domain/bloc/domain_state.dart';
@@ -20,6 +19,9 @@ class _SearchViewState extends State<SearchView> {
   final DomainBloc _domainBloc = DomainBloc();
   final DomainBloc _domainBloc2 = DomainBloc();
   List<FilteredPokemonModel>? pokemons = [];
+  String generalQuery = "";
+  String ordering = "";
+  List<String> types = [];
   PokemonRepository repo = PokemonRepository();
   List<bool> isSelectedAZ = [false, false];
   List<bool> isSelectedTypes = [
@@ -42,10 +44,6 @@ class _SearchViewState extends State<SearchView> {
     false,
     false
   ];
-
-  String ordering = "";
-  List<String> types = [];
-  String generalQuery = "";
 
   Future<void> _pullRefresh() async {
     setState(() {});
@@ -192,6 +190,7 @@ class _SearchViewState extends State<SearchView> {
       _domainBloc
           .add(GetPokemonList(generalQuery, ordering, types, widget.view));
     }
+    setState(() {});
     return Scaffold(
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -492,7 +491,7 @@ class _SearchViewState extends State<SearchView> {
                                                                 children: [
                                                                   Image.asset(
                                                                       "assets/${pokemons![index].types[0].type!.name!}.png"),
-                                                                  SizedBox(
+                                                                  const SizedBox(
                                                                     width: 55,
                                                                   )
                                                                 ],

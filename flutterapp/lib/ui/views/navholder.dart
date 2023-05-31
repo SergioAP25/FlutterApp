@@ -6,7 +6,6 @@ import '../../data/services/repository.dart';
 import 'navbar/detail_view.dart';
 import 'navbar/options.dart';
 import 'navbar/search_view.dart';
-import 'navbar/favorites.dart';
 
 class NavHolder extends StatefulWidget {
   final AuthUser user;

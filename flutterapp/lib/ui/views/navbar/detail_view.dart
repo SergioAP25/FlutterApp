@@ -4,7 +4,6 @@ import 'package:flutterapp/domain/bloc/domain_event.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
 import 'package:flutterapp/util/generics/get_arguments.dart';
 import '../../../constants/routes.dart';
-import '../../../data/services/repository.dart';
 import '../../../domain/bloc/domain_bloc.dart';
 import '../../../domain/bloc/domain_state.dart';
 import '../../../domain/models/description_pokemon_model.dart';
@@ -19,13 +18,21 @@ class DetailView extends StatefulWidget {
 }
 
 class _DetailViewState extends State<DetailView> {
+  FilteredPokemonModel? pokemon;
+  bool? favorite;
+  String? description;
+
   final DomainBloc _randomPokemonBloc = DomainBloc();
   final DomainBloc _favoriteBloc = DomainBloc();
   final DomainBloc _descriptionBloc = DomainBloc();
-  bool? favorite;
-  PokemonRepository repo = PokemonRepository();
-  FilteredPokemonModel? pokemon;
-  String? description;
+
+  Future<void> _pullRefresh() async {
+    if (widget.view == home) {
+      if (!_randomPokemonBloc.isClosed) {
+        _randomPokemonBloc.add(const GetRandomPokemonEvent());
+      }
+    }
+  }
 
   void assignList(FilteredPokemonModel statePokemon) {
     if (widget.view == home) {
@@ -45,14 +52,6 @@ class _DetailViewState extends State<DetailView> {
       }
     }
     return englishDescription;
-  }
-
-  Future<void> _pullRefresh() async {
-    if (widget.view == home) {
-      if (!_randomPokemonBloc.isClosed) {
-        _randomPokemonBloc.add(const GetRandomPokemonEvent());
-      }
-    }
   }
 
   @override
@@ -490,7 +489,7 @@ class _DetailViewState extends State<DetailView> {
                           ],
                         ),
                         const SizedBox(
-                          height: 50,
+                          height: 25,
                         )
                       ],
                     ),
