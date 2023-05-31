@@ -190,7 +190,6 @@ class _SearchViewState extends State<SearchView> {
       _domainBloc
           .add(GetPokemonList(generalQuery, ordering, types, widget.view));
     }
-    setState(() {});
     return Scaffold(
       body: Column(
         mainAxisSize: MainAxisSize.max,

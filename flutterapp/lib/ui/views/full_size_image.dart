@@ -10,7 +10,7 @@ class FullSizeImageWindow extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: SizedBox(
-          height: 250,
+          height: 350,
           child: Image.network(
             image!,
             fit: BoxFit.cover,
