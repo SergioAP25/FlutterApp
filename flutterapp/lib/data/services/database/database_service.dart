@@ -432,10 +432,11 @@ class PokemonService {
 
     final result = await db.rawQuery(
         "SELECT (SELECT COUNT(*) FROM pokemon WHERE name = ?) == 1", [name]);
-    String aux = jsonEncode(result.first);
-    int integer = int.parse(aux[aux.length - 2]);
-    bool boolean = integer == 0 ? false : true;
-    return boolean;
+    return result.first["(SELECT COUNT(*) FROM pokemon WHERE name = ?) == 1"]
+                as int ==
+            0
+        ? false
+        : true;
   }
 
   Future<bool> isFavorite(String name) async {
@@ -445,9 +446,12 @@ class PokemonService {
     final result = await db.rawQuery(
         "SELECT (SELECT COUNT(*) FROM favorite WHERE pokemonName = ?) == 1",
         [name]);
-    String aux = jsonEncode(result.first);
-    int integer = int.parse(aux[aux.length - 2]);
-    bool boolean = integer == 0 ? false : true;
-    return boolean;
+
+    return result.first[
+                    "(SELECT COUNT(*) FROM favorite WHERE pokemonName = ?) == 1"]
+                as int ==
+            0
+        ? false
+        : true;
   }
 }
