@@ -9,6 +9,7 @@ import '../data/services/repository.dart';
 
 class GetPokemons {
   final PokemonRepository _repository = PokemonRepository();
+
   List<Results> _apilist = [];
 
   Future<void> getPokemons() async {

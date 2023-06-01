@@ -17,19 +17,19 @@ class DetailView extends StatefulWidget {
 }
 
 class _DetailViewState extends State<DetailView> {
-  FilteredPokemonModel? pokemon;
-  List<Object>? args;
-  Function? updateSearchView;
-  bool? favorite;
-  String? description;
-  String? view;
+  FilteredPokemonModel? _pokemon;
+  List<Object>? _args;
+  Function? _updateSearchView;
+  bool? _favorite;
+  String? _description;
+  String? _view;
 
   final DomainBloc _randomPokemonBloc = DomainBloc();
   final DomainBloc _favoriteBloc = DomainBloc();
   final DomainBloc _descriptionBloc = DomainBloc();
 
   Future<void> _pullRefresh() async {
-    if (view == home) {
+    if (_view == home) {
       if (!_randomPokemonBloc.isClosed) {
         _randomPokemonBloc.add(const GetRandomPokemonEvent());
       }
@@ -37,12 +37,12 @@ class _DetailViewState extends State<DetailView> {
   }
 
   void _assignList(FilteredPokemonModel statePokemon) {
-    if (view == home) {
-      pokemon = statePokemon;
-    } else if (view == detail) {
-      args = ModalRoute.of(context)!.settings.arguments as List<Object>;
-      pokemon = args![0] as FilteredPokemonModel;
-      updateSearchView = args![1] as Function;
+    if (_view == home) {
+      _pokemon = statePokemon;
+    } else if (_view == detail) {
+      _args = ModalRoute.of(context)!.settings.arguments as List<Object>;
+      _pokemon = _args![0] as FilteredPokemonModel;
+      _updateSearchView = _args![1] as Function;
     }
   }
 
@@ -60,7 +60,7 @@ class _DetailViewState extends State<DetailView> {
 
   @override
   void initState() {
-    view = widget.view;
+    _view = widget.view;
     super.initState();
   }
 
@@ -76,11 +76,11 @@ class _DetailViewState extends State<DetailView> {
           if (state is DomainStateLoadedRandomPokemon) {
             _assignList(state.pokemon);
             if (!_descriptionBloc.isClosed) {
-              _descriptionBloc.add(GetDescriptionEvent(pokemon!.name));
+              _descriptionBloc.add(GetDescriptionEvent(_pokemon!.name));
             }
 
             if (!_favoriteBloc.isClosed) {
-              _favoriteBloc.add(IsFavoriteEvent(pokemon!.name));
+              _favoriteBloc.add(IsFavoriteEvent(_pokemon!.name));
             }
             return Scaffold(
               body: RefreshIndicator(
@@ -103,33 +103,33 @@ class _DetailViewState extends State<DetailView> {
                                 child: BlocBuilder<DomainBloc, DomainState>(
                                   builder: (context, state) {
                                     if (state is DomainStateLoadedIsFavorite) {
-                                      favorite = state.favorite;
+                                      _favorite = state.favorite;
                                       return IconButton(
                                           splashColor: Colors.transparent,
                                           highlightColor: Colors.transparent,
                                           iconSize: 55,
                                           onPressed: () async {
-                                            if (!favorite!) {
+                                            if (!_favorite!) {
                                               if (!_favoriteBloc.isClosed) {
                                                 _favoriteBloc.add(
                                                     AddFavoriteEvent(
-                                                        pokemon!.name));
-                                                if (view == detail) {
-                                                  updateSearchView!();
+                                                        _pokemon!.name));
+                                                if (_view == detail) {
+                                                  _updateSearchView!();
                                                 }
                                               }
                                             } else {
                                               if (!_favoriteBloc.isClosed) {
                                                 _favoriteBloc.add(
                                                     RemoveFavoriteEvent(
-                                                        pokemon!.name));
-                                                if (view == detail) {
-                                                  updateSearchView!();
+                                                        _pokemon!.name));
+                                                if (_view == detail) {
+                                                  _updateSearchView!();
                                                 }
                                               }
                                             }
                                           },
-                                          icon: favorite!
+                                          icon: _favorite!
                                               ? const Icon(
                                                   Icons.star,
                                                   color: Colors.yellow,
@@ -156,13 +156,13 @@ class _DetailViewState extends State<DetailView> {
                             onTap: () {
                               Navigator.of(context).pushNamed(
                                   fullSizeImageRoute,
-                                  arguments: pokemon!.sprites.frontDefault!);
+                                  arguments: _pokemon!.sprites.frontDefault!);
                             },
                             child: SizedBox(
                               height: 200,
                               width: double.infinity,
                               child: Image.network(
-                                pokemon!.sprites.frontDefault!,
+                                _pokemon!.sprites.frontDefault!,
                                 fit: BoxFit.contain,
                               ),
                             ),
@@ -179,7 +179,7 @@ class _DetailViewState extends State<DetailView> {
                                 children: [
                                   Align(
                                       alignment: Alignment.center,
-                                      child: Text(pokemon!.name,
+                                      child: Text(_pokemon!.name,
                                           style: const TextStyle(
                                               fontSize: 30,
                                               fontWeight: FontWeight.bold))),
@@ -220,7 +220,7 @@ class _DetailViewState extends State<DetailView> {
                                                   color: const Color.fromARGB(
                                                       255, 65, 208, 252),
                                                   child: SizedBox(
-                                                    height: pokemon!
+                                                    height: _pokemon!
                                                         .stats[0].baseStat!
                                                         .toDouble(),
                                                     width: 45,
@@ -232,7 +232,7 @@ class _DetailViewState extends State<DetailView> {
                                                   color: const Color.fromARGB(
                                                       255, 231, 48, 48),
                                                   child: SizedBox(
-                                                    height: pokemon!
+                                                    height: _pokemon!
                                                         .stats[1].baseStat!
                                                         .toDouble(),
                                                     width: 45,
@@ -244,7 +244,7 @@ class _DetailViewState extends State<DetailView> {
                                                   color: const Color.fromARGB(
                                                       255, 245, 170, 58),
                                                   child: SizedBox(
-                                                    height: pokemon!
+                                                    height: _pokemon!
                                                         .stats[2].baseStat!
                                                         .toDouble(),
                                                     width: 45,
@@ -256,7 +256,7 @@ class _DetailViewState extends State<DetailView> {
                                                   color: const Color.fromARGB(
                                                       255, 25, 226, 35),
                                                   child: SizedBox(
-                                                    height: pokemon!
+                                                    height: _pokemon!
                                                         .stats[3].baseStat!
                                                         .toDouble(),
                                                     width: 45,
@@ -268,7 +268,7 @@ class _DetailViewState extends State<DetailView> {
                                                   color: const Color.fromARGB(
                                                       255, 224, 100, 42),
                                                   child: SizedBox(
-                                                    height: pokemon!
+                                                    height: _pokemon!
                                                         .stats[4].baseStat!
                                                         .toDouble(),
                                                     width: 45,
@@ -280,7 +280,7 @@ class _DetailViewState extends State<DetailView> {
                                                   color: const Color.fromARGB(
                                                       255, 29, 15, 219),
                                                   child: SizedBox(
-                                                    height: pokemon!
+                                                    height: _pokemon!
                                                         .stats[5].baseStat!
                                                         .toDouble(),
                                                     width: 45,
@@ -369,13 +369,13 @@ class _DetailViewState extends State<DetailView> {
                                       const SizedBox(
                                         width: 15,
                                       ),
-                                      if (pokemon!.types.length < 2)
+                                      if (_pokemon!.types.length < 2)
                                         SizedBox(
                                           height: 40,
                                           child: Row(
                                             children: [
                                               Image.asset(
-                                                  "assets/${pokemon!.types[0].type!.name!}.png"),
+                                                  "assets/${_pokemon!.types[0].type!.name!}.png"),
                                             ],
                                           ), //
                                         )
@@ -385,9 +385,9 @@ class _DetailViewState extends State<DetailView> {
                                           child: Row(
                                             children: [
                                               Image.asset(
-                                                  "assets/${pokemon!.types[0].type!.name!}.png"),
+                                                  "assets/${_pokemon!.types[0].type!.name!}.png"),
                                               Image.asset(
-                                                  "assets/${pokemon!.types[1].type!.name!}.png"),
+                                                  "assets/${_pokemon!.types[1].type!.name!}.png"),
                                             ],
                                           ), //
                                         ),
@@ -408,7 +408,7 @@ class _DetailViewState extends State<DetailView> {
                                         width: 15,
                                       ),
                                       Text(
-                                        "${(pokemon!.height / 10).toString()} m",
+                                        "${(_pokemon!.height / 10).toString()} m",
                                         style: const TextStyle(
                                           fontSize: 18,
                                         ),
@@ -426,7 +426,7 @@ class _DetailViewState extends State<DetailView> {
                                         width: 15,
                                       ),
                                       Text(
-                                        "${pokemon!.weight.toString()} kg",
+                                        "${_pokemon!.weight.toString()} kg",
                                         style: const TextStyle(
                                           fontSize: 18,
                                         ),
@@ -442,7 +442,7 @@ class _DetailViewState extends State<DetailView> {
                                       builder: (context, state) {
                                         if (state
                                             is DomainStateLoadedDescription) {
-                                          description = _getEnglishDescription(
+                                          _description = _getEnglishDescription(
                                               state.description);
                                           return Column(
                                             children: [
@@ -462,7 +462,7 @@ class _DetailViewState extends State<DetailView> {
                                               Align(
                                                 alignment: Alignment.centerLeft,
                                                 child: Text(
-                                                  description!,
+                                                  _description!,
                                                   style: const TextStyle(
                                                     fontSize: 18,
                                                   ),

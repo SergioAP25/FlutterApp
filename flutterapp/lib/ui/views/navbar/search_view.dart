@@ -16,22 +16,24 @@ class SearchView extends StatefulWidget {
 }
 
 class SearchViewState extends State<SearchView> {
-  String? view;
-  List<FilteredPokemonModel>? pokemons = [];
-  List<FilteredPokemonModel>? favoritesList = [];
-  String generalQuery = "";
-  String ordering = "";
-  List<String> types = [];
+  String? _view;
+  List<FilteredPokemonModel>? _pokemons = [];
+  List<FilteredPokemonModel>? _favoritesList = [];
+
+  String _generalQuery = "";
+  String _ordering = "";
+
+  final List<String> _types = [];
   final DomainBloc _filtersBloc = DomainBloc();
   final DomainBloc _favoritesListBloc = DomainBloc();
   final DomainBloc _favoritesBloc = DomainBloc();
-  PageStorageKey? pokedexKey;
-  PageStorageKey? favoritesKey;
-  PageStorageKey? generalKey;
 
-  bool? favorite;
-  List<bool> isSelectedAZ = [false, false];
-  List<bool> isSelectedTypes = [
+  PageStorageKey? _pokedexKey;
+  PageStorageKey? _favoritesKey;
+  PageStorageKey? _generalKey;
+
+  final List<bool> _isSelectedAZ = [false, false];
+  final List<bool> _isSelectedTypes = [
     false,
     false,
     false,
@@ -56,11 +58,11 @@ class SearchViewState extends State<SearchView> {
     setState(() {});
   }
 
-  bool allowedSelection() {
+  bool _allowedSelection() {
     int total = 0;
     bool allowed = false;
-    for (int i = 0; i < isSelectedTypes.length; i++) {
-      if (isSelectedTypes[i]) {
+    for (int i = 0; i < _isSelectedTypes.length; i++) {
+      if (_isSelectedTypes[i]) {
         total++;
       }
       if (total == 2) {
@@ -73,152 +75,153 @@ class SearchViewState extends State<SearchView> {
     return allowed;
   }
 
-  void removeTypes(int index) {
+  void _removeTypes(int index) {
     switch (index) {
       case 0:
-        types.remove("normal");
+        _types.remove("normal");
         break;
       case 1:
-        types.remove("fire");
+        _types.remove("fire");
         break;
       case 2:
-        types.remove("water");
+        _types.remove("water");
         break;
       case 3:
-        types.remove("grass");
+        _types.remove("grass");
         break;
       case 4:
-        types.remove("electric");
+        _types.remove("electric");
         break;
       case 5:
-        types.remove("ice");
+        _types.remove("ice");
         break;
       case 6:
-        types.remove("ground");
+        _types.remove("ground");
         break;
       case 7:
-        types.remove("flying");
+        _types.remove("flying");
         break;
       case 8:
-        types.remove("poison");
+        _types.remove("poison");
         break;
       case 9:
-        types.remove("fighting");
+        _types.remove("fighting");
         break;
       case 10:
-        types.remove("psychic");
+        _types.remove("psychic");
         break;
       case 11:
-        types.remove("dark");
+        _types.remove("dark");
         break;
       case 12:
-        types.remove("rock");
+        _types.remove("rock");
         break;
       case 13:
-        types.remove("bug");
+        _types.remove("bug");
         break;
       case 14:
-        types.remove("ghost");
+        _types.remove("ghost");
         break;
       case 15:
-        types.remove("steel");
+        _types.remove("steel");
         break;
       case 16:
-        types.remove("dragon");
+        _types.remove("dragon");
         break;
       case 17:
-        types.remove("fairy");
+        _types.remove("fairy");
         break;
     }
   }
 
-  void addTypes(int index) {
+  void _addTypes(int index) {
     switch (index) {
       case 0:
-        types.add("normal");
+        _types.add("normal");
         break;
       case 1:
-        types.add("fire");
+        _types.add("fire");
         break;
       case 2:
-        types.add("water");
+        _types.add("water");
         break;
       case 3:
-        types.add("grass");
+        _types.add("grass");
         break;
       case 4:
-        types.add("electric");
+        _types.add("electric");
         break;
       case 5:
-        types.add("ice");
+        _types.add("ice");
         break;
       case 6:
-        types.add("ground");
+        _types.add("ground");
         break;
       case 7:
-        types.add("flying");
+        _types.add("flying");
         break;
       case 8:
-        types.add("poison");
+        _types.add("poison");
         break;
       case 9:
-        types.add("fighting");
+        _types.add("fighting");
         break;
       case 10:
-        types.add("psychic");
+        _types.add("psychic");
         break;
       case 11:
-        types.add("dark");
+        _types.add("dark");
         break;
       case 12:
-        types.add("rock");
+        _types.add("rock");
         break;
       case 13:
-        types.add("bug");
+        _types.add("bug");
         break;
       case 14:
-        types.add("ghost");
+        _types.add("ghost");
         break;
       case 15:
-        types.add("steel");
+        _types.add("steel");
         break;
       case 16:
-        types.add("dragon");
+        _types.add("dragon");
         break;
       case 17:
-        types.add("fairy");
+        _types.add("fairy");
         break;
     }
   }
 
-  void assignKey() {
-    switch (view) {
+  void _assignKey() {
+    switch (_view) {
       case pokedex:
-        pokedexKey ??= const PageStorageKey(pokedex);
-        generalKey = pokedexKey;
+        _pokedexKey ??= const PageStorageKey(pokedex);
+        _generalKey = _pokedexKey;
         break;
       case favorites:
-        favoritesKey ??= const PageStorageKey(favorites);
-        generalKey = favoritesKey;
+        _favoritesKey ??= const PageStorageKey(favorites);
+        _generalKey = _favoritesKey;
         break;
     }
   }
 
-  void updateSearchView() {
+  void _updateSearchView() {
     setState(() {});
   }
 
   @override
   void initState() {
-    view = widget.view;
+    _view = widget.view;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    assignKey();
+    _assignKey();
     if (!_filtersBloc.isClosed) {
-      _filtersBloc.add(GetPokemonList(generalQuery, ordering, types, view!));
+      _filtersBloc
+          .add(GetPokemonList(_generalQuery, _ordering, _types, _view!));
     }
     return Scaffold(
       body: Column(
@@ -236,10 +239,10 @@ class SearchViewState extends State<SearchView> {
                 prefixIcon: const Icon(Icons.search),
                 prefixIconColor: Colors.grey),
             onChanged: (query) {
-              generalQuery = query;
+              _generalQuery = query;
               if (!_filtersBloc.isClosed) {
-                _filtersBloc
-                    .add(GetPokemonList(generalQuery, ordering, types, view!));
+                _filtersBloc.add(
+                    GetPokemonList(_generalQuery, _ordering, _types, _view!));
               }
             },
           ),
@@ -255,36 +258,36 @@ class SearchViewState extends State<SearchView> {
                       ToggleButtons(
                           direction: Axis.vertical,
                           renderBorder: false,
-                          isSelected: isSelectedAZ,
+                          isSelected: _isSelectedAZ,
                           onPressed: (index) {
-                            for (int i = 0; i < isSelectedAZ.length; i++) {
+                            for (int i = 0; i < _isSelectedAZ.length; i++) {
                               if (i == index) {
                                 setState(() {
-                                  isSelectedAZ[i] = !isSelectedAZ[i];
+                                  _isSelectedAZ[i] = !_isSelectedAZ[i];
                                 });
                               } else {
                                 setState(() {
-                                  isSelectedAZ[i] = false;
+                                  _isSelectedAZ[i] = false;
                                 });
                               }
                             }
-                            if (index == 0 && isSelectedAZ[index]) {
-                              ordering = "az";
+                            if (index == 0 && _isSelectedAZ[index]) {
+                              _ordering = "az";
                               if (!_filtersBloc.isClosed) {
                                 _filtersBloc.add(GetPokemonList(
-                                    generalQuery, ordering, types, view!));
+                                    _generalQuery, _ordering, _types, _view!));
                               }
-                            } else if (index == 1 && isSelectedAZ[index]) {
+                            } else if (index == 1 && _isSelectedAZ[index]) {
                               if (!_filtersBloc.isClosed) {
-                                ordering = "za";
+                                _ordering = "za";
                                 _filtersBloc.add(GetPokemonList(
-                                    generalQuery, ordering, types, view!));
+                                    _generalQuery, _ordering, _types, _view!));
                               }
-                            } else if (!isSelectedAZ[0] && !isSelectedAZ[1]) {
+                            } else if (!_isSelectedAZ[0] && !_isSelectedAZ[1]) {
                               if (!_filtersBloc.isClosed) {
-                                ordering = "";
+                                _ordering = "";
                                 _filtersBloc.add(GetPokemonList(
-                                    generalQuery, ordering, types, view!));
+                                    _generalQuery, _ordering, _types, _view!));
                               }
                             }
                           },
@@ -297,29 +300,29 @@ class SearchViewState extends State<SearchView> {
                       ToggleButtons(
                           direction: Axis.vertical,
                           renderBorder: false,
-                          isSelected: isSelectedTypes,
+                          isSelected: _isSelectedTypes,
                           onPressed: (index) {
-                            if (isSelectedTypes[index]) {
+                            if (_isSelectedTypes[index]) {
                               setState(() {
-                                isSelectedTypes[index] =
-                                    !isSelectedTypes[index];
+                                _isSelectedTypes[index] =
+                                    !_isSelectedTypes[index];
                               });
 
-                              removeTypes(index);
+                              _removeTypes(index);
                               if (!_filtersBloc.isClosed) {
                                 _filtersBloc.add(GetPokemonList(
-                                    generalQuery, ordering, types, view!));
+                                    _generalQuery, _ordering, _types, _view!));
                               }
-                            } else if (allowedSelection()) {
+                            } else if (_allowedSelection()) {
                               setState(() {
-                                isSelectedTypes[index] =
-                                    !isSelectedTypes[index];
+                                _isSelectedTypes[index] =
+                                    !_isSelectedTypes[index];
                               });
 
-                              addTypes(index);
+                              _addTypes(index);
                               if (!_filtersBloc.isClosed) {
                                 _filtersBloc.add(GetPokemonList(
-                                    generalQuery, ordering, types, view!));
+                                    _generalQuery, _ordering, _types, _view!));
                               }
                             }
                           },
@@ -354,7 +357,7 @@ class SearchViewState extends State<SearchView> {
                   child: BlocBuilder<DomainBloc, DomainState>(
                     builder: (context, state) {
                       if (state is DomainStateLoadedPokemonList) {
-                        pokemons = state.pokemons;
+                        _pokemons = state.pokemons;
                         if (!_favoritesListBloc.isClosed) {
                           _favoritesListBloc
                               .add(const GetPokemonList("", "", [], favorites));
@@ -364,23 +367,23 @@ class SearchViewState extends State<SearchView> {
                           child: BlocBuilder<DomainBloc, DomainState>(
                             builder: (context, state) {
                               if (state is DomainStateLoadedPokemonList) {
-                                favoritesList = state.pokemons;
+                                _favoritesList = state.pokemons;
                                 return Expanded(
                                   child: RefreshIndicator(
                                     onRefresh: _pullRefresh,
                                     child: BlocProvider.value(
                                       value: _favoritesBloc,
                                       child: ListView.builder(
-                                        key: generalKey,
+                                        key: _generalKey,
                                         padding: EdgeInsets.zero,
-                                        itemCount: pokemons!.length,
+                                        itemCount: _pokemons!.length,
                                         itemBuilder: (context, index) {
                                           bool favorite = false;
                                           for (int i = 0;
-                                              i < favoritesList!.length;
+                                              i < _favoritesList!.length;
                                               i++) {
-                                            if (pokemons![index].name ==
-                                                favoritesList![i].name) {
+                                            if (_pokemons![index].name ==
+                                                _favoritesList![i].name) {
                                               favorite = true;
                                               break;
                                             }
@@ -393,8 +396,8 @@ class SearchViewState extends State<SearchView> {
                                                   Navigator.of(context)
                                                       .pushNamed(detailRoute,
                                                           arguments: [
-                                                        pokemons![index],
-                                                        updateSearchView
+                                                        _pokemons![index],
+                                                        _updateSearchView
                                                       ]);
                                                 },
                                                 child: Container(
@@ -444,21 +447,21 @@ class SearchViewState extends State<SearchView> {
                                                                               () {
                                                                             if (!favorite) {
                                                                               if (!_favoritesBloc.isClosed) {
-                                                                                _favoritesBloc.add(AddFavoriteEvent(pokemons![index].name));
+                                                                                _favoritesBloc.add(AddFavoriteEvent(_pokemons![index].name));
                                                                                 favorite = !favorite;
-                                                                                favoritesList!.add(pokemons![index]);
+                                                                                _favoritesList!.add(_pokemons![index]);
                                                                               }
                                                                             } else {
-                                                                              if (view == pokedex) {
+                                                                              if (_view == pokedex) {
                                                                                 if (!_favoritesBloc.isClosed) {
-                                                                                  _favoritesBloc.add(RemoveFavoriteEvent(pokemons![index].name));
+                                                                                  _favoritesBloc.add(RemoveFavoriteEvent(_pokemons![index].name));
                                                                                   favorite = !favorite;
-                                                                                  favoritesList!.remove(pokemons![index]);
+                                                                                  _favoritesList!.remove(_pokemons![index]);
                                                                                 }
                                                                               } else {
                                                                                 setState(() {
                                                                                   if (!_favoritesBloc.isClosed) {
-                                                                                    _favoritesBloc.add(RemoveFavoriteEvent(pokemons![index].name));
+                                                                                    _favoritesBloc.add(RemoveFavoriteEvent(_pokemons![index].name));
                                                                                     favorite = !favorite;
                                                                                   }
                                                                                 });
@@ -492,7 +495,7 @@ class SearchViewState extends State<SearchView> {
                                                               width: 85,
                                                             ),
                                                             Image.network(
-                                                              pokemons![index]
+                                                              _pokemons![index]
                                                                   .sprites
                                                                   .frontDefault!,
                                                               fit: BoxFit.fill,
@@ -527,7 +530,7 @@ class SearchViewState extends State<SearchView> {
                                                                   ),
                                                                   Expanded(
                                                                     child: Text(
-                                                                      pokemons![
+                                                                      _pokemons![
                                                                               index]
                                                                           .name,
                                                                       overflow:
@@ -538,7 +541,7 @@ class SearchViewState extends State<SearchView> {
                                                                   const SizedBox(
                                                                     width: 35,
                                                                   ),
-                                                                  if (pokemons![
+                                                                  if (_pokemons![
                                                                               index]
                                                                           .types
                                                                           .length <
@@ -550,7 +553,7 @@ class SearchViewState extends State<SearchView> {
                                                                           Row(
                                                                         children: [
                                                                           Image.asset(
-                                                                              "assets/${pokemons![index].types[0].type!.name!}.png"),
+                                                                              "assets/${_pokemons![index].types[0].type!.name!}.png"),
                                                                           const SizedBox(
                                                                             width:
                                                                                 55,
@@ -566,9 +569,9 @@ class SearchViewState extends State<SearchView> {
                                                                           Row(
                                                                         children: [
                                                                           Image.asset(
-                                                                              "assets/${pokemons![index].types[0].type!.name!}.png"),
+                                                                              "assets/${_pokemons![index].types[0].type!.name!}.png"),
                                                                           Image.asset(
-                                                                              "assets/${pokemons![index].types[1].type!.name!}.png"),
+                                                                              "assets/${_pokemons![index].types[1].type!.name!}.png"),
                                                                         ],
                                                                       ), //
                                                                     ),

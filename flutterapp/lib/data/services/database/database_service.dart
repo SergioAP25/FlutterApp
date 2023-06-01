@@ -26,13 +26,13 @@ class PokemonService {
 
   Future<void> _ensureDbIsOpen() async {
     try {
-      await open();
+      await _open();
     } on DatabaseAlreadyOpen {
       //empty
     }
   }
 
-  Database getDatabaseOrThrow() {
+  Database _getDatabaseOrThrow() {
     final db = _db;
     if (db == null) {
       throw DatabaseIsNotOpen();
@@ -41,7 +41,7 @@ class PokemonService {
     }
   }
 
-  Future<void> open() async {
+  Future<void> _open() async {
     if (_db != null) {
       throw DatabaseAlreadyOpen();
     }
@@ -71,7 +71,7 @@ class PokemonService {
 
   Future<void> insertPokemon({required FilteredPokemonModel pokemon}) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
     await db.insert(
         pokemonTable,
         {
@@ -89,7 +89,7 @@ class PokemonService {
   Future<void> insertDescription(
       {required DescriptionModel description}) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
     await db.insert(
       descriptionTable,
       {
@@ -102,7 +102,7 @@ class PokemonService {
 
   Future<void> insertFavorite({required String name}) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
     await db.insert(
       favoriteTable,
       {pokemonNameColumn: name},
@@ -111,14 +111,14 @@ class PokemonService {
 
   Future<void> deleteFavorite({required String name}) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
     await db.delete(favoriteTable, where: "pokemonName = ?", whereArgs: [name]);
   }
 
   Future<Iterable<PokemonDatabaseModel>> getPokemonByName(
       {required String name}) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final results = await db.query(
       pokemonTable,
@@ -133,7 +133,7 @@ class PokemonService {
   Future<Iterable<PokemonDatabaseModel>> getPokemonByNameAZ(
       {required String name}) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final results = await db.query(
       pokemonTable,
@@ -148,7 +148,7 @@ class PokemonService {
   Future<Iterable<PokemonDatabaseModel>> getPokemonByNameZA(
       {required String name}) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final results = await db.query(
       pokemonTable,
@@ -163,7 +163,7 @@ class PokemonService {
   Future<Iterable<PokemonDatabaseModel>> getPokemonByNameFilteredByType(
       {required String name, required String type}) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final results = await db.query(
       pokemonTable,
@@ -180,7 +180,7 @@ class PokemonService {
       required String type1,
       required String type2}) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final results = await db.query(
       pokemonTable,
@@ -195,7 +195,7 @@ class PokemonService {
   Future<Iterable<PokemonDatabaseModel>> getPokemonByNameFilteredByTypeAZ(
       {required String name, required String type}) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final results = await db.query(
       pokemonTable,
@@ -210,7 +210,7 @@ class PokemonService {
   Future<Iterable<PokemonDatabaseModel>> getPokemonByNameFilteredByTypeZA(
       {required String name, required String type}) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final results = await db.query(
       pokemonTable,
@@ -227,7 +227,7 @@ class PokemonService {
       required String type1,
       required String type2}) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final results = await db.query(
       pokemonTable,
@@ -244,7 +244,7 @@ class PokemonService {
       required String type1,
       required String type2}) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final results = await db.query(
       pokemonTable,
@@ -260,7 +260,7 @@ class PokemonService {
     required String name,
   }) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final results = await db.rawQuery(
         "SELECT * FROM pokemon p, favorite f WHERE p.name = f.pokemonName AND name LIKE ?",
@@ -274,7 +274,7 @@ class PokemonService {
     required String name,
   }) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final results = await db.rawQuery(
         "SELECT * FROM pokemon p, favorite f WHERE p.name = f.pokemonName AND name LIKE ? ORDER BY pokemonName ASC",
@@ -288,7 +288,7 @@ class PokemonService {
     required String name,
   }) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final results = await db.rawQuery(
         "SELECT * FROM pokemon p, favorite f WHERE p.name = f.pokemonName AND name LIKE ? ORDER BY pokemonName DESC",
@@ -301,7 +301,7 @@ class PokemonService {
   Future<Iterable<PokemonDatabaseModel>> getFavoritePokemonByNameFilteredByType(
       {required String name, required String type}) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final results = await db.rawQuery(
         "SELECT * FROM pokemon p, favorite f WHERE p.name = f.pokemonName AND name LIKE ? AND types LIKE ?",
@@ -317,7 +317,7 @@ class PokemonService {
           required String type1,
           required String type2}) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final results = await db.rawQuery(
         "SELECT * FROM pokemon p, favorite f WHERE p.name = f.pokemonName AND name LIKE ? AND types LIKE ? AND types LIKE ?",
@@ -331,7 +331,7 @@ class PokemonService {
       getFavoritePokemonByNameFilteredByTypeAZ(
           {required String name, required String type}) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final results = await db.rawQuery(
         "SELECT * FROM pokemon p, favorite f WHERE p.name = f.pokemonName AND name LIKE ? AND types LIKE ? ORDER BY pokemonName ASC",
@@ -345,7 +345,7 @@ class PokemonService {
       getFavoritePokemonByNameFilteredByTypeZA(
           {required String name, required String type}) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final results = await db.rawQuery(
         "SELECT * FROM pokemon p, favorite f WHERE p.name = f.pokemonName AND name LIKE ? AND types LIKE ? ORDER BY pokemonName DESC",
@@ -361,7 +361,7 @@ class PokemonService {
           required String type1,
           required String type2}) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final results = await db.rawQuery(
         "SELECT * FROM pokemon p, favorite f WHERE p.name = f.pokemonName AND name LIKE ? AND types LIKE ? AND types LIKE ? ORDER BY pokemonName ASC",
@@ -377,7 +377,7 @@ class PokemonService {
           required String type1,
           required String type2}) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final results = await db.rawQuery(
         "SELECT * FROM pokemon p, favorite f WHERE p.name = f.pokemonName AND name LIKE ? AND types LIKE ? AND types LIKE ? ORDER BY pokemonName DESC",
@@ -391,7 +391,7 @@ class PokemonService {
     required String name,
   }) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final results = await db.rawQuery(
         "SELECT * FROM pokemon p, description d WHERE p.id = d.description_id AND name = ?",
@@ -401,7 +401,7 @@ class PokemonService {
 
   Future<PokemonDatabaseModel> getRandomPokemon() async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final result =
         await db.rawQuery("SELECT * FROM pokemon ORDER BY RANDOM () LIMIT 1.");
@@ -411,7 +411,7 @@ class PokemonService {
 
   Future<int> countPokemons() async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final result = await db.rawQuery("SELECT COUNT(*) FROM pokemon");
     return result.first["COUNT(*)"] as int;
@@ -419,7 +419,7 @@ class PokemonService {
 
   Future<int> countDescriptions() async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final result = await db.rawQuery("SELECT COUNT(*) FROM description");
 
@@ -428,7 +428,7 @@ class PokemonService {
 
   Future<bool> exists(String name) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final result = await db.rawQuery(
         "SELECT (SELECT COUNT(*) FROM pokemon WHERE name = ?) == 1", [name]);
@@ -441,7 +441,7 @@ class PokemonService {
 
   Future<bool> isFavorite(String name) async {
     await _ensureDbIsOpen();
-    final db = getDatabaseOrThrow();
+    final db = _getDatabaseOrThrow();
 
     final result = await db.rawQuery(
         "SELECT (SELECT COUNT(*) FROM favorite WHERE pokemonName = ?) == 1",
