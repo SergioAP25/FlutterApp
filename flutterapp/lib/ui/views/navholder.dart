@@ -24,6 +24,8 @@ class _NavHolderState extends State<NavHolder> {
 
   late List<GlobalKey<SearchViewState>> _searchViewKeys;
 
+  List<Widget> _screens = [];
+
   final DomainBloc _getPokemonsBloc = DomainBloc();
 
   @override
@@ -33,6 +35,13 @@ class _NavHolderState extends State<NavHolder> {
 
     _searchViewKeys = List<GlobalKey<SearchViewState>>.generate(
         2, (_) => GlobalKey<SearchViewState>());
+
+    _screens = [
+      DetailView(view: home),
+      SearchView(key: _searchViewKeys[0], view: pokedex),
+      SearchView(key: _searchViewKeys[1], view: favorites),
+      Options(user: user),
+    ];
 
     _getPokemonsBloc.add(const GetPokemonsEvent());
   }
@@ -44,21 +53,21 @@ class _NavHolderState extends State<NavHolder> {
       child: BlocBuilder<DomainBloc, DomainState>(
         builder: (context, state) {
           return Scaffold(
-            body: IndexedStack(
-              index: _selectedIndex,
-              children: <Widget>[
-                DetailView(view: home),
-                SearchView(key: _searchViewKeys[0], view: pokedex),
-                SearchView(key: _searchViewKeys[1], view: favorites),
-                Options(user: user),
-              ],
-            ),
+            body: IndexedStack(index: _selectedIndex, children: _screens),
             bottomNavigationBar: BottomNavigationBar(
               fixedColor: const Color.fromARGB(255, 41, 41, 41),
               unselectedItemColor: const Color.fromARGB(255, 41, 41, 41),
               type: BottomNavigationBarType.shifting,
               currentIndex: _selectedIndex,
               onTap: (index) {
+                if (index == 0) {
+                  _screens.removeAt(0);
+
+                  _screens.insert(
+                    0,
+                    DetailView(view: home),
+                  );
+                }
                 setState(() {
                   _selectedIndex = index;
                 });

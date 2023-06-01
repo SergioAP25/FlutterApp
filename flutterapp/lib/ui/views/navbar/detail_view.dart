@@ -58,14 +58,14 @@ class _DetailViewState extends State<DetailView> {
   @override
   void initState() {
     view = widget.view;
-    if (!_randomPokemonBloc.isClosed) {
-      _randomPokemonBloc.add(const GetRandomPokemonEvent());
-    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    if (!_randomPokemonBloc.isClosed) {
+      _randomPokemonBloc.add(const GetRandomPokemonEvent());
+    }
     return BlocProvider(
       create: (context) => _randomPokemonBloc,
       child: BlocBuilder<DomainBloc, DomainState>(
