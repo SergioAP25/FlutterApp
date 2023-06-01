@@ -115,13 +115,18 @@ class _DetailViewState extends State<DetailView> {
                                                 _favoriteBloc.add(
                                                     AddFavoriteEvent(
                                                         pokemon!.name));
-                                                updateSearchView!();
+                                                if (view == detail) {
+                                                  updateSearchView!();
+                                                }
                                               }
                                             } else {
                                               if (!_favoriteBloc.isClosed) {
                                                 _favoriteBloc.add(
                                                     RemoveFavoriteEvent(
                                                         pokemon!.name));
+                                                if (view == detail) {
+                                                  updateSearchView!();
+                                                }
                                               }
                                             }
                                           },

@@ -21,6 +21,9 @@ class SearchView extends StatefulWidget {
 class SearchViewState extends State<SearchView> {
   List<FilteredPokemonModel>? pokemons = [];
   List<FilteredPokemonModel>? favoritesList = [];
+  PageStorageKey? pokedexKey;
+  PageStorageKey? favoritesKey;
+  PageStorageKey? generalKey;
   String generalQuery = "";
   String ordering = "";
   List<String> types = [];
@@ -191,12 +194,26 @@ class SearchViewState extends State<SearchView> {
     }
   }
 
+  void assignKey() {
+    switch (widget.view) {
+      case pokedex:
+        pokedexKey ??= const PageStorageKey(pokedex);
+        generalKey = pokedexKey;
+        break;
+      case favorites:
+        favoritesKey ??= const PageStorageKey(favorites);
+        generalKey = favoritesKey;
+        break;
+    }
+  }
+
   void updateSearchView() {
     setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
+    assignKey();
     if (!_filtersBloc.isClosed) {
       _filtersBloc
           .add(GetPokemonList(generalQuery, ordering, types, widget.view));
@@ -352,6 +369,7 @@ class SearchViewState extends State<SearchView> {
                                     child: BlocProvider.value(
                                       value: _favoritesBloc,
                                       child: ListView.builder(
+                                        key: generalKey,
                                         padding: EdgeInsets.zero,
                                         itemCount: pokemons!.length,
                                         itemBuilder: (context, index) {

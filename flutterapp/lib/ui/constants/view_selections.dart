@@ -1,5 +1,5 @@
-String home = "HOME";
-String detail = "DETAIL";
+const String home = "HOME";
+const String detail = "DETAIL";
 
-String pokedex = "POKEDEX";
-String favorites = "FAVORITES";
+const String pokedex = "POKEDEX";
+const String favorites = "FAVORITES";
