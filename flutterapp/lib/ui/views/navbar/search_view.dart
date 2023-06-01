@@ -385,6 +385,7 @@ class SearchViewState extends State<SearchView> {
                                               break;
                                             }
                                           }
+
                                           return Column(
                                             children: [
                                               GestureDetector(
@@ -445,12 +446,14 @@ class SearchViewState extends State<SearchView> {
                                                                               if (!_favoritesBloc.isClosed) {
                                                                                 _favoritesBloc.add(AddFavoriteEvent(pokemons![index].name));
                                                                                 favorite = !favorite;
+                                                                                favoritesList!.add(pokemons![index]);
                                                                               }
                                                                             } else {
                                                                               if (view == pokedex) {
                                                                                 if (!_favoritesBloc.isClosed) {
                                                                                   _favoritesBloc.add(RemoveFavoriteEvent(pokemons![index].name));
                                                                                   favorite = !favorite;
+                                                                                  favoritesList!.remove(pokemons![index]);
                                                                                 }
                                                                               } else {
                                                                                 setState(() {
