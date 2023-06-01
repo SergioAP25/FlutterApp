@@ -32,6 +32,8 @@ class SearchViewState extends State<SearchView> {
   PageStorageKey? _favoritesKey;
   PageStorageKey? _generalKey;
 
+  late final TextEditingController _searchBarController;
+
   final List<bool> _isSelectedAZ = [false, false];
   final List<bool> _isSelectedTypes = [
     false,
@@ -213,7 +215,14 @@ class SearchViewState extends State<SearchView> {
   @override
   void initState() {
     _view = widget.view;
+    _searchBarController = TextEditingController();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _searchBarController.dispose();
+    super.dispose();
   }
 
   @override
@@ -231,13 +240,29 @@ class SearchViewState extends State<SearchView> {
             height: 20.0,
           ),
           TextField(
+            controller: _searchBarController,
             decoration: InputDecoration(
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     borderSide: BorderSide.none),
                 hintText: "Search here",
                 prefixIcon: const Icon(Icons.search),
-                prefixIconColor: Colors.grey),
+                prefixIconColor: Colors.grey,
+                suffixIcon: IconButton(
+                  icon: const Icon(
+                    Icons.clear,
+                    color: Colors.grey,
+                  ),
+                  splashRadius: 25,
+                  onPressed: () {
+                    _searchBarController.clear();
+                    _generalQuery = "";
+                    if (!_filtersBloc.isClosed) {
+                      _filtersBloc.add(GetPokemonList(
+                          _generalQuery, _ordering, _types, _view!));
+                    }
+                  },
+                )),
             onChanged: (query) {
               _generalQuery = query;
               if (!_filtersBloc.isClosed) {
