@@ -427,8 +427,8 @@ class _DetailViewState extends State<DetailView> {
                                   const SizedBox(
                                     height: 25,
                                   ),
-                                  BlocProvider(
-                                    create: (context) => _descriptionBloc,
+                                  BlocProvider.value(
+                                    value: _descriptionBloc,
                                     child: BlocBuilder<DomainBloc, DomainState>(
                                       builder: (context, state) {
                                         if (state
