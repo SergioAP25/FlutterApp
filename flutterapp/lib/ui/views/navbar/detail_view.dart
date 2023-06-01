@@ -19,6 +19,8 @@ class DetailView extends StatefulWidget {
 
 class _DetailViewState extends State<DetailView> {
   FilteredPokemonModel? pokemon;
+  List<Object>? args;
+  Function? updateSearchView;
   bool? favorite;
   String? description;
   String? view;
@@ -39,7 +41,9 @@ class _DetailViewState extends State<DetailView> {
     if (view == home) {
       pokemon = statePokemon;
     } else if (view == detail) {
-      pokemon = context.getArgument<FilteredPokemonModel>();
+      args = ModalRoute.of(context)!.settings.arguments as List<Object>;
+      pokemon = args![0] as FilteredPokemonModel;
+      updateSearchView = args![1] as Function;
     }
   }
 
@@ -111,6 +115,7 @@ class _DetailViewState extends State<DetailView> {
                                                 _favoriteBloc.add(
                                                     AddFavoriteEvent(
                                                         pokemon!.name));
+                                                updateSearchView!();
                                               }
                                             } else {
                                               if (!_favoriteBloc.isClosed) {

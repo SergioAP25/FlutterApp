@@ -18,11 +18,7 @@ class SearchView extends StatefulWidget {
   State<SearchView> createState() => SearchViewState();
 }
 
-class SearchViewState extends State<SearchView>
-    with AutomaticKeepAliveClientMixin {
-  @override
-  bool get wantKeepAlive => true;
-
+class SearchViewState extends State<SearchView> {
   List<FilteredPokemonModel>? pokemons = [];
   List<FilteredPokemonModel>? favoritesList = [];
   String generalQuery = "";
@@ -193,6 +189,10 @@ class SearchViewState extends State<SearchView>
         types.add("fairy");
         break;
     }
+  }
+
+  void updateSearchView() {
+    setState(() {});
   }
 
   @override
@@ -371,8 +371,10 @@ class SearchViewState extends State<SearchView>
                                                 onTap: () {
                                                   Navigator.of(context)
                                                       .pushNamed(detailRoute,
-                                                          arguments:
-                                                              pokemons![index]);
+                                                          arguments: [
+                                                        pokemons![index],
+                                                        updateSearchView
+                                                      ]);
                                                 },
                                                 child: Container(
                                                   decoration:
