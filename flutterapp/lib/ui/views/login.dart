@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterapp/data/services/auth/bloc/auth_state.dart';
-
-import '../../data/services/auth/auth_service.dart';
 import '../../data/services/auth/bloc/auth_bloc.dart';
 import '../../data/services/auth/bloc/auth_event.dart';
 import '../../data/services/auth/exceptions/auth_exceptions.dart';

@@ -1,2 +1,2 @@
-String basic = "BASIC";
-String google = "GOOGLE";
+const String basic = "BASIC";
+const String google = "GOOGLE";

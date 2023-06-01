@@ -15,7 +15,7 @@ class ApiService {
   ApiService._sharedInstance();
 
   Future<PokemonApiModel> getAllPokemons() async {
-    const endpoint = base_url + allPokemons;
+    const endpoint = baseUrl + allPokemons;
     final uri = Uri.parse(endpoint);
     final response = await http.get(uri);
     final json = jsonDecode(response.body);

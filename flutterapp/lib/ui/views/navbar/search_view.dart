@@ -216,7 +216,6 @@ class SearchViewState extends State<SearchView> {
 
   @override
   Widget build(BuildContext context) {
-    print(view);
     assignKey();
     if (!_filtersBloc.isClosed) {
       _filtersBloc.add(GetPokemonList(generalQuery, ordering, types, view!));
@@ -358,7 +357,7 @@ class SearchViewState extends State<SearchView> {
                         pokemons = state.pokemons;
                         if (!_favoritesListBloc.isClosed) {
                           _favoritesListBloc
-                              .add(GetPokemonList("", "", const [], favorites));
+                              .add(const GetPokemonList("", "", [], favorites));
                         }
                         return BlocProvider.value(
                           value: _favoritesListBloc,

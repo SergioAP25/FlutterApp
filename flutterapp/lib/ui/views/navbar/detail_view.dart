@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterapp/domain/bloc/domain_event.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
-import 'package:flutterapp/util/generics/get_arguments.dart';
 import '../../../constants/routes.dart';
 import '../../../domain/bloc/domain_bloc.dart';
 import '../../../domain/bloc/domain_state.dart';

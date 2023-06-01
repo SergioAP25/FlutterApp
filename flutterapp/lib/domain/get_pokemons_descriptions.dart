@@ -1,7 +1,5 @@
 import 'package:flutterapp/domain/models/description_pokemon_model.dart';
-
 import '../data/services/repository.dart';
-import 'models/filtered_pokemon_model.dart';
 
 class GetPokemonsDescriptions {
   final PokemonRepository _repository = PokemonRepository();

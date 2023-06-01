@@ -66,6 +66,9 @@ class _NavHolderState extends State<NavHolder> {
 
                     _screens.insert(
                       0,
+                      // If this line was constant info wouldn't change
+                      // when entering home
+                      // ignore: prefer_const_constructors
                       DetailView(view: home),
                     );
                     break;

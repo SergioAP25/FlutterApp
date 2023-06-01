@@ -7,16 +7,16 @@ class DescriptionApiModel {
     if (json['flavor_text_entries'] != null) {
       flavorTextEntries = <FlavorTextEntries>[];
       json['flavor_text_entries'].forEach((v) {
-        flavorTextEntries!.add(new FlavorTextEntries.fromJson(v));
+        flavorTextEntries!.add(FlavorTextEntries.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.flavorTextEntries != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (flavorTextEntries != null) {
       data['flavor_text_entries'] =
-          this.flavorTextEntries!.map((v) => v.toJson()).toList();
+          flavorTextEntries!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -30,16 +30,15 @@ class FlavorTextEntries {
 
   FlavorTextEntries.fromJson(Map<String, dynamic> json) {
     flavorText = json['flavor_text'];
-    language = json['language'] != null
-        ? new Language.fromJson(json['language'])
-        : null;
+    language =
+        json['language'] != null ? Language.fromJson(json['language']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['flavor_text'] = this.flavorText;
-    if (this.language != null) {
-      data['language'] = this.language!.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['flavor_text'] = flavorText;
+    if (language != null) {
+      data['language'] = language!.toJson();
     }
     return data;
   }
@@ -55,8 +54,8 @@ class Language {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
     return data;
   }
 }
