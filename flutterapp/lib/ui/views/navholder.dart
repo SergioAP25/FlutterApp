@@ -60,14 +60,34 @@ class _NavHolderState extends State<NavHolder> {
               type: BottomNavigationBarType.shifting,
               currentIndex: _selectedIndex,
               onTap: (index) {
-                if (index == 0) {
-                  _screens.removeAt(0);
+                switch (index) {
+                  case 0:
+                    _screens.removeAt(0);
 
-                  _screens.insert(
-                    0,
-                    DetailView(view: home),
-                  );
+                    _screens.insert(
+                      0,
+                      DetailView(view: home),
+                    );
+                    break;
+
+                  case 1:
+                    _screens.removeAt(1);
+
+                    _screens.insert(
+                      1,
+                      SearchView(key: _searchViewKeys[0], view: pokedex),
+                    );
+                    break;
+                  case 2:
+                    _screens.removeAt(2);
+
+                    _screens.insert(
+                      2,
+                      SearchView(key: _searchViewKeys[1], view: favorites),
+                    );
+                    break;
                 }
+
                 setState(() {
                   _selectedIndex = index;
                 });
