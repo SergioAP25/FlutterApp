@@ -1,12 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterapp/constants/routes.dart';
 import 'package:flutterapp/domain/bloc/domain_event.dart';
 import 'package:flutterapp/domain/models/filtered_pokemon_model.dart';
 import 'package:flutterapp/ui/constants/view_selections.dart';
-import '../../../data/services/repository.dart';
 import '../../../domain/bloc/domain_bloc.dart';
 import '../../../domain/bloc/domain_state.dart';
 
@@ -19,18 +16,18 @@ class SearchView extends StatefulWidget {
 }
 
 class SearchViewState extends State<SearchView> {
+  String? view;
   List<FilteredPokemonModel>? pokemons = [];
   List<FilteredPokemonModel>? favoritesList = [];
-  PageStorageKey? pokedexKey;
-  PageStorageKey? favoritesKey;
-  PageStorageKey? generalKey;
   String generalQuery = "";
   String ordering = "";
   List<String> types = [];
   final DomainBloc _filtersBloc = DomainBloc();
   final DomainBloc _favoritesListBloc = DomainBloc();
   final DomainBloc _favoritesBloc = DomainBloc();
-  PokemonRepository repo = PokemonRepository();
+  PageStorageKey? pokedexKey;
+  PageStorageKey? favoritesKey;
+  PageStorageKey? generalKey;
 
   bool? favorite;
   List<bool> isSelectedAZ = [false, false];
@@ -195,7 +192,7 @@ class SearchViewState extends State<SearchView> {
   }
 
   void assignKey() {
-    switch (widget.view) {
+    switch (view) {
       case pokedex:
         pokedexKey ??= const PageStorageKey(pokedex);
         generalKey = pokedexKey;
@@ -212,11 +209,17 @@ class SearchViewState extends State<SearchView> {
   }
 
   @override
+  void initState() {
+    view = widget.view;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    print(view);
     assignKey();
     if (!_filtersBloc.isClosed) {
-      _filtersBloc
-          .add(GetPokemonList(generalQuery, ordering, types, widget.view));
+      _filtersBloc.add(GetPokemonList(generalQuery, ordering, types, view!));
     }
     return Scaffold(
       body: Column(
@@ -236,8 +239,8 @@ class SearchViewState extends State<SearchView> {
             onChanged: (query) {
               generalQuery = query;
               if (!_filtersBloc.isClosed) {
-                _filtersBloc.add(
-                    GetPokemonList(generalQuery, ordering, types, widget.view));
+                _filtersBloc
+                    .add(GetPokemonList(generalQuery, ordering, types, view!));
               }
             },
           ),
@@ -269,20 +272,20 @@ class SearchViewState extends State<SearchView> {
                             if (index == 0 && isSelectedAZ[index]) {
                               ordering = "az";
                               if (!_filtersBloc.isClosed) {
-                                _filtersBloc.add(GetPokemonList(generalQuery,
-                                    ordering, types, widget.view));
+                                _filtersBloc.add(GetPokemonList(
+                                    generalQuery, ordering, types, view!));
                               }
                             } else if (index == 1 && isSelectedAZ[index]) {
                               if (!_filtersBloc.isClosed) {
                                 ordering = "za";
-                                _filtersBloc.add(GetPokemonList(generalQuery,
-                                    ordering, types, widget.view));
+                                _filtersBloc.add(GetPokemonList(
+                                    generalQuery, ordering, types, view!));
                               }
                             } else if (!isSelectedAZ[0] && !isSelectedAZ[1]) {
                               if (!_filtersBloc.isClosed) {
                                 ordering = "";
-                                _filtersBloc.add(GetPokemonList(generalQuery,
-                                    ordering, types, widget.view));
+                                _filtersBloc.add(GetPokemonList(
+                                    generalQuery, ordering, types, view!));
                               }
                             }
                           },
@@ -305,8 +308,8 @@ class SearchViewState extends State<SearchView> {
 
                               removeTypes(index);
                               if (!_filtersBloc.isClosed) {
-                                _filtersBloc.add(GetPokemonList(generalQuery,
-                                    ordering, types, widget.view));
+                                _filtersBloc.add(GetPokemonList(
+                                    generalQuery, ordering, types, view!));
                               }
                             } else if (allowedSelection()) {
                               setState(() {
@@ -316,8 +319,8 @@ class SearchViewState extends State<SearchView> {
 
                               addTypes(index);
                               if (!_filtersBloc.isClosed) {
-                                _filtersBloc.add(GetPokemonList(generalQuery,
-                                    ordering, types, widget.view));
+                                _filtersBloc.add(GetPokemonList(
+                                    generalQuery, ordering, types, view!));
                               }
                             }
                           },
@@ -445,7 +448,7 @@ class SearchViewState extends State<SearchView> {
                                                                                 favorite = !favorite;
                                                                               }
                                                                             } else {
-                                                                              if (widget.view == pokedex) {
+                                                                              if (view == pokedex) {
                                                                                 if (!_favoritesBloc.isClosed) {
                                                                                   _favoritesBloc.add(RemoveFavoriteEvent(pokemons![index].name));
                                                                                   favorite = !favorite;

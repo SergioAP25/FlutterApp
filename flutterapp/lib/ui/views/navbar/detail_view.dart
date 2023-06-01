@@ -37,7 +37,7 @@ class _DetailViewState extends State<DetailView> {
     }
   }
 
-  void assignList(FilteredPokemonModel statePokemon) {
+  void _assignList(FilteredPokemonModel statePokemon) {
     if (view == home) {
       pokemon = statePokemon;
     } else if (view == detail) {
@@ -47,7 +47,7 @@ class _DetailViewState extends State<DetailView> {
     }
   }
 
-  String? getEnglishDescription(DescriptionModel? description) {
+  String? _getEnglishDescription(DescriptionModel? description) {
     String? englishDescription = "";
     for (int i = 0; i < description!.description.length; i++) {
       if (description.description[i].language!.name == "en") {
@@ -75,7 +75,7 @@ class _DetailViewState extends State<DetailView> {
       child: BlocBuilder<DomainBloc, DomainState>(
         builder: (context, state) {
           if (state is DomainStateLoadedRandomPokemon) {
-            assignList(state.pokemon);
+            _assignList(state.pokemon);
             if (!_descriptionBloc.isClosed) {
               _descriptionBloc.add(GetDescriptionEvent(pokemon!.name));
             }
@@ -443,7 +443,7 @@ class _DetailViewState extends State<DetailView> {
                                       builder: (context, state) {
                                         if (state
                                             is DomainStateLoadedDescription) {
-                                          description = getEnglishDescription(
+                                          description = _getEnglishDescription(
                                               state.description);
                                           return Column(
                                             children: [

@@ -37,7 +37,7 @@ class _NavHolderState extends State<NavHolder> {
         2, (_) => GlobalKey<SearchViewState>());
 
     _screens = [
-      DetailView(view: home),
+      const DetailView(view: home),
       SearchView(key: _searchViewKeys[0], view: pokedex),
       SearchView(key: _searchViewKeys[1], view: favorites),
       Options(user: user),
