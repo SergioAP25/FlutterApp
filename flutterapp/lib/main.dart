@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         child: const StartingPage(),
       ),
       routes: {
-        detailRoute: (context) => DetailView(
+        detailRoute: (context) => const DetailView(
               view: detail,
             ),
         fullSizeImageRoute: (context) => const FullSizeImageWindow()
