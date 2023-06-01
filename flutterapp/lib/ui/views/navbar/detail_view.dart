@@ -48,7 +48,7 @@ class _DetailViewState extends State<DetailView> {
     for (int i = 0; i < description!.description.length; i++) {
       if (description.description[i].language!.name == "en") {
         englishDescription =
-            description.description[i].flavorText!.replaceAll("\n", "");
+            description.description[i].flavorText!.replaceAll("\n", " ");
         break;
       }
     }
