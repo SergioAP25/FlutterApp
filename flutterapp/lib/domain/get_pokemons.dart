@@ -13,7 +13,6 @@ class GetPokemons {
   List<Results> _apilist = [];
 
   Future<void> getPokemons() async {
-    print("STARTED DATABASE UPDATE");
     final list = await _repository.getAllPokemons();
     _apilist = list.results;
     bool exists =
@@ -21,7 +20,6 @@ class GetPokemons {
     if (!exists) {
       _insertPokemonsIntoDatabase();
     }
-    print("FINISHED DATABASE UPDATE");
   }
 
   void _insertPokemonsIntoDatabase() async {
@@ -47,7 +45,6 @@ class GetPokemons {
         description.description.add(FlavorTextEntries(
             flavorText: defaultDescription, language: Language(name: "en")));
       }
-      print(pokemon.name);
       await _repository.insertPokemon(pokemon);
       await _repository.insertDescriptions(description);
     }
