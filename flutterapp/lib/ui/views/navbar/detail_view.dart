@@ -468,6 +468,9 @@ class _DetailViewState extends State<DetailView> {
                                                   ),
                                                 ),
                                               ),
+                                              const SizedBox(
+                                                height: 25,
+                                              )
                                             ],
                                           );
                                         } else {
@@ -485,9 +488,6 @@ class _DetailViewState extends State<DetailView> {
                           )
                         ],
                       ),
-                      const SizedBox(
-                        height: 25,
-                      )
                     ],
                   ),
                 ),
