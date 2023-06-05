@@ -9,7 +9,6 @@ import 'package:flutterapp/domain/get_pokemons_descriptions.dart';
 import 'package:flutterapp/domain/get_random_pokemon.dart';
 import 'package:flutterapp/domain/is_favorite.dart';
 import 'package:flutterapp/domain/remove_favorite.dart';
-import '../exists.dart';
 import '../get_favorite_pokemon_az.dart';
 import '../get_favorite_pokemon_by_name_filtered_by_multi_type.dart';
 import '../get_favorite_pokemon_by_name_filtered_by_multi_type_az.dart';
